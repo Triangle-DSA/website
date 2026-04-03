@@ -1,25 +1,32 @@
 ---
 import { Image } from "astro:assets";
-import heroImage from "../assets/hero.webp";
 
 interface Props {
   title: string;
   subtitle: string;
+  heroImage?: {
+    alt?: string;
+    asset?: {
+      url?: string;
+    };
+  };
 }
 
-const { title, subtitle } = Astro.props;
+const { title, subtitle, heroImage } = Astro.props;
 ---
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true">
-    <Image
-      src={heroImage}
-      alt=""
-      class="hero-bg-image"
-      loading="eager"
-      fetchpriority="high"
-      decoding="async"
-    />
+    {heroImage?.asset?.url && (
+      <img
+        src={heroImage?.asset?.url}
+        alt={heroImage?.alt || ""}
+        class="hero-bg-image"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    )}
   </div>
   <div class="container">
     <div class="hero-content">

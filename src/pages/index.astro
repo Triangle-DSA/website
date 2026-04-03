@@ -9,7 +9,13 @@ import { type SocialMedia } from "../sanity/schemaTypes/socialMedia";
 
 const homepage = await sanityClient.fetch<HomepageContent>(
   `*[_type == "homepageContent"][0]{
-      hero,
+      hero {
+        ...,
+        heroImage {
+          ...,
+          asset->{url}
+        }
+      },
       about,
       join
     }`,
@@ -44,19 +50,23 @@ const socialMediaItems = await sanityClient.fetch<SocialMedia[]>(
 ---
 
 <Layout title="North Carolina DSA - Democratic Socialists of America">
-  <Hero title={homepage.hero?.title} subtitle={homepage.hero?.subtitle} />
+  <Hero
+    title={homepage?.hero?.title}
+    subtitle={homepage?.hero?.subtitle}
+    heroImage={homepage?.hero?.heroImage}
+  />
   <main id="main-content">
     <!-- About Section -->
     <section id="about" class="section section--slant-top">
       <div class="container">
         <div class="about-inner">
-          <h2 class="section-heading">{homepage.about?.heading}</h2>
+          <h2 class="section-heading">{homepage?.about?.heading}</h2>
           <div class="about-text">
             <p class="lead-text">
-              {homepage.about?.paragraph1}
+              {homepage?.about?.paragraph1}
             </p>
             <p>
-              {homepage.about?.paragraph2}
+              {homepage?.about?.paragraph2}
             </p>
           </div>
         </div>
@@ -107,10 +117,10 @@ const socialMediaItems = await sanityClient.fetch<SocialMedia[]>(
     >
       <div class="container join-inner">
         <h2 class="section-heading section-heading--center">
-          {homepage.join?.heading}
+          {homepage?.join?.heading}
         </h2>
         <p class="join-text">
-          {homepage.join?.text}
+          {homepage?.join?.text}
         </p>
         <div class="join-buttons">
           <a
@@ -121,9 +131,9 @@ const socialMediaItems = await sanityClient.fetch<SocialMedia[]>(
           >Join DSA</a>
           <a href="#contact" class="btn btn--outline">Contact NC Chapter</a>
         </div>
-        {homepage.join?.duesInfo && (
+        {homepage?.join?.duesInfo && (
           <p class="dues-info">
-            {homepage.join?.duesInfo}
+            {homepage?.join?.duesInfo}
           </p>
         )}
       </div>
