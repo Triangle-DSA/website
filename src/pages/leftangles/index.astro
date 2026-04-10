@@ -8,6 +8,12 @@ interface PostListItem {
     current: string;
   };
   publishedAt?: string;
+  mainImage?: {
+    alt?: string;
+    asset?: {
+      url?: string;
+    };
+  };
 }
 
 const { data: posts } = await loadQuery<PostListItem[]>({
@@ -15,9 +21,19 @@ const { data: posts } = await loadQuery<PostListItem[]>({
     | order(coalesce(publishedAt, _createdAt) desc){
       title,
       slug,
-      publishedAt
+      publishedAt,
+      mainImage {
+        alt,
+        asset->{url}
+      }
     }`,
 });
+
+function cardSize(i: number): "large" | "wide" | "small" {
+  if (i === 0 || (i % 9 === 0 && i > 0)) return "large";
+  if (i % 5 === 4) return "wide";
+  return "small";
+}
 ---
 
 <Layout title="Left Angles | North Carolina DSA">
@@ -35,26 +51,44 @@ const { data: posts } = await loadQuery<PostListItem[]>({
     <section class="section">
       <div class="container">
         <div class="posts-grid">
-          {posts.map((post, i) => (
-            <article
-              class="card card--elevated post-card"
-              style={`animation-delay: ${i * 60}ms`}
-            >
-              <a href={`/leftangles/${post.slug.current}`} class="post-link">
-                <h2 class="post-title">{post.title}</h2>
-                {post.publishedAt && (
-                  <time class="post-meta" datetime={post.publishedAt}>
-                    {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-                )}
-                <span class="post-arrow" aria-hidden="true">→</span>
-              </a>
-            </article>
-          ))}
+          {posts.map((post, i) => {
+            const size = cardSize(i);
+            return (
+              <article
+                class:list={[
+                  "card card--elevated post-card",
+                  size === "large" && "post-card--large",
+                  size === "wide" && "post-card--wide",
+                ]}
+                style={`animation-delay: ${i * 60}ms`}
+              >
+                <a href={`/leftangles/${post.slug.current}`} class="post-link">
+                  {post.mainImage?.asset?.url ? (
+                    <img
+                      class="post-image"
+                      src={post.mainImage.asset.url}
+                      alt={post.mainImage.alt ?? post.title}
+                      loading={i === 0 ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+                  ) : <div class="post-image-placeholder" aria-hidden="true" />}
+                  <div class="post-content">
+                    <h2 class="post-title">{post.title}</h2>
+                    {post.publishedAt && (
+                      <time class="post-meta" datetime={post.publishedAt}>
+                        {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </time>
+                    )}
+                    <span class="post-arrow" aria-hidden="true">→</span>
+                  </div>
+                </a>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -109,16 +143,21 @@ main {
   position: relative;
 }
 
+/* ---- Grid ---- */
+
 .posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 260px;
+  grid-auto-flow: dense;
   gap: var(--space-lg);
 }
 
+/* ---- Card base ---- */
+
 .post-card {
   padding: 0;
-  border-top: 3px solid var(--red-primary);
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  border-radius: var(--radius-md);
   animation: fadeInUp var(--duration-slow) var(--ease-out) both;
   overflow: hidden;
 }
@@ -126,11 +165,9 @@ main {
 .post-link {
   display: flex;
   flex-direction: column;
-  padding: var(--space-xl) var(--space-lg);
   text-decoration: none;
   color: inherit;
   height: 100%;
-  position: relative;
 }
 
 .post-link:hover {
@@ -141,18 +178,72 @@ main {
   color: var(--red-primary);
 }
 
+.post-link:hover .post-image {
+  transform: scale(1.04);
+}
+
 .post-link:hover .post-arrow {
   transform: translateX(4px);
   opacity: 1;
 }
 
+/* Image fills available card height above the content strip */
+
+.post-image,
+.post-image-placeholder {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: block;
+}
+
+.post-image {
+  object-fit: cover;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.post-image-placeholder {
+  background: linear-gradient(
+    160deg,
+    var(--red-primary) 0%,
+    var(--red-dark) 50%,
+    var(--red-darker) 100%
+  );
+  position: relative;
+}
+
+.post-image-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(0, 0, 0, 0.06) 40px,
+    rgba(0, 0, 0, 0.06) 42px
+  );
+}
+
+/* Content strip at the bottom of each card */
+
+.post-content {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md) var(--space-lg);
+  position: relative;
+  background: var(--white);
+  border-top: 3px solid var(--red-primary);
+}
+
 .post-title {
   font-family: var(--font-display);
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-2xs);
   transition: color var(--duration-fast) var(--ease-out);
   line-height: 1.1;
 }
@@ -160,13 +251,13 @@ main {
 .post-meta {
   color: var(--text-secondary);
   font-size: var(--text-sm);
-  margin-top: auto;
 }
 
 .post-arrow {
   position: absolute;
-  bottom: var(--space-lg);
+  top: 50%;
   right: var(--space-lg);
+  transform: translateY(-50%);
   font-size: var(--text-lg);
   color: var(--red-primary);
   opacity: 0;
@@ -175,9 +266,105 @@ main {
     opacity var(--duration-fast) var(--ease-out);
 }
 
+.post-link:hover .post-arrow {
+  transform: translateY(-50%) translateX(4px);
+  opacity: 1;
+}
+
+/* ---- Large card: 2 cols × 2 rows ---- */
+
+.post-card--large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.post-card--large .post-content {
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.post-card--large .post-title {
+  font-size: var(--text-2xl);
+}
+
+/* ---- Wide card: 2 cols × 1 row — horizontal layout ---- */
+
+.post-card--wide {
+  grid-column: span 2;
+}
+
+.post-card--wide .post-link {
+  flex-direction: row;
+}
+
+/* Image fixed to natural aspect ratio at full card height */
+.post-card--wide .post-image,
+.post-card--wide .post-image-placeholder {
+  flex: none;
+  width: auto;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+/* Content fills remaining width beside the image */
+.post-card--wide .post-content {
+  flex: 1;
+  border-top: none;
+  border-left: 3px solid var(--red-primary);
+  justify-content: center;
+  padding: var(--space-xl);
+}
+
+.post-card--wide .post-title {
+  font-size: var(--text-xl);
+}
+
+/* ---- Responsive ---- */
+
 @media (max-width: 768px) {
   .posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 220px;
+  }
+
+  .post-card--large {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  .post-card--large .post-title {
+    font-size: var(--text-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .posts-grid {
     grid-template-columns: 1fr;
+    grid-auto-rows: 240px;
+  }
+
+  .post-card--large,
+  .post-card--wide {
+    grid-column: span 1;
+  }
+
+  /* Revert wide card to vertical on single-column layout */
+  .post-card--wide .post-link {
+    flex-direction: column;
+  }
+
+  .post-card--wide .post-image,
+  .post-card--wide .post-image-placeholder {
+    flex: 1;
+    width: 100%;
+    height: auto;
+    aspect-ratio: unset;
+  }
+
+  .post-card--wide .post-content {
+    border-left: none;
+    border-top: 3px solid var(--red-primary);
+    justify-content: flex-start;
+    padding: var(--space-md) var(--space-lg);
   }
 }
 </style>
