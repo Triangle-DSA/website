@@ -4,6 +4,12 @@ export interface HomepageContent {
   hero: {
     title: string;
     subtitle: string;
+    heroImage?: {
+      alt?: string;
+      asset?: {
+        url?: string;
+      };
+    };
   };
   about: {
     heading: string;
@@ -38,6 +44,20 @@ export const homepageContentType = defineType({
           title: "Subtitle",
           type: "text",
           validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: "heroImage",
+          type: "image",
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: "alt",
+              type: "string",
+              title: "Alternative Text",
+            },
+          ],
         }),
       ],
     }),

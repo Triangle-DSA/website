@@ -4,7 +4,7 @@ import { defineField, defineType, type Image, type Reference, type Slug } from "
 export interface Post {
   title: string;
   slug: Slug;
-  author: Reference;
+  author: string;
   mainImage: Image;
   categories: Reference[];
   publishedAt: Date;
@@ -29,8 +29,7 @@ export const postType = defineType({
     }),
     defineField({
       name: "author",
-      type: "reference",
-      to: { type: "author" },
+      type: "string",
     }),
     defineField({
       name: "mainImage",
@@ -53,7 +52,7 @@ export const postType = defineType({
     }),
     defineField({
       name: "publishedAt",
-      type: "datetime",
+      type: "date",
     }),
     defineField({
       name: "body",
@@ -64,7 +63,7 @@ export const postType = defineType({
   preview: {
     select: {
       title: "title",
-      author: "author.name",
+      author: "author",
       media: "mainImage",
     },
     prepare(selection) {
