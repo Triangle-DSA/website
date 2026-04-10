@@ -215,7 +215,7 @@ if (toggle && menu) {
 
 <style>
 .site-header {
-  background: pink;
+  background: var(--pink);
   color: var(--red-primary);
   position: sticky;
   top: 0;
@@ -406,13 +406,13 @@ if (toggle && menu) {
   display: none;
   flex-direction: column;
   justify-content: center;
-  gap: 5px;
+  gap: var(--space-2xs);
   width: 40px;
   height: 40px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  padding: var(--space-xs);
   z-index: 110;
 }
 
@@ -442,7 +442,7 @@ if (toggle && menu) {
 .nav-mobile {
   position: fixed;
   inset: 64px 0 0 0;
-  background: pink;
+  background: var(--pink);
   z-index: 99;
   display: flex;
   align-items: flex-start;
