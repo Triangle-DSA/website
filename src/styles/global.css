@@ -16,7 +16,7 @@
   --red-primary: #ec1f27;
   --red-dark: #c41e1e;
   --red-darker: #8b1a1a;
-  --red-glow: rgba(236, 31, 39, 0.15);
+  --pink: #fbd2d4;
   --cream: #faf8f5;
   --black: #111111;
   --black-rich: #0a0a0a;
@@ -24,6 +24,7 @@
   --gray-50: #f7f7f6;
   --gray-100: #eeeded;
   --gray-200: #d9d7d5;
+  --gray-300: #c1c0bf;
   --gray-400: #9e9a96;
   --gray-500: #706c67;
   --gray-700: #3d3a37;
@@ -463,6 +464,50 @@ a:hover {
   padding-bottom: calc(var(--space-3xl) + 40px);
 }
 
+/* --- Page Hero --- */
+.page-hero {
+  background: linear-gradient(
+    160deg,
+    var(--red-primary) 0%,
+    var(--red-dark) 50%,
+    var(--red-darker) 100%
+  );
+  color: var(--white);
+  padding: var(--space-3xl) 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), 0 100%);
+}
+
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(0, 0, 0, 0.04) 40px,
+    rgba(0, 0, 0, 0.04) 42px
+  );
+  pointer-events: none;
+}
+
+.page-hero h1 {
+  color: var(--white);
+  position: relative;
+}
+
+.page-hero-sub {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
 /* --- Responsive --- */
 @media (max-width: 1024px) {
   :root {
@@ -476,6 +521,10 @@ a:hover {
   }
 
   .section {
+    padding: var(--space-2xl) 0;
+  }
+
+  .page-hero {
     padding: var(--space-2xl) 0;
   }
 
@@ -495,6 +544,14 @@ a:hover {
   :root {
     --container-pad: var(--space-md);
   }
+}
+
+/* --- Responsive Image --- */
+.responsive-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-md);
 }
 
 /* --- Screenreader Only --- */
