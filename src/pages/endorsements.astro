@@ -144,8 +144,29 @@ const endorsedCandidates = [
 </Layout>
 
 <style>
+.page-hero {
+  background: linear-gradient(
+    160deg,
+    var(--gray-700) 0%,
+    var(--gray-900) 60%,
+    var(--black-rich) 100%
+  );
+  color: var(--white);
+  padding: var(--space-3xl) 0;
+  text-align: center;
+}
+
 .section-heading::after {
   background: var(--gray-700);
+}
+
+.page-hero h1 {
+  color: var(--white);
+}
+
+.page-hero-sub {
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0 auto;
 }
 
 .endorsee-list {
@@ -197,6 +218,7 @@ const endorsedCandidates = [
   background: var(--white);
   padding: var(--space-lg);
   border: 1px solid var(--gray-200);
+  border-left: 1px solid var(--gray-200);
   box-shadow: var(--shadow-sm);
 }
 
@@ -229,6 +251,10 @@ const endorsedCandidates = [
 }
 
 @media (max-width: 768px) {
+  .page-hero {
+    padding: var(--space-2xl) 0;
+  }
+
   .endorsee-row {
     flex-direction: column;
   }
