@@ -70,8 +70,15 @@ function cardSize(i: number): "large" | "wide" | "small" {
                       alt={post.mainImage.alt ?? post.title}
                       loading={i === 0 ? "eager" : "lazy"}
                       decoding="async"
+                      style={`view-transition-name: post-image-${post.slug.current}`}
                     />
-                  ) : <div class="post-image-placeholder" aria-hidden="true" />}
+                  ) : (
+                     <div
+                       class="post-image-placeholder"
+                       aria-hidden="true"
+                       style={`view-transition-name: post-image-${post.slug.current}`}
+                     />
+                   )}
                   <div class="post-content">
                     <h2 class="post-title">{post.title}</h2>
                     {post.publishedAt && (
