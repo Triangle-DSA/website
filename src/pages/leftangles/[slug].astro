@@ -73,6 +73,7 @@ const { data: post } = await loadQuery<PostPage>({
               alt={post.mainImage.alt ?? post.title}
               loading="eager"
               decoding="async"
+              style={`view-transition-name: post-image-${params.slug}`}
             />
           )}
           <div class="prose">
