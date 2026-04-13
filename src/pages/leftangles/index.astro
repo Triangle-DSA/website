@@ -60,7 +60,6 @@ function cardSize(i: number): "large" | "wide" | "small" {
                   size === "large" && "post-card--large",
                   size === "wide" && "post-card--wide",
                 ]}
-                style={`animation-delay: ${i * 60}ms`}
               >
                 <a href={`/leftangles/${post.slug.current}`} class="post-link">
                   {post.mainImage?.asset?.url ? (
@@ -165,7 +164,6 @@ main {
 .post-card {
   padding: 0;
   border-radius: var(--radius-md);
-  animation: fadeInUp var(--duration-slow) var(--ease-out) both;
   overflow: hidden;
 }
 
