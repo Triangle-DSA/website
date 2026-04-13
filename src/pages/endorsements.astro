@@ -45,42 +45,26 @@ const endorsedCandidates = [
         <h2 class="section-heading">Currently Endorsed</h2>
 
         <div class="endorsee-list">
-          {endorsedCandidates.map((candidate) => {
-            const isPortrait = candidate.image.height > candidate.image.width;
+          {endorsedCandidates.map((candidate) => (
+            <article class="endorsee-card">
+              <div class="endorsee-media">
+                <Image
+                  src={candidate.image}
+                  alt={candidate.imageAlt}
+                  loading="lazy"
+                  class="endorsee-image"
+                  width={400}
+                  height={500}
+                />
+              </div>
 
-            return (
-              <article
-                class:list={[
-                  "endorsee-row",
-                  { "endorsee-row--portrait": isPortrait },
-                ]}
-              >
-                <div
-                  class:list={[
-                    "endorsee-media",
-                    { "endorsee-media--portrait": isPortrait },
-                  ]}
-                >
-                  <Image
-                    src={candidate.image}
-                    alt={candidate.imageAlt}
-                    loading="lazy"
-                    class="endorsee-image"
-                    width={isPortrait ? 180 : 280}
-                    sizes={isPortrait
-                    ? "(max-width: 768px) 180px, 180px"
-                    : "(max-width: 768px) 100vw, 280px"}
-                  />
-                </div>
-
-                <div class="endorsee-content">
-                  <h3>{candidate.name}</h3>
-                  <p class="endorsee-office">{candidate.office}</p>
-                  <p>{candidate.summary}</p>
-                </div>
-              </article>
-            );
-          })}
+              <div class="endorsee-content">
+                <h3>{candidate.name}</h3>
+                <p class="endorsee-office">{candidate.office}</p>
+                <p>{candidate.summary}</p>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>
@@ -171,37 +155,43 @@ const endorsedCandidates = [
 
 .endorsee-list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-xl);
 }
 
-.endorsee-row {
+.endorsee-card {
   display: flex;
-  gap: var(--space-xl);
-  align-items: flex-start;
+  flex-direction: column;
+  flex: 0 1 320px;
+  max-width: 100%;
+  min-width: 0;
   background: var(--white);
   border: 1px solid var(--gray-200);
-  padding: var(--space-lg);
   box-shadow: var(--shadow-sm);
 }
 
 .endorsee-media {
-  flex: 0 0 auto;
-  width: 280px;
-}
-
-.endorsee-media--portrait {
-  width: 180px;
+  width: 100%;
+  max-width: 320px;
+  height: 400px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .endorsee-image {
   width: 100%;
-  height: auto;
+  max-width: 320px;
+  height: 400px;
+  object-fit: cover;
   display: block;
 }
 
 .endorsee-content {
   flex: 1;
+  min-width: 0;
+  padding: var(--space-lg);
+  overflow-wrap: break-word;
 }
 
 .endorsee-office {
@@ -255,23 +245,19 @@ const endorsedCandidates = [
     padding: var(--space-2xl) 0;
   }
 
-  .endorsee-row {
+  .endorsee-list {
     flex-direction: column;
+    align-items: center;
   }
 
-  .endorsee-row--portrait {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .endorsee-media {
+  .endorsee-card {
     width: 100%;
-    max-width: 420px;
   }
 
-  .endorsee-media--portrait {
-    width: 140px;
-    max-width: 140px;
+  .endorsee-media,
+  .endorsee-image {
+    max-width: 100%;
+    height: auto;
   }
 }
 </style>
