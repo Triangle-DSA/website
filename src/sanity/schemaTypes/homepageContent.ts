@@ -7,7 +7,8 @@ export interface HomepageContent {
     heroImage?: {
       alt?: string;
       asset?: {
-        url?: string;
+        _ref: string;
+        _type: string;
       };
     };
   };
