@@ -2,6 +2,7 @@
 import { sanityClient } from "sanity:client";
 import Hero from "../components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
+import { urlForImage } from "../sanity/lib/url-for-image";
 import { type Campaign } from "../sanity/schemaTypes/campaign";
 import { type HomepageContent } from "../sanity/schemaTypes/homepageContent";
 import { type ProgramItem } from "../sanity/schemaTypes/programItem";
@@ -47,9 +48,21 @@ const socialMediaItems = await sanityClient.fetch<SocialMedia[]>(
     order
   }`,
 );
+const heroPreloadUrl = homepage?.hero?.heroImage?.asset
+  ? urlForImage(homepage.hero.heroImage).width(1920).auto("format").url()
+  : null;
 ---
 
 <Layout title="North Carolina DSA - Democratic Socialists of America">
+  {heroPreloadUrl && (
+    <link
+      slot="head"
+      rel="preload"
+      as="image"
+      href={heroPreloadUrl}
+      fetchpriority="high"
+    />
+  )}
   <Hero
     title={homepage?.hero?.title}
     subtitle={homepage?.hero?.subtitle}

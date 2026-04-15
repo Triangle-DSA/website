@@ -64,6 +64,7 @@ const canonicalURL = new URL(
 
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to content</a>

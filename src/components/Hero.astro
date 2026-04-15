@@ -16,12 +16,22 @@ interface Props {
 const { title, subtitle, heroImage } = Astro.props;
 
 const heroImageUrl = heroImage?.asset
-  ? urlForImage(heroImage).auto("format").fit("max").url()
+  ? urlForImage(heroImage).width(1920).auto("format").fit("max").url()
+  : null;
+
+const lqipUrl = heroImage?.asset
+  ? urlForImage(heroImage).width(20).blur(50).format("jpg").url()
   : null;
 ---
 
 <section class="hero">
-  <div class="hero-bg" aria-hidden="true">
+  <div
+    class="hero-bg"
+    aria-hidden="true"
+    style={lqipUrl
+    ? `background-image: url('${lqipUrl}'); background-size: cover; background-position: center;`
+    : undefined}
+  >
     {heroImageUrl && (
       <img
         src={heroImageUrl}
