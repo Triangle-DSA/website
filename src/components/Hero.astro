@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { urlForImage } from "../sanity/lib/url-for-image";
 
 interface Props {
   title: string;
@@ -7,19 +7,34 @@ interface Props {
   heroImage?: {
     alt?: string;
     asset?: {
-      url?: string;
+      _ref: string;
+      _type: string;
     };
   };
 }
 
 const { title, subtitle, heroImage } = Astro.props;
+
+const heroImageUrl = heroImage?.asset
+  ? urlForImage(heroImage).width(1920).auto("format").fit("max").url()
+  : null;
+
+const lqipUrl = heroImage?.asset
+  ? urlForImage(heroImage).width(20).blur(50).format("jpg").url()
+  : null;
 ---
 
 <section class="hero">
-  <div class="hero-bg" aria-hidden="true">
-    {heroImage?.asset?.url && (
+  <div
+    class="hero-bg"
+    aria-hidden="true"
+    style={lqipUrl
+    ? `background-image: url('${lqipUrl}'); background-size: cover; background-position: center;`
+    : undefined}
+  >
+    {heroImageUrl && (
       <img
-        src={heroImage?.asset?.url}
+        src={heroImageUrl}
         alt={heroImage?.alt || ""}
         class="hero-bg-image"
         loading="eager"
