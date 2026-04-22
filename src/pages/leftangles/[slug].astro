@@ -279,6 +279,19 @@ main {
   margin: var(--space-2xl) 0;
 }
 
+/* Text alignment via decorators */
+.prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="center"])) {
+  text-align: center;
+}
+
+.prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="right"])) {
+  text-align: right;
+}
+
+.prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="left"])) {
+  text-align: left;
+}
+
 @media (max-width: 768px) {
   .article-body {
     padding: var(--space-lg);

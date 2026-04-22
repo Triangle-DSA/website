@@ -1,5 +1,34 @@
 // ./src/sanity/schemaTypes/blockContent.ts
+import { createElement } from "react";
 import { defineArrayMember, defineType } from "sanity";
+import { AlignPlugins } from "../plugins/exclusive-align";
+
+const AlignLeftIcon = () =>
+  createElement(
+    "svg",
+    { width: "1em", height: "1em", viewBox: "0 0 16 16", fill: "currentColor" },
+    createElement("rect", { x: 1, y: 3, width: 14, height: 1.5, rx: 0.5 }),
+    createElement("rect", { x: 1, y: 7.25, width: 9, height: 1.5, rx: 0.5 }),
+    createElement("rect", { x: 1, y: 11.5, width: 12, height: 1.5, rx: 0.5 }),
+  );
+
+const AlignCenterIcon = () =>
+  createElement(
+    "svg",
+    { width: "1em", height: "1em", viewBox: "0 0 16 16", fill: "currentColor" },
+    createElement("rect", { x: 1, y: 3, width: 14, height: 1.5, rx: 0.5 }),
+    createElement("rect", { x: 3.5, y: 7.25, width: 9, height: 1.5, rx: 0.5 }),
+    createElement("rect", { x: 2, y: 11.5, width: 12, height: 1.5, rx: 0.5 }),
+  );
+
+const AlignRightIcon = () =>
+  createElement(
+    "svg",
+    { width: "1em", height: "1em", viewBox: "0 0 16 16", fill: "currentColor" },
+    createElement("rect", { x: 1, y: 3, width: 14, height: 1.5, rx: 0.5 }),
+    createElement("rect", { x: 6, y: 7.25, width: 9, height: 1.5, rx: 0.5 }),
+    createElement("rect", { x: 3, y: 11.5, width: 12, height: 1.5, rx: 0.5 }),
+  );
 
 /**
  * This is the schema type for block content used in the post document type
@@ -16,6 +45,11 @@ export const blockContentType = defineType({
   title: "Block Content",
   name: "blockContent",
   type: "array",
+  components: {
+    portableText: {
+      plugins: AlignPlugins,
+    },
+  },
   of: [
     defineArrayMember({
       type: "block",
@@ -39,6 +73,9 @@ export const blockContentType = defineType({
         decorators: [
           { title: "Strong", value: "strong" },
           { title: "Emphasis", value: "em" },
+          { title: "Align Left", value: "alignLeft", icon: AlignLeftIcon },
+          { title: "Align Center", value: "alignCenter", icon: AlignCenterIcon },
+          { title: "Align Right", value: "alignRight", icon: AlignRightIcon },
         ],
         // Annotations can be any object structure – e.g. a link or a footnote.
         annotations: [
