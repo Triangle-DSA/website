@@ -1,6 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { loadQuery } from "../../sanity/lib/load-query";
+import {
+  sanityImageSrcset,
+  sanityImageUrl,
+} from "../../sanity/lib/url-for-image";
 
 interface PostListItem {
   title: string;
@@ -11,7 +15,7 @@ interface PostListItem {
   mainImage?: {
     alt?: string;
     asset?: {
-      url?: string;
+      _ref?: string;
     };
   };
 }
@@ -24,7 +28,7 @@ const { data: posts } = await loadQuery<PostListItem[]>({
       publishedAt,
       mainImage {
         alt,
-        asset->{url}
+        asset
       }
     }`,
 });
@@ -62,10 +66,12 @@ function cardSize(i: number): "large" | "wide" | "small" {
                 ]}
               >
                 <a href={`/leftangles/${post.slug.current}`} class="post-link">
-                  {post.mainImage?.asset?.url ? (
+                  {post.mainImage?.asset?._ref ? (
                     <img
                       class="post-image"
-                      src={post.mainImage.asset.url}
+                      src={sanityImageUrl(post.mainImage, 800)}
+                      srcset={sanityImageSrcset(post.mainImage, [400, 800, 1200])}
+                      sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
                       alt={post.mainImage.alt ?? post.title}
                       loading={i === 0 ? "eager" : "lazy"}
                       decoding="async"

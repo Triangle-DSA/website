@@ -22,7 +22,7 @@ export default defineConfig({
     sanity({
       projectId: PUBLIC_SANITY_PROJECT_ID,
       dataset: PUBLIC_SANITY_DATASET,
-      useCdn: false, // See note on using the CDN
+      useCdn: true,
       apiVersion: "2026-02-21", // insert the current date to access the latest version of the API
       studioBasePath: "/admin", // If you want to access the Studio on a route
       stega: {

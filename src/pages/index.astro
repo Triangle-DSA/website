@@ -12,8 +12,8 @@ const homepage = await sanityClient.fetch<HomepageContent>(
       hero {
         ...,
         heroImage {
-          ...,
-          asset->{url}
+          alt,
+          asset
         }
       },
       about,

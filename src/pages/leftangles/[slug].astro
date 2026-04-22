@@ -2,6 +2,7 @@
 import PortableText from "../../components/PortableText.astro";
 import Layout from "../../layouts/Layout.astro";
 import { loadQuery } from "../../sanity/lib/load-query";
+import { sanityImageUrl } from "../../sanity/lib/url-for-image";
 
 interface PostPage {
   title: string;
@@ -10,7 +11,7 @@ interface PostPage {
   mainImage?: {
     alt?: string;
     asset?: {
-      url?: string;
+      _ref?: string;
     };
   };
 }
@@ -24,7 +25,7 @@ const { data: post } = await loadQuery<PostPage>({
     body,
     mainImage {
       alt,
-      asset->{url}
+      asset
     }
   }`,
   params,
@@ -66,10 +67,12 @@ const { data: post } = await loadQuery<PostPage>({
     <section class="section">
       <div class="container container--narrow">
         <article class="article-body">
-          {post.mainImage?.asset?.url && (
+          {post.mainImage?.asset?._ref && (
             <img
               class="article-image"
-              src={post.mainImage.asset.url}
+              src={sanityImageUrl(post.mainImage, 740)}
+              srcset={`${sanityImageUrl(post.mainImage, 740)} 740w, ${sanityImageUrl(post.mainImage, 1480)} 1480w`}
+              sizes="(max-width: 768px) 100vw, 740px"
               alt={post.mainImage.alt ?? post.title}
               loading="eager"
               decoding="async"
