@@ -30,6 +30,22 @@ const AlignRightIcon = () =>
     createElement("rect", { x: 3, y: 11.5, width: 12, height: 1.5, rx: 0.5 }),
   );
 
+const AlignJustifyIcon = () =>
+  createElement(
+    "svg",
+    { width: "1em", height: "1em", viewBox: "0 0 16 16", fill: "currentColor" },
+    createElement("rect", { x: 1, y: 3, width: 14, height: 1.5, rx: 0.5 }),
+    createElement("rect", { x: 1, y: 7.25, width: 14, height: 1.5, rx: 0.5 }),
+    createElement("rect", { x: 1, y: 11.5, width: 14, height: 1.5, rx: 0.5 }),
+  );
+
+// Decorator component that renders a data-align span so the editor CSS
+// can apply text-align to the parent block via :has().
+const AlignDecorator = (props: { children: React.ReactNode; value: string }) => {
+  const align = props.value.replace("align", "").toLowerCase();
+  return createElement("span", { "data-align": align }, props.children);
+};
+
 /**
  * This is the schema type for block content used in the post document type
  * Importing this type into the studio configuration's `schema` property
@@ -73,9 +89,10 @@ export const blockContentType = defineType({
         decorators: [
           { title: "Strong", value: "strong" },
           { title: "Emphasis", value: "em" },
-          { title: "Align Left", value: "alignLeft", icon: AlignLeftIcon },
-          { title: "Align Center", value: "alignCenter", icon: AlignCenterIcon },
-          { title: "Align Right", value: "alignRight", icon: AlignRightIcon },
+          { title: "Align Left", value: "alignLeft", icon: AlignLeftIcon, component: AlignDecorator },
+          { title: "Align Center", value: "alignCenter", icon: AlignCenterIcon, component: AlignDecorator },
+          { title: "Align Right", value: "alignRight", icon: AlignRightIcon, component: AlignDecorator },
+          { title: "Align Justify", value: "alignJustify", icon: AlignJustifyIcon, component: AlignDecorator },
         ],
         // Annotations can be any object structure – e.g. a link or a footnote.
         annotations: [

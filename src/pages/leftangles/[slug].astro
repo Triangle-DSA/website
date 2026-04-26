@@ -292,6 +292,10 @@ main {
   text-align: left;
 }
 
+.prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="justify"])) {
+  text-align: justify;
+}
+
 @media (max-width: 768px) {
   .article-body {
     padding: var(--space-lg);
