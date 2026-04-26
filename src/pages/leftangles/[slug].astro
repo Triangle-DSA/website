@@ -3,6 +3,11 @@ import PortableText from "../../components/PortableText.astro";
 import Layout from "../../layouts/Layout.astro";
 import { loadQuery } from "../../sanity/lib/load-query";
 
+interface AdjacentPost {
+  title: string;
+  slug: string;
+}
+
 interface PostPage {
   title: string;
   publishedAt?: string;
@@ -13,6 +18,8 @@ interface PostPage {
       url?: string;
     };
   };
+  newer?: AdjacentPost;
+  older?: AdjacentPost;
 }
 
 const { params } = Astro;
@@ -25,7 +32,17 @@ const { data: post } = await loadQuery<PostPage>({
     mainImage {
       alt,
       asset->{url}
-    }
+    },
+    "newer": *[_type == "post" && defined(slug.current) && _id != ^._id && coalesce(publishedAt, _createdAt) > coalesce(^.publishedAt, ^._createdAt)]
+      | order(coalesce(publishedAt, _createdAt) asc)[0]{
+        title,
+        "slug": slug.current
+      },
+    "older": *[_type == "post" && defined(slug.current) && _id != ^._id && coalesce(publishedAt, _createdAt) < coalesce(^.publishedAt, ^._createdAt)]
+      | order(coalesce(publishedAt, _createdAt) desc)[0]{
+        title,
+        "slug": slug.current
+      }
   }`,
   params,
 });
@@ -80,6 +97,23 @@ const { data: post } = await loadQuery<PostPage>({
             <PortableText portableText={post.body} />
           </div>
         </article>
+
+        {(post.newer || post.older) && (
+          <nav class="post-nav" aria-label="More posts">
+            {post.newer ? (
+              <a href={`/leftangles/${post.newer.slug}`} class="post-nav-link post-nav-link--newer">
+                <span class="post-nav-label">← Newer Post</span>
+                <span class="post-nav-title">{post.newer.title}</span>
+              </a>
+            ) : <span />}
+            {post.older ? (
+              <a href={`/leftangles/${post.older.slug}`} class="post-nav-link post-nav-link--older">
+                <span class="post-nav-label">Older Post →</span>
+                <span class="post-nav-title">{post.older.title}</span>
+              </a>
+            ) : <span />}
+          </nav>
+        )}
       </div>
     </section>
   </main>
@@ -279,6 +313,53 @@ main {
   margin: var(--space-2xl) 0;
 }
 
+.post-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-top: var(--space-2xl);
+}
+
+.post-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+  color: inherit;
+  border-top: 3px solid var(--red-primary);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.post-nav-link:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.post-nav-link--older {
+  text-align: right;
+}
+
+.post-nav-label {
+  font-size: var(--text-sm);
+  color: var(--red-primary);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.post-nav-title {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
 @media (max-width: 768px) {
   .article-body {
     padding: var(--space-lg);
@@ -288,6 +369,14 @@ main {
   .prose :global(blockquote) {
     padding: var(--space-sm) var(--space-md);
     margin: var(--space-lg) 0;
+  }
+
+  .post-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .post-nav-link--older {
+    text-align: left;
   }
 }
 </style>
