@@ -58,7 +58,7 @@ function AlignLeftDefaultHighlight() {
   const anyActive = isLeft || isCenter || isRight || isJustify;
 
   useEffect(() => {
-    const btn = document.querySelector('button[aria-label="Align Left"]');
+    const btn = document.querySelector("button[aria-label=\"Align Left\"]");
     if (!btn) return;
     if (!anyActive) {
       btn.setAttribute("data-default-selected", "true");
