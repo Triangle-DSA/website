@@ -1,43 +1,13 @@
 // ./src/sanity/schemaTypes/blockContent.ts
 import { createElement } from "react";
 import { defineArrayMember, defineType } from "sanity";
-import { AlignPlugins } from "../plugins/exclusive-align";
-
-const AlignLeftIcon = () =>
-  createElement(
-    "svg",
-    { width: "1em", height: "1em", viewBox: "0 0 16 16", fill: "currentColor" },
-    createElement("rect", { x: 1, y: 3, width: 14, height: 1.5, rx: 0.5 }),
-    createElement("rect", { x: 1, y: 7.25, width: 9, height: 1.5, rx: 0.5 }),
-    createElement("rect", { x: 1, y: 11.5, width: 12, height: 1.5, rx: 0.5 }),
-  );
-
-const AlignCenterIcon = () =>
-  createElement(
-    "svg",
-    { width: "1em", height: "1em", viewBox: "0 0 16 16", fill: "currentColor" },
-    createElement("rect", { x: 1, y: 3, width: 14, height: 1.5, rx: 0.5 }),
-    createElement("rect", { x: 3.5, y: 7.25, width: 9, height: 1.5, rx: 0.5 }),
-    createElement("rect", { x: 2, y: 11.5, width: 12, height: 1.5, rx: 0.5 }),
-  );
-
-const AlignRightIcon = () =>
-  createElement(
-    "svg",
-    { width: "1em", height: "1em", viewBox: "0 0 16 16", fill: "currentColor" },
-    createElement("rect", { x: 1, y: 3, width: 14, height: 1.5, rx: 0.5 }),
-    createElement("rect", { x: 6, y: 7.25, width: 9, height: 1.5, rx: 0.5 }),
-    createElement("rect", { x: 3, y: 11.5, width: 12, height: 1.5, rx: 0.5 }),
-  );
-
-const AlignJustifyIcon = () =>
-  createElement(
-    "svg",
-    { width: "1em", height: "1em", viewBox: "0 0 16 16", fill: "currentColor" },
-    createElement("rect", { x: 1, y: 3, width: 14, height: 1.5, rx: 0.5 }),
-    createElement("rect", { x: 1, y: 7.25, width: 14, height: 1.5, rx: 0.5 }),
-    createElement("rect", { x: 1, y: 11.5, width: 14, height: 1.5, rx: 0.5 }),
-  );
+import {
+  AlignCenterIcon,
+  AlignJustifyIcon,
+  AlignLeftIcon,
+  AlignPlugins,
+  AlignRightIcon,
+} from "../plugins/exclusive-align";
 
 // Decorator component that renders a data-align span so the editor CSS
 // can apply text-align to the parent block via :has().
