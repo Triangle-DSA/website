@@ -8,6 +8,8 @@ import {
   AlignPlugins,
   AlignRightIcon,
 } from "../plugins/exclusive-align";
+import { BlockInputWithColors } from "../components/BlockInputWithColors";
+import { bgColorAnnotation, textColorAnnotation } from "./colorDecorators";
 
 // Decorator component that renders a data-align span so the editor CSS
 // can apply text-align to the parent block via :has().
@@ -32,6 +34,8 @@ export const blockContentType = defineType({
   name: "blockContent",
   type: "array",
   components: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    input: BlockInputWithColors as any,
     portableText: {
       plugins: AlignPlugins,
     },
@@ -78,6 +82,8 @@ export const blockContentType = defineType({
               },
             ],
           },
+          textColorAnnotation,
+          bgColorAnnotation,
         ],
       },
     }),

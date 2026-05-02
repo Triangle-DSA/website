@@ -375,6 +375,33 @@ main {
   text-align: justify;
 }
 
+/* --- Text + background color decorators --- */
+.prose :global([data-text-color="black"]) { color: #000000; }
+.prose :global([data-text-color="white"]) { color: #ffffff; }
+.prose :global([data-text-color="darkGrey"]) { color: #424242; }
+.prose :global([data-text-color="red"]) { color: #d32f2f; }
+.prose :global([data-text-color="orange"]) { color: #ef6c00; }
+.prose :global([data-text-color="yellow"]) { color: #f9d423; }
+.prose :global([data-text-color="green"]) { color: #2e7d32; }
+.prose :global([data-text-color="teal"]) { color: #00897b; }
+.prose :global([data-text-color="blue"]) { color: #1976d2; }
+.prose :global([data-text-color="purple"]) { color: #7b1fa2; }
+.prose :global([data-text-color="pink"]) { color: #c2185b; }
+.prose :global([data-text-color="brown"]) { color: #6d4c41; }
+
+.prose :global([data-bg-color="black"]) { background-color: #000000; }
+.prose :global([data-bg-color="white"]) { background-color: #ffffff; }
+.prose :global([data-bg-color="darkGrey"]) { background-color: #424242; }
+.prose :global([data-bg-color="red"]) { background-color: #d32f2f; }
+.prose :global([data-bg-color="orange"]) { background-color: #ef6c00; }
+.prose :global([data-bg-color="yellow"]) { background-color: #f9d423; }
+.prose :global([data-bg-color="green"]) { background-color: #2e7d32; }
+.prose :global([data-bg-color="teal"]) { background-color: #00897b; }
+.prose :global([data-bg-color="blue"]) { background-color: #1976d2; }
+.prose :global([data-bg-color="purple"]) { background-color: #7b1fa2; }
+.prose :global([data-bg-color="pink"]) { background-color: #c2185b; }
+.prose :global([data-bg-color="brown"]) { background-color: #6d4c41; }
+
 @media (max-width: 768px) {
   .article-body {
     padding: var(--space-lg);
