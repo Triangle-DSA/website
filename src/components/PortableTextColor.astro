@@ -1,0 +1,15 @@
+---
+const { node } = Astro.props;
+const markType: string = node?._type ?? "";
+const color: string | undefined = node?.markDef?.color;
+
+let attr: "data-text-color" | "data-bg-color" | null = null;
+if (markType === "textColor") attr = "data-text-color";
+else if (markType === "bgColor") attr = "data-bg-color";
+---
+
+{
+  attr && color
+    ? <span {...{ [attr]: color }}><slot /></span>
+    : <slot />
+}
