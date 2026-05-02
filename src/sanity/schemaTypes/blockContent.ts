@@ -1,5 +1,20 @@
 // ./src/sanity/schemaTypes/blockContent.ts
+import { createElement } from "react";
 import { defineArrayMember, defineType } from "sanity";
+import {
+  AlignCenterIcon,
+  AlignJustifyIcon,
+  AlignLeftIcon,
+  AlignPlugins,
+  AlignRightIcon,
+} from "../plugins/exclusive-align";
+
+// Decorator component that renders a data-align span so the editor CSS
+// can apply text-align to the parent block via :has().
+const AlignDecorator = (props: { children: React.ReactNode; value: string }) => {
+  const align = props.value.replace("align", "").toLowerCase();
+  return createElement("span", { "data-align": align }, props.children);
+};
 
 /**
  * This is the schema type for block content used in the post document type
@@ -16,6 +31,11 @@ export const blockContentType = defineType({
   title: "Block Content",
   name: "blockContent",
   type: "array",
+  components: {
+    portableText: {
+      plugins: AlignPlugins,
+    },
+  },
   of: [
     defineArrayMember({
       type: "block",
@@ -39,6 +59,10 @@ export const blockContentType = defineType({
         decorators: [
           { title: "Strong", value: "strong" },
           { title: "Emphasis", value: "em" },
+          { title: "Align Left", value: "alignLeft", icon: AlignLeftIcon, component: AlignDecorator },
+          { title: "Align Center", value: "alignCenter", icon: AlignCenterIcon, component: AlignDecorator },
+          { title: "Align Right", value: "alignRight", icon: AlignRightIcon, component: AlignDecorator },
+          { title: "Align Justify", value: "alignJustify", icon: AlignJustifyIcon, component: AlignDecorator },
         ],
         // Annotations can be any object structure – e.g. a link or a footnote.
         annotations: [
