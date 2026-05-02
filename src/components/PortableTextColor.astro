@@ -8,8 +8,6 @@ if (markType === "textColor") attr = "data-text-color";
 else if (markType === "bgColor") attr = "data-bg-color";
 ---
 
-{
-  attr && color
-    ? <span {...{ [attr]: color }}><slot /></span>
-    : <slot />
-}
+{attr && color
+  ? <span {...{ [attr]: color }}><slot /></span>
+  : <slot />}

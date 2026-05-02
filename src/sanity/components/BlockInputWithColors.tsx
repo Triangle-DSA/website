@@ -1,17 +1,12 @@
 import { PortableTextEditor } from "@portabletext/editor";
 import { Box, Button, Card, Flex, Menu, MenuButton, MenuItem, Stack } from "@sanity/ui";
 import React, { useCallback, useMemo, useRef } from "react";
-import {
-  type ArraySchemaType,
-  type ObjectSchemaType,
-  PortableTextInput,
-  type PortableTextInputProps,
-} from "sanity";
+import { type ArraySchemaType, type ObjectSchemaType, PortableTextInput, type PortableTextInputProps } from "sanity";
 import { COLORS } from "../schemaTypes/colorDecorators";
 
 const findAnnotationSchema = (
   schemaType: ArraySchemaType,
-  annotationName: string
+  annotationName: string,
 ): ObjectSchemaType | undefined => {
   const blockMember = schemaType.of?.find(
     (member) => (member as { name?: string }).name === "block",
