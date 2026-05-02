@@ -1,0 +1,6 @@
+---
+const { node } = Astro.props;
+const align = node.markType.replace("align", "").toLowerCase();
+---
+
+<span data-align={align}><slot /></span>

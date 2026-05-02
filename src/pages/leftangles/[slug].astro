@@ -358,6 +358,21 @@ main {
   font-size: var(--text-md);
   color: var(--text-primary);
   line-height: 1.2;
+/* Text alignment via decorators */
+.prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="center"])) {
+  text-align: center;
+}
+
+.prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="right"])) {
+  text-align: right;
+}
+
+.prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="left"])) {
+  text-align: left;
+}
+
+.prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="justify"])) {
+  text-align: justify;
 }
 
 @media (max-width: 768px) {
