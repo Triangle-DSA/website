@@ -1,6 +1,8 @@
 // ./src/sanity/schemaTypes/blockContent.ts
 import { createElement } from "react";
 import { defineArrayMember, defineType } from "sanity";
+import type { PortableTextPluginsProps } from "sanity";
+import { BlockInputWithColors } from "../components/BlockInputWithColors";
 import {
   AlignCenterIcon,
   AlignJustifyIcon,
@@ -8,8 +10,6 @@ import {
   AlignPlugins,
   AlignRightIcon,
 } from "../plugins/exclusive-align";
-import type { PortableTextPluginsProps } from "sanity";
-import { BlockInputWithColors } from "../components/BlockInputWithColors";
 import { bgColorAnnotation, ColorPlugins, textColorAnnotation } from "./colorDecorators";
 
 // Compose Color + Align plugins (PTE expects a single plugins component).

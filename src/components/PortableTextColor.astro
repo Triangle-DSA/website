@@ -1,6 +1,6 @@
 ---
 const { node } = Astro.props;
-const markType: string = node?._type ?? "";
+const markType: string = node?.markType ?? "";
 const color: string | undefined = node?.markDef?.color;
 
 let attr: "data-text-color" | "data-bg-color" | null = null;

@@ -89,10 +89,11 @@ const BgColorAnnotationComponent = (props: BlockAnnotationProps) => {
 // CSS injected into the PTE editor so that text-color / bg-color annotations
 // preview their selected color. !important is required to win over the
 // editor's default annotation styles (gray background + theme color).
-const COLOR_EDITOR_CSS = COLORS.map(({ name, hex }) =>
-  `[data-text-color="${name}"], [data-text-color="${name}"] * { color: ${hex} !important; }
+const COLOR_EDITOR_CSS =
+  COLORS.map(({ name, hex }) =>
+    `[data-text-color="${name}"], [data-text-color="${name}"] * { color: ${hex} !important; }
 [data-bg-color="${name}"], [data-bg-color="${name}"] * { background-color: ${hex} !important; }`
-).join("\n") + `
+  ).join("\n") + `
 button[aria-label="Text Color"],
 button[aria-label="Background Color"] { display: none !important; }`;
 
