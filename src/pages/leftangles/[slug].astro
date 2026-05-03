@@ -22,10 +22,7 @@ interface PostPage {
   older?: AdjacentPost;
 }
 
-const slug = Astro.params.slug;
-if (!slug) {
-  throw new Error("Missing slug parameter");
-}
+const { params } = Astro;
 
 const { data: post } = await loadQuery<PostPage>({
   query: `*[_type == "post" && slug.current == $slug][0]{
@@ -47,7 +44,7 @@ const { data: post } = await loadQuery<PostPage>({
         "slug": slug.current
       }
   }`,
-  params: { slug },
+  params: { slug: params.slug! },
 });
 ---
 
@@ -93,7 +90,7 @@ const { data: post } = await loadQuery<PostPage>({
               alt={post.mainImage.alt ?? post.title}
               loading="eager"
               decoding="async"
-              style={`view-transition-name: post-image-${slug}`}
+              style={`view-transition-name: ${params.slug}`}
             />
           )}
           <div class="prose">
