@@ -1,4 +1,5 @@
-import React from "react";
+import React, { createElement } from "react";
+import type { BlockAnnotationProps, PortableTextPluginsProps } from "sanity";
 
 export type ColorName =
   | "black"
@@ -75,6 +76,35 @@ const colorPreview = (label: string) => ({
   },
 });
 
+const TextColorAnnotationComponent = (props: BlockAnnotationProps) => {
+  const color = (props.value as { color?: string })?.color;
+  return <span data-text-color={color}>{props.renderDefault(props)}</span>;
+};
+
+const BgColorAnnotationComponent = (props: BlockAnnotationProps) => {
+  const color = (props.value as { color?: string })?.color;
+  return <span data-bg-color={color}>{props.renderDefault(props)}</span>;
+};
+
+// CSS injected into the PTE editor so that text-color / bg-color annotations
+// preview their selected color. !important is required to win over the
+// editor's default annotation styles (gray background + theme color).
+const COLOR_EDITOR_CSS = COLORS.map(({ name, hex }) =>
+  `[data-text-color="${name}"], [data-text-color="${name}"] * { color: ${hex} !important; }
+[data-bg-color="${name}"], [data-bg-color="${name}"] * { background-color: ${hex} !important; }`
+).join("\n") + `
+button[aria-label="Text Color"],
+button[aria-label="Background Color"] { display: none !important; }`;
+
+export function ColorPlugins(props: PortableTextPluginsProps) {
+  return (
+    <>
+      {createElement("style", null, COLOR_EDITOR_CSS)}
+      {props.renderDefault(props)}
+    </>
+  );
+}
+
 export const textColorAnnotation = {
   name: "textColor",
   title: "Text Color",
@@ -89,6 +119,9 @@ export const textColorAnnotation = {
     },
   ],
   preview: colorPreview("Text"),
+  components: {
+    annotation: TextColorAnnotationComponent,
+  },
 };
 
 export const bgColorAnnotation = {
@@ -105,4 +138,7 @@ export const bgColorAnnotation = {
     },
   ],
   preview: colorPreview("Background"),
+  components: {
+    annotation: BgColorAnnotationComponent,
+  },
 };

@@ -22,7 +22,10 @@ interface PostPage {
   older?: AdjacentPost;
 }
 
-const { params } = Astro;
+const slug = Astro.params.slug;
+if (!slug) {
+  throw new Error("Missing slug parameter");
+}
 
 const { data: post } = await loadQuery<PostPage>({
   query: `*[_type == "post" && slug.current == $slug][0]{
@@ -44,7 +47,7 @@ const { data: post } = await loadQuery<PostPage>({
         "slug": slug.current
       }
   }`,
-  params,
+  params: { slug },
 });
 ---
 
@@ -90,7 +93,7 @@ const { data: post } = await loadQuery<PostPage>({
               alt={post.mainImage.alt ?? post.title}
               loading="eager"
               decoding="async"
-              style={`view-transition-name: post-image-${params.slug}`}
+              style={`view-transition-name: post-image-${slug}`}
             />
           )}
           <div class="prose">
@@ -160,7 +163,6 @@ main {
   font-size: var(--text-sm);
   font-weight: 500;
   text-decoration: none;
-  ;
   letter-spacing: 0.05em;
   margin-bottom: var(--space-lg);
   transition: color var(--duration-fast) var(--ease-out);
@@ -184,7 +186,6 @@ main {
   font-family: var(--font-body);
   font-size: var(--text-sm);
   color: rgba(255, 255, 255, 0.75);
-  ;
   letter-spacing: 0.06em;
   position: relative;
 }
@@ -358,6 +359,8 @@ main {
   font-size: var(--text-md);
   color: var(--text-primary);
   line-height: 1.2;
+}
+
 /* Text alignment via decorators */
 .prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="center"])) {
   text-align: center;
