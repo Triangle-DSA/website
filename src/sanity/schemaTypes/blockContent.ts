@@ -8,8 +8,19 @@ import {
   AlignPlugins,
   AlignRightIcon,
 } from "../plugins/exclusive-align";
+import type { PortableTextPluginsProps } from "sanity";
 import { BlockInputWithColors } from "../components/BlockInputWithColors";
-import { bgColorAnnotation, textColorAnnotation } from "./colorDecorators";
+import { bgColorAnnotation, ColorPlugins, textColorAnnotation } from "./colorDecorators";
+
+// Compose Color + Align plugins (PTE expects a single plugins component).
+// ColorPlugins.renderDefault renders AlignPlugins with the *original* props,
+// so AlignPlugins.renderDefault still points at the real PTE default and we
+// don't recurse infinitely.
+const ComposedPlugins = (props: PortableTextPluginsProps) =>
+  createElement(ColorPlugins, {
+    ...props,
+    renderDefault: () => createElement(AlignPlugins, props),
+  });
 
 // Decorator component that renders a data-align span so the editor CSS
 // can apply text-align to the parent block via :has().
@@ -37,7 +48,7 @@ export const blockContentType = defineType({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     input: BlockInputWithColors as any,
     portableText: {
-      plugins: AlignPlugins,
+      plugins: ComposedPlugins,
     },
   },
   of: [
