@@ -4,7 +4,7 @@ export interface SocialMedia {
   platform: string;
   label: string;
   url: string;
-  emoji?: string;
+  icon?: { asset: { _ref: string; _type: string } };
   order?: number;
 }
 
@@ -43,17 +43,22 @@ export const socialMediaType = defineType({
         }),
     }),
     defineField({
-      name: "emoji",
-      title: "Emoji",
-      type: "string",
-      description: "Optional emoji to show in the Get Involved list",
+      name: "icon",
+      title: "Icon",
+      type: "image",
+      description: "Optional icon image to show in the Get Involved list",
+      options: { hotspot: false },
     }),
     defineField({
       name: "order",
       title: "Order",
       type: "number",
       validation: (rule) => rule.required().integer().min(0),
-      initialValue: 0,
+      initialValue: async (_params, context) => {
+        const client = context.getClient({ apiVersion: "2026-02-21" });
+        const max = await client.fetch<number | null>(`*[_type == "socialMedia"] | order(order desc)[0].order`);
+        return (max ?? -1) + 1;
+      },
     }),
   ],
   orderings: [
@@ -67,6 +72,7 @@ export const socialMediaType = defineType({
     select: {
       title: "platform",
       subtitle: "label",
+      media: "icon",
     },
   },
 });

@@ -15,7 +15,7 @@ const socialMediaItems = await sanityClient.fetch<SocialMedia[]>(
     platform,
     label,
     url,
-    emoji,
+    icon { asset },
     order
   }`,
 );
