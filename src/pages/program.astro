@@ -1,0 +1,313 @@
+---
+import { sanityClient } from "sanity:client";
+import Layout from "../layouts/Layout.astro";
+import { type ProgramItem } from "../sanity/schemaTypes/programItem";
+import { slugify } from "../utils/slugify";
+
+const sortedProgram = await sanityClient.fetch<ProgramItem[]>(
+  `*[_type == "programItem"] | order(order asc) {
+    title,
+    icon,
+    description,
+    order
+  }`,
+);
+---
+
+<Layout
+  title="Our Program - North Carolina DSA"
+  description="NC Triangle DSA demands a democratic, socialist future. Read about our key political and economic program items."
+>
+  <main id="main-content">
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <h1>Our Program</h1>
+        <p class="page-hero-sub">
+          Demanding a democratic, socialist future in the Tar Heel State
+        </p>
+      </div>
+    </section>
+
+    <!-- Program Content Section -->
+    <section class="section">
+      <div class="container program-container">
+        <!-- Sidebar Table of Contents -->
+        <aside class="program-sidebar">
+          <nav aria-label="Program sections navigation" class="sticky-nav">
+            <h2 class="sidebar-title">Sections</h2>
+            <ul class="sidebar-list">
+              {sortedProgram.map((item) => (
+                <li>
+                  <a href={`#${slugify(item.title)}`} class="sidebar-link">
+                    <span
+                      class="sidebar-link-icon"
+                      aria-hidden="true"
+                    >{item.icon}</span>
+                    <span class="sidebar-link-text">{item.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="program-content">
+          {sortedProgram.map((item) => {
+            const slug = slugify(item.title);
+            return (
+              <article id={slug} class="program-section">
+                <h2 class="section-title">
+                  <span
+                    class="section-title-icon"
+                    aria-hidden="true"
+                  >{item.icon}</span>
+                  {item.title}
+                </h2>
+                <div class="section-body">
+                  {item.description.split("\n\n").filter(p => p.trim()).map((
+                    paragraph,
+                  ) => <p>{paragraph}</p>)}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+// Scroll spy to highlight active section in sidebar
+const observerOptions = {
+  root: null,
+  rootMargin: "-20% 0px -60% 0px", // triggers when section is in the middle of the viewport
+  threshold: 0,
+};
+
+const sections = document.querySelectorAll(".program-section");
+const navLinks = document.querySelectorAll(".sidebar-link");
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute("id");
+      navLinks.forEach((link) => {
+        const href = link.getAttribute("href");
+        if (href === `#${id}`) {
+          link.classList.add("sidebar-link--active");
+        } else {
+          link.classList.remove("sidebar-link--active");
+        }
+      });
+    }
+  });
+}, observerOptions);
+
+sections.forEach((section) => observer.observe(section));
+</script>
+
+<style>
+main {
+  min-height: 100vh;
+}
+
+/* --- Hero --- */
+.page-hero {
+  background: linear-gradient(
+    160deg,
+    var(--red-primary) 0%,
+    var(--red-dark) 50%,
+    var(--red-darker) 100%
+  );
+  color: var(--white);
+  padding: var(--space-3xl) 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), 0 100%);
+}
+
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(0, 0, 0, 0.04) 40px,
+    rgba(0, 0, 0, 0.04) 42px
+  );
+  pointer-events: none;
+}
+
+.page-hero h1 {
+  color: var(--white);
+  position: relative;
+  margin-bottom: var(--space-sm);
+}
+
+.page-hero-sub {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* --- Layout --- */
+.program-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+/* --- Sticky Sidebar --- */
+.program-sidebar {
+  position: sticky;
+  top: 96px; /* offset for site header */
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding-right: var(--space-md);
+  border-right: 1px solid var(--gray-200);
+}
+
+.sidebar-title {
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-500);
+  margin-bottom: var(--space-md);
+}
+
+.sidebar-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-decoration: none;
+  font-size: var(--text-sm);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    padding-left var(--duration-fast) var(--ease-out);
+}
+
+.sidebar-link:hover {
+  background-color: var(--gray-100);
+  color: var(--red-primary);
+  text-decoration: none;
+  padding-left: var(--space-md);
+}
+
+.sidebar-link--active {
+  background-color: var(--red-glow);
+  color: var(--red-primary);
+  font-weight: 700;
+}
+
+.sidebar-link-icon {
+  font-size: var(--text-md);
+  flex-shrink: 0;
+}
+
+.sidebar-link-text {
+  line-height: 1.3;
+}
+
+/* --- Main Content --- */
+.program-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+}
+
+.program-section {
+  padding-top: var(--space-md);
+  scroll-margin-top: 100px; /* target scroll offset for navbar */
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--red-primary);
+  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.section-title-icon {
+  font-size: var(--text-2xl);
+}
+
+.section-body p {
+  font-size: var(--text-md);
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+}
+
+.section-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .program-container {
+    grid-template-columns: 240px 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .program-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .program-sidebar {
+    position: static;
+    max-height: none;
+    border-right: none;
+    padding-right: 0;
+    margin-bottom: var(--space-lg);
+    background: var(--gray-50);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-200);
+  }
+
+  .sidebar-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .sidebar-link {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+  }
+
+  .sidebar-link:hover {
+    padding-left: var(--space-sm);
+  }
+}
+</style>
