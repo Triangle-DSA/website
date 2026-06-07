@@ -71,437 +71,795 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
   />
   <main id="main-content">
     <!-- About Section -->
-    <section id="about" class="section section--slant-top">
-      <div class="container">
-        <div class="about-inner">
-          <h2 class="section-heading">{homepage?.about?.heading}</h2>
-          <div class="about-text">
-            <p class="lead-text">
-              {homepage?.about?.paragraph1}
-            </p>
-            <p>
-              {homepage?.about?.paragraph2}
-            </p>
-          </div>
-        </div>
+    <section id="about" class="about-section container mt-md relative">
+      <div class="section-header">
+        <h2 class="section-title bg-accent-pink rotate-1 shadow-md uppercase">
+          {homepage?.about?.heading}
+        </h2>
+      </div>
+      <div class="about-content p-lg border-heavy shadow-lg -rotate-1 bg-surface-lowest">
+        <p class="about-lead">{homepage?.about?.paragraph1}</p>
+        <p>{homepage?.about?.paragraph2}</p>
       </div>
     </section>
 
     <!-- Program Section -->
-    <section id="program" class="section bg-light">
-      <div class="container">
-        <h2 class="section-heading section-heading--center">Our Program</h2>
-        <div class="program-list">
-          {sortedProgram.map((item, i) => (
-            <a
-              href={`/program#${slugify(item.title)}`}
-              class="program-item"
-              style={`animation-delay: ${i * 45}ms`}
-            >
-              <span class="program-icon" aria-hidden="true">{item.icon}</span>
-              <span class="program-title">{item.title}</span>
-              <svg
-                class="program-arrow"
-                width="14"
-                height="14"
-                viewBox="0 0 12 12"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                aria-hidden="true"
+    <section
+      id="program"
+      class="program-section container mt-xl bg-surface-lowest relative"
+    >
+      <div class="bg-dots program-bg-overlay"></div>
+      <div class="section-header">
+        <h2 class="section-title bg-accent-yellow -rotate-1 shadow-md uppercase">
+          Our Program
+        </h2>
+        <p class="section-subtitle font-typewriter rotate-1 mt-6">
+          -- Where the organizing happens. Join a working group today. --
+        </p>
+      </div>
+
+      <div class="program-grid pt-md">
+        {sortedProgram.map((item, i) => {
+          const rotateClass = i % 3 === 0
+            ? "-rotate-1"
+            : i % 3 === 1
+            ? "rotate-1"
+            : "-rotate-2";
+          const iconBgClass = i % 3 === 0
+            ? "bg-primary-fixed"
+            : i % 3 === 1
+            ? "bg-accent-yellow"
+            : "bg-primary-fixed-dim";
+          const tapeRotateClass = i % 2 === 0 ? "rotate(-6deg)" : "rotate(5deg)";
+
+          return (
+            <div class={`program-card bg-surface-lowest border-heavy p-lg solid-shadow group ${rotateClass}`}>
+              <div
+                class="tape-effect"
+                style={`transform: translateX(-50%) ${tapeRotateClass};`}
               >
-                <path d="M4.5 1.5L9 6L4.5 10.5M9 6H1.5" />
-              </svg>
-            </a>
-          ))}
-        </div>
+              </div>
+              <div class="program-card-content z-10">
+                <div
+                  class={`program-icon shadow-md border-medium ${iconBgClass} ${
+                    i % 3 === 2 ? "rounded-full" : ""
+                  } ${rotateClass}`}
+                >
+                  <span class="icon-text">{item.icon}</span>
+                </div>
+                <h3 class="program-title uppercase">{item.title}</h3>
+                <p class="program-desc">{item.description}</p>
+              </div>
+              <div class="program-card-footer mt-auto">
+                <a class="program-link" href={`/program#${slugify(item.title)}`}>
+                  -&gt; Read More
+                </a>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
 
     <!-- Campaigns Section -->
-    <section id="campaigns" class="section">
-      <div class="container">
-        <h2 class="section-heading">Our Campaigns</h2>
-        <div class="campaigns-grid">
-          {sortedCampaigns.map((campaign, i) => (
-            <div
-              class="card card--bordered campaign-card"
-              style={`animation-delay: ${i * 80}ms`}
-            >
-              <h3 class="campaign-title">{campaign.title}</h3>
-              <p>{campaign.description}</p>
+    <section
+      id="campaigns"
+      class="campaigns-section container my-xl bg-surface-lowest border-heavy solid-shadow relative rotate-1"
+    >
+      <div class="campaigns-bg-texture bg-halftone-texture"></div>
+      <div class="campaigns-sticker font-typewriter uppercase">
+        JOIN US! -&gt;
+      </div>
+      <div class="tape-effect tape-top-left"></div>
+      <div class="tape-effect tape-top-right"></div>
+      <div class="tape-effect tape-bottom-center"></div>
+
+      <div class="campaigns-header">
+        <h2 class="campaigns-title uppercase">
+          <span class="highlighter-effect">Our Campaigns</span>
+        </h2>
+      </div>
+
+      <div class="campaigns-grid">
+        {sortedCampaigns.map((campaign, i) => {
+          const rotateClass = i % 2 === 0 ? "-rotate-1" : "rotate-1";
+          return (
+            <div class={`campaign-card bg-surface p-md border-heavy shadow-lg ${rotateClass}`}>
+              <div class="campaign-card-content">
+                <h4 class="campaign-title uppercase">{campaign.title}</h4>
+                <div class="campaign-desc font-typewriter">
+                  <p>{campaign.description}</p>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </section>
 
     <!-- Join Section -->
-    <section
-      id="join"
-      class="section bg-red section--slant-top section--slant-bottom"
-    >
-      <div class="container join-inner">
-        <h2 class="section-heading section-heading--center">
-          {homepage?.join?.heading}
-        </h2>
-        <p class="join-text">
-          {homepage?.join?.text}
-        </p>
-        <div class="join-buttons">
+    <section id="join" class="join-section container my-xl relative">
+      <div class="join-banner bg-primary border-heavy solid-shadow -rotate-1">
+        <div class="join-bg-dots bg-dots"></div>
+
+        <div class="join-content">
+          <h2 class="join-title uppercase -rotate-2">
+            {homepage?.join?.heading || "Fund the Movement."}
+          </h2>
+          <p class="join-text font-typewriter shadow-md rotate-1">
+            {homepage?.join?.text}
+          </p>
+          {homepage?.join?.duesInfo && (
+            <p class="join-dues font-typewriter">
+              * {homepage?.join?.duesInfo}
+            </p>
+          )}
+        </div>
+
+        <div class="join-actions">
           <a
+            class="btn-primary join-cta shadow-solid rotate-3 uppercase"
             href="https://dsausa.org/join"
-            class="btn btn--primary"
             target="_blank"
             rel="noopener noreferrer"
-          >Join DSA</a>
-          <a href="#contact" class="btn btn--outline">Contact NC Chapter</a>
+          >
+            Join DSA
+          </a>
+          <a
+            class="btn-secondary join-contact shadow-md -rotate-2 uppercase"
+            href="#contact"
+          >
+            Contact NC Chapter
+          </a>
         </div>
-        {homepage?.join?.duesInfo && (
-          <p class="dues-info">
-            {homepage?.join?.duesInfo}
-          </p>
-        )}
       </div>
     </section>
 
-    <!-- Events Section -->
-    <section id="events" class="section section--slant-top">
-      <div class="container events-cta">
-        <h2 class="section-heading section-heading--center">Upcoming Events</h2>
-        <p>
-          Join us for meetings, actions, social events, and more! Check out our
-          <a href="/calendar">full events calendar</a> to see what's happening.
-        </p>
-        <div class="events-btn-wrap">
-          <a href="/calendar" class="btn btn--primary">View Calendar</a>
-        </div>
+    <!-- Events Section CTA -->
+    <section
+      id="events"
+      class="events-section bg-surface-lowest border-heavy solid-shadow rotate-1 my-xl relative"
+    >
+      <div class="tape-effect tape-events"></div>
+      <div class="events-emoji-1 -rotate-12">💥</div>
+      <div class="events-emoji-2 rotate-12">✊</div>
+
+      <div class="events-icon-wrapper shadow-accent -rotate-3">
+        <span
+          class="material-symbols-outlined events-icon text-primary"
+          style='font-variation-settings: "FILL" 1'
+        >event</span>
       </div>
+
+      <h2 class="events-title uppercase">
+        <span class="highlighter-effect">Upcoming Events</span>
+      </h2>
+
+      <p class="events-desc font-typewriter">
+        Join us for meetings, actions, social events, and more!
+      </p>
+
+      <a
+        class="btn-primary events-cta shadow-md rotate-2 uppercase"
+        href="/calendar"
+      >
+        View Calendar
+      </a>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="section bg-light">
-      <div class="container">
-        <h2 class="section-heading">Get Involved</h2>
-        <p>
-          Want to learn more or get involved with North Carolina DSA? We'd love
-          to hear from you!
+    <section id="contact" class="contact-section container mt-xl">
+      <div class="section-header mb-lg">
+        <h2 class="section-title bg-accent-pink -rotate-1 shadow-md uppercase">
+          Get Involved
+        </h2>
+        <p class="section-subtitle font-typewriter mt-4">
+          We'd love to hear from you!
         </p>
-        <ul class="contact-list">
-          {socialMediaItems.map((item) => {
-            const isExternal = item.url.startsWith("http://")
-              || item.url.startsWith("https://");
+      </div>
 
-            return (
-              <li class="contact-item">
-                <span
-                  class="contact-icon"
-                  aria-hidden="true"
-                >{item.emoji ? item.emoji : "🔗"}</span>
-                <span class="contact-body">
-                  <strong>{item.platform}</strong>
-                  <a
-                    href={item.url}
-                    target={isExternal ? "_blank" : undefined}
-                    rel={isExternal ? "noopener noreferrer" : undefined}
-                  >
-                    {item.label}
-                    {isExternal && (
-                      <svg
-                        class="ext-icon"
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        aria-hidden="true"
-                      >
-                        <path d="M4.5 1.5H10.5V7.5M10.5 1.5L1.5 10.5" />
-                      </svg>
-                    )}
-                  </a>
+      <div class="contact-grid gap-md">
+        {socialMediaItems.map((item, i) => {
+          const isExternal = item.url.startsWith("http://")
+            || item.url.startsWith("https://");
+          const rotateClass = i % 2 === 0 ? "rotate-2" : "-rotate-2";
+
+          return (
+            <a
+              href={item.url}
+              class={`contact-card bg-surface p-md border-medium shadow-md ${rotateClass}`}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer" : undefined}
+            >
+              <span
+                class="contact-emoji"
+                aria-hidden="true"
+              >{item.emoji ? item.emoji : "🔗"}</span>
+              <div class="contact-info">
+                <span class="contact-platform uppercase">{item.platform}</span>
+                <span class="contact-label font-typewriter">
+                  {item.label}
+                  {isExternal && (
+                    <svg
+                      class="external-icon"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path d="M4.5 1.5H10.5V7.5M10.5 1.5L1.5 10.5" />
+                    </svg>
+                  )}
                 </span>
-              </li>
-            );
-          })}
-        </ul>
+              </div>
+            </a>
+          );
+        })}
       </div>
     </section>
   </main>
 </Layout>
 
 <style>
-main {
-  min-height: 100vh;
-}
-
-/* --- About --- */
-.about-inner {
-  max-width: var(--max-width-narrow);
-}
-
-.about-text p {
-  font-size: var(--text-md);
-  line-height: 1.75;
-  color: var(--text-secondary);
-}
-
-.lead-text {
-  font-size: var(--text-lg);
-  color: var(--text-primary);
-  font-weight: 500;
-  line-height: 1.65;
-}
-
-/* --- Program List (Compact redesign, cardless) --- */
-.program-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-md) var(--space-xl);
-  margin-top: var(--space-xl);
-}
-
-.program-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--gray-200);
-  text-decoration: none;
-  color: var(--text-primary);
-  transition:
-    color var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out);
-  animation: fadeInUp var(--duration-slow) var(--ease-out) both;
-}
-
-.program-item:hover {
-  color: var(--red-primary);
-  border-color: var(--red-primary);
-  text-decoration: none;
-}
-
-.program-icon {
-  font-size: var(--text-lg);
-  flex-shrink: 0;
-  transition: transform var(--duration-fast) var(--ease-out);
-}
-
-.program-item:hover .program-icon {
-  transform: scale(1.15) rotate(-5deg);
-}
-
-.program-title {
-  font-family: var(--font-display);
-  font-size: var(--text-md);
-  font-weight: 700;
-  line-height: 1.2;
-  flex: 1;
-}
-
-.program-arrow {
-  color: var(--red-primary);
-  opacity: 0;
-  transform: translateX(-4px);
-  transition:
-    opacity var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
-  flex-shrink: 0;
-}
-
-.program-item:hover .program-arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* --- Campaigns Grid --- */
-.campaigns-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-lg);
-  margin-top: var(--space-xl);
-}
-
-.campaign-card {
-  padding: var(--space-xl);
-  background: var(--gray-50);
-  animation: slideInRight var(--duration-slow) var(--ease-out) both;
-}
-
-.campaign-title {
-  color: var(--red-primary);
-  font-size: var(--text-xl);
-  margin-bottom: var(--space-sm);
-}
-
-.campaign-card p {
-  color: var(--text-secondary);
-  font-size: var(--text-sm);
-  max-width: none;
-}
-
-/* --- Join Section --- */
-.join-inner {
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-#join {
-  background: pink;
-  color: var(--red-primary);
-}
-
-#join .section-heading,
-#join .section-heading--center,
-#join .section-heading--center::after {
-  color: var(--red-primary);
-}
-
-#join .section-heading::after {
-  background: var(--red-primary);
-}
-
-.join-text {
-  font-size: var(--text-md);
-  margin-bottom: var(--space-xl);
-  max-width: 650px;
-  margin-left: auto;
-  margin-right: auto;
-  line-height: 1.7;
-  color: var(--red-primary);
-}
-
-.join-buttons {
-  display: flex;
-  gap: var(--space-md);
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: var(--space-lg);
-}
-
-.dues-info {
-  font-style: italic;
-  font-size: var(--text-sm);
-  color: var(--red-dark);
-  max-width: none;
-}
-
-#join .btn--outline {
-  color: var(--red-primary);
-  border-color: var(--red-primary);
-}
-
-#join .btn--outline:hover {
-  background: var(--red-primary);
-  color: var(--white);
-  box-shadow: var(--shadow-lg);
-}
-
-/* --- Events CTA --- */
-.events-cta {
-  text-align: center;
-  max-width: var(--max-width-narrow);
-  margin: 0 auto;
-}
-
-.events-cta p {
-  font-size: var(--text-md);
-  color: var(--text-secondary);
-  max-width: none;
-  margin-bottom: var(--space-lg);
-}
-
-.events-btn-wrap {
+/* General Layout Utilities used in index.astro */
+.mt-md {
   margin-top: var(--space-md);
 }
-
-/* --- Contact --- */
-.contact-list {
-  list-style: none;
+.mt-xl {
   margin-top: var(--space-xl);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.my-xl {
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+.mb-xs {
+  margin-bottom: var(--space-xs);
+}
+.mb-lg {
+  margin-bottom: var(--space-lg);
+}
+.p-md {
+  padding: var(--space-md);
+}
+.p-lg {
+  padding: var(--space-lg);
+}
+.pt-md {
+  padding-top: var(--space-md);
+}
+.gap-md {
   gap: var(--space-md);
 }
-
-.contact-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
-  padding: var(--space-md);
-  background: var(--white);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform var(--duration-fast) var(--ease-out),
-    box-shadow var(--duration-normal) var(--ease-out);
+.z-10 {
+  z-index: 10;
 }
 
-.contact-item:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+/* Rotations */
+.rotate-1 {
+  transform: rotate(1deg);
+}
+.-rotate-1 {
+  transform: rotate(-1deg);
+}
+.rotate-2 {
+  transform: rotate(2deg);
+}
+.-rotate-2 {
+  transform: rotate(-2deg);
+}
+.rotate-3 {
+  transform: rotate(3deg);
+}
+.-rotate-3 {
+  transform: rotate(-3deg);
+}
+.-rotate-12 {
+  transform: rotate(-12deg);
+}
+.rotate-12 {
+  transform: rotate(12deg);
 }
 
-.contact-icon {
-  font-size: var(--text-xl);
-  flex-shrink: 0;
-  line-height: 1;
-  margin-top: 2px;
+/* Colors */
+.bg-accent-pink {
+  background-color: var(--color-accent-pink);
+}
+.bg-accent-yellow {
+  background-color: var(--color-accent-yellow);
+}
+.bg-surface-lowest {
+  background-color: var(--color-surface-lowest);
+}
+.bg-surface {
+  background-color: var(--color-surface);
+}
+.bg-primary {
+  background-color: var(--color-primary);
+}
+.bg-primary-fixed {
+  background-color: var(--color-primary-fixed);
+}
+.bg-primary-fixed-dim {
+  background-color: var(--color-primary-fixed-dim);
 }
 
-.contact-body {
+.text-primary {
+  color: var(--color-primary);
+}
+
+/* Shadows */
+.shadow-md {
+  box-shadow: var(--shadow-solid-md);
+}
+.shadow-lg {
+  box-shadow: var(--shadow-solid-lg);
+}
+.shadow-solid {
+  box-shadow: var(--shadow-solid);
+}
+
+/* Borders */
+.border-medium {
+  border: 3px solid var(--color-on-background);
+}
+
+/* Misc */
+.rounded-full {
+  border-radius: var(--radius-full);
+}
+
+/* Section Header */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--color-on-background);
+  padding: 0 16px;
+  border: 3px solid var(--color-on-background);
+  display: inline-block;
+  position: relative;
+  z-index: 10;
+}
+.section-subtitle {
+  font-size: 20px;
+  color: var(--color-on-background);
+}
+
+/* About Section */
+.about-section {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+.about-content {
+  font-family: var(--font-typewriter);
+  font-size: 20px;
+  color: var(--color-on-background);
+  line-height: 1.625;
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.about-lead {
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* Program Section */
+.program-section {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  border-top: 4px solid var(--color-on-background);
+  border-bottom: 4px solid var(--color-on-background);
+}
+.program-bg-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  pointer-events: none;
+}
+.program-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+@media (min-width: 768px) {
+  .program-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-gutter);
+  }
+}
+.program-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3xs);
-  font-size: var(--text-sm);
+  height: 100%;
+  transition: all var(--transition-slow);
 }
-
-.contact-body strong {
-  color: var(--text-primary);
-  font-size: var(--text-sm);
-
-  letter-spacing: 0.04em;
-  font-weight: 600;
+.program-card:hover {
+  transform: translateY(-8px);
 }
-
-.contact-body a {
-  display: inline-flex;
+.program-card-content {
+  margin-bottom: var(--space-md);
+  position: relative;
+}
+.program-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
   align-items: center;
-  gap: var(--space-2xs);
+  justify-content: center;
+  margin-bottom: var(--space-md);
+}
+.icon-text {
+  font-size: 36px;
+}
+.program-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--color-on-background);
+  margin-bottom: var(--space-sm);
+}
+.program-desc {
+  font-family: var(--font-typewriter);
+  font-size: 18px;
+  color: var(--color-on-background);
+  line-height: 1.625;
+}
+.program-card-footer {
+  padding-top: var(--space-md);
+  border-top: 3px dashed var(--color-on-background);
+}
+.program-link {
+  font-family: var(--font-typewriter);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 8px;
+  border: 2px solid transparent;
+  width: fit-content;
+  transition: all var(--transition-fast);
+}
+.program-card:hover .program-link {
+  transform: translateX(8px);
+}
+.program-link:hover {
+  color: var(--color-on-background);
+  background-color: var(--color-accent-yellow);
+  border-color: var(--color-on-background);
 }
 
-.ext-icon {
-  opacity: 0.5;
-  flex-shrink: 0;
+/* Campaigns Section */
+.campaigns-section {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+.campaigns-bg-texture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.2;
+  pointer-events: none;
+}
+.campaigns-sticker {
+  position: absolute;
+  top: -2rem;
+  right: -1rem;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 20px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border: 3px solid var(--color-on-background);
+  box-shadow: 4px 4px 0px 0px var(--color-on-background);
+  transform: rotate(12deg);
+  z-index: 20;
+}
+.tape-top-left {
+  top: -15px;
+  left: 10%;
+  width: 120px;
+}
+.tape-top-right {
+  top: -15px;
+  left: 90%;
+  width: 100px;
+  transform: translateX(-50%) rotate(8deg);
+}
+.tape-bottom-center {
+  bottom: -15px;
+  top: auto;
+  left: 50%;
+  width: 150px;
+  transform: translateX(-50%) rotate(-2deg);
 }
 
-/* --- Responsive --- */
-@media (max-width: 1024px) {
+.campaigns-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-xl);
+  border-bottom: 4px solid var(--color-on-background);
+  padding-bottom: var(--space-md);
+}
+@media (min-width: 640px) {
+  .campaigns-header {
+    flex-direction: row;
+  }
+}
+.campaigns-title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  color: var(--color-on-background);
+  font-weight: 800;
+  display: inline-block;
+  position: relative;
+}
+.campaigns-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+@media (min-width: 768px) {
   .campaigns-grid {
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+.campaign-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  transition:
+    background-color var(--transition-normal),
+    transform var(--transition-normal);
+}
+.campaign-card:hover {
+  background-color: var(--color-accent-yellow);
+  transform: translateY(-4px);
+}
+.campaign-card-content {
+  flex-grow: 1;
+}
+.campaign-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--color-on-background);
+  margin-bottom: var(--space-xs);
+}
+.campaign-desc {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-on-background);
+}
 
-@media (max-width: 768px) {
-  .values-grid,
-  .campaigns-grid {
-    grid-template-columns: 1fr;
+/* Join Section */
+.join-section {
+  position: relative;
+}
+.join-banner {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .join-banner {
+    flex-direction: row;
   }
+}
+.join-bg-dots {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+.join-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .join-content {
+    width: 66.666%;
+  }
+}
+.join-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--color-on-primary);
+  margin-bottom: var(--space-md);
+  line-height: 1.2;
+  -webkit-text-stroke: 2px var(--color-on-background);
+}
+@media (min-width: 768px) {
+  .join-title {
+    font-size: 64px;
+  }
+}
+.join-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-on-primary);
+  max-width: 36rem;
+  line-height: 1.625;
+  background-color: var(--color-on-background);
+  padding: 16px;
+  border: 3px solid var(--color-on-primary);
+  box-shadow: 4px 4px 0px 0px var(--color-surface-lowest);
+}
+.join-dues {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-on-primary);
+  margin-top: 16px;
+  background-color: #000;
+  padding: 8px;
+  display: inline-block;
+}
+.join-actions {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: var(--space-lg);
+}
+@media (min-width: 768px) {
+  .join-actions {
+    width: 33.333%;
+    margin-top: 0;
+  }
+}
+.join-cta {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-on-background);
+  font-size: 24px;
+  padding: var(--space-lg) var(--space-xl);
+  border: 4px solid var(--color-on-background);
+  width: 100%;
+  text-align: center;
+}
+.join-cta:hover {
+  background-color: var(--color-surface);
+  transform: scale(1.05) rotate(3deg);
+}
+.join-contact {
+  background-color: var(--color-surface-lowest);
+  color: var(--color-on-background);
+  font-size: 20px;
+  padding: var(--space-md) var(--space-lg);
+  border: 4px solid var(--color-on-background);
+  width: 100%;
+  text-align: center;
+}
 
-  .contact-list {
-    grid-template-columns: 1fr;
-  }
+/* Events Section */
+.events-section {
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--space-xl) var(--space-gutter);
+  text-align: center;
+}
+.tape-events {
+  top: -15px;
+}
+.events-emoji-1 {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  font-size: 48px;
+}
+.events-emoji-2 {
+  position: absolute;
+  bottom: 80px;
+  right: 40px;
+  font-size: 48px;
+}
+.events-icon-wrapper {
+  display: inline-block;
+  background-color: var(--color-on-background);
+  padding: 24px;
+  margin-bottom: var(--space-md);
+  border: 4px solid transparent;
+}
+.shadow-accent {
+  box-shadow: 4px 4px 0px 0px var(--color-primary);
+}
+.events-icon {
+  font-size: 64px;
+}
+.events-title {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: var(--color-on-background);
+  font-weight: 900;
+  margin-bottom: var(--space-sm);
+  display: inline-block;
+  position: relative;
+}
+.events-desc {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-on-background);
+  margin-bottom: var(--space-xl);
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.events-cta {
+  font-size: 20px;
+  padding: 16px 32px;
+  border: 4px solid var(--color-on-background);
+  white-space: nowrap;
+}
+.events-cta:hover {
+  transform: scale(1.05) rotate(2deg);
+}
 
-  .join-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .join-buttons .btn {
-    width: 100%;
-    max-width: 300px;
-  }
+/* Contact Section */
+.contact-section {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  border-top: 4px dashed var(--color-on-background);
+}
+.contact-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: all var(--transition-normal);
+}
+.contact-card:hover {
+  background-color: var(--color-accent-yellow);
+  transform: translateY(-4px);
+}
+.contact-emoji {
+  font-size: 24px;
+}
+.contact-info {
+  display: flex;
+  flex-direction: column;
+}
+.contact-platform {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-on-background);
+}
+.contact-label {
+  font-size: 14px;
+  color: var(--color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.external-icon {
+  width: 12px;
+  height: 12px;
+  opacity: 0.7;
 }
 </style>

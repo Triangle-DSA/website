@@ -16,135 +16,339 @@ interface Props {
 const { title, subtitle, heroImage } = Astro.props;
 
 const heroImageUrl = heroImage?.asset
-  ? urlForImage(heroImage).width(1920).auto("format").fit("max").url()
-  : null;
-
-const lqipUrl = heroImage?.asset
-  ? urlForImage(heroImage).width(20).blur(50).format("jpg").url()
+  ? urlForImage(heroImage).width(1200).auto("format").fit("max").url()
   : null;
 ---
 
-<section class="hero">
-  <div
-    class="hero-bg"
-    aria-hidden="true"
-    style={lqipUrl
-    ? `background-image: url('${lqipUrl}'); background-size: cover; background-position: center;`
-    : undefined}
-  >
-    {heroImageUrl && (
-      <img
-        src={heroImageUrl}
-        alt={heroImage?.alt || ""}
-        class="hero-bg-image"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      />
-    )}
-  </div>
-  <div class="container">
+<section class="hero-section container">
+  <div class="hero-grid">
     <div class="hero-content">
-      <h1 class="hero-title animate-in">{title}</h1>
-      <p class="hero-subtitle animate-in animate-in-delay-1">
+      <!-- Sticker Badge -->
+      <div class="sticker-badge">
+        * Worker Power! *
+      </div>
+
+      <h1 class="hero-title uppercase">
+        {title.split(". ").map((part, index, array) => {
+          if (index === array.length - 1 && array.length > 1) {
+            return (
+              <span class="hero-title-highlight-wrapper">
+                <span
+                  class="highlighter-effect hero-title-highlight"
+                >{part}</span>
+              </span>
+            );
+          }
+          return <>{part}. <br /></>;
+        })}
+      </h1>
+
+      <p class="hero-subtitle">
         {subtitle}
       </p>
-      <div class="hero-buttons animate-in animate-in-delay-2">
-        <a href="#join" class="btn btn--secondary">Become a Member</a>
-        <a href="#about" class="btn btn--outline">Learn More</a>
+
+      <div class="hero-actions">
+        <div class="hero-cta-wrapper">
+          <div class="zine-circle"></div>
+          <a
+            class="btn-primary hero-cta-primary solid-shadow-hover"
+            href="#join"
+          >
+            Join Us
+          </a>
+        </div>
+        <a
+          class="btn-secondary hero-cta-secondary solid-shadow-hover"
+          href="#about"
+        >
+          Learn More
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-image-wrapper">
+      <!-- Decorative Pattern behind image -->
+      <div class="hero-image-bg bg-dots"></div>
+      <div
+        class="tape-effect"
+        style="top: -10px; left: 20%; transform: translateX(-50%) rotate(15deg)"
+      >
+      </div>
+      <div
+        class="tape-effect"
+        style="top: -10px; left: 80%; transform: translateX(-50%) rotate(-10deg)"
+      >
+      </div>
+      <div class="image-sticker">
+        Organize!
+      </div>
+
+      <div class="hero-image-container border-heavy solid-shadow photocopy-filter">
+        {heroImageUrl ? (
+          <>
+            <img
+              src={heroImageUrl}
+              alt={heroImage?.alt || "DSA organizers in action"}
+              class="hero-image"
+            />
+            <div class="hero-image-overlay"></div>
+          </>
+        ) : (
+           <div class="hero-image-placeholder">
+             <span class="material-symbols-outlined icon-large drop-shadow-md"
+             >campaign</span>
+           </div>
+         )}
       </div>
     </div>
   </div>
 </section>
 
 <style>
-.hero {
+.hero-section {
   position: relative;
-  color: var(--white);
-  padding: var(--space-5xl) 0 calc(var(--space-5xl) + 40px);
-  text-align: center;
-  overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), 0 100%);
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
 }
 
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.hero-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.38);
-}
-
-.hero-bg-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-}
-
-.hero .container {
+.hero-grid {
+  display: grid;
+  gap: var(--space-gutter);
+  align-items: center;
   position: relative;
-  z-index: 1;
+}
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
 }
 
 .hero-content {
-  max-width: 850px;
-  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  transform: rotate(-1deg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+@media (min-width: 768px) {
+  .hero-content {
+    grid-column: span 7 / span 7;
+  }
+}
+
+.sticker-badge {
+  position: absolute;
+  top: -3rem;
+  left: -2rem;
+  background-color: var(--color-accent-yellow);
+  color: var(--color-on-background);
+  font-family: var(--font-typewriter);
+  font-size: 20px;
+  padding: 8px 16px;
+  border: 3px solid var(--color-on-background);
+  transform: rotate(-6deg);
+  box-shadow: 4px 4px 0px 0px var(--color-on-background);
+  z-index: 20;
+  font-weight: 700;
 }
 
 .hero-title {
-  font-size: clamp(var(--text-4xl), 8vw, var(--text-5xl));
-  line-height: 0.95;
-  letter-spacing: 0.04em;
-  margin-bottom: var(--space-lg);
-  color: var(--white);
-  text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 800;
+  color: var(--color-on-background);
+  letter-spacing: -0.01em;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 72px;
+    line-height: 76px;
+  }
+}
+
+.hero-title-highlight-wrapper {
+  color: var(--color-on-background);
+  display: inline-block;
+  transition: transform var(--transition-normal);
+  cursor: default;
+  margin-top: 16px;
+  position: relative;
+}
+.hero-title-highlight-wrapper:hover {
+  transform: scale(1.05);
+}
+.hero-title-highlight {
+  color: var(--color-primary);
 }
 
 .hero-subtitle {
-  font-family: var(--font-body);
-  font-size: clamp(var(--text-md), 2.5vw, var(--text-lg));
-  line-height: 1.5;
-  max-width: 600px;
-  margin: 0 auto var(--space-xl);
-  text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+  font-family: var(--font-typewriter);
+  font-size: 20px;
+  line-height: 1.625;
+  color: var(--color-on-background);
+  max-width: 42rem;
+  margin-top: var(--space-md);
+  background-color: var(--color-surface-lowest);
+  padding: var(--space-sm);
+  border: 3px solid var(--color-on-background);
+  box-shadow: 4px 4px 0px 0px var(--color-on-background);
+  transform: rotate(-1deg);
 }
 
-.hero-buttons {
+.hero-actions {
   display: flex;
+  flex-direction: column;
   gap: var(--space-md);
-  justify-content: center;
-  flex-wrap: wrap;
+  padding-top: var(--space-lg);
+}
+@media (min-width: 640px) {
+  .hero-actions {
+    flex-direction: row;
+  }
 }
 
-@media (max-width: 768px) {
-  .hero {
-    padding: var(--space-3xl) 0 calc(var(--space-3xl) + 30px);
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), 0 100%);
+.hero-cta-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .hero-cta-wrapper {
+    width: auto;
   }
+}
 
-  .hero-buttons {
-    flex-direction: column;
-    align-items: center;
+.hero-cta-primary {
+  width: 100%;
+  font-size: 20px;
+  padding: var(--space-md) var(--space-xl);
+  border-width: 4px;
+  transform: rotate(2deg);
+}
+@media (min-width: 640px) {
+  .hero-cta-primary {
+    width: auto;
   }
+}
 
-  .hero-buttons .btn {
-    width: 100%;
-    max-width: 280px;
+.btn-secondary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-surface-lowest);
+  color: var(--color-on-background);
+  padding: var(--space-md) var(--space-xl);
+  border: 4px solid var(--color-on-background);
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background-color: var(--color-accent-yellow);
+}
+.btn-secondary:active {
+  transform: scale(0.95);
+}
+
+.hero-cta-secondary {
+  width: 100%;
+  transform: rotate(-1deg);
+}
+@media (min-width: 640px) {
+  .hero-cta-secondary {
+    width: auto;
   }
+}
+
+.hero-image-wrapper {
+  position: relative;
+  margin-top: var(--space-xl);
+  transform: rotate(2deg);
+}
+@media (min-width: 768px) {
+  .hero-image-wrapper {
+    grid-column: span 5 / span 5;
+    margin-top: 0;
+  }
+}
+
+.hero-image-bg {
+  position: absolute;
+  bottom: -2rem;
+  right: -2rem;
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--color-on-background);
+}
+
+.image-sticker {
+  position: absolute;
+  bottom: -1.5rem;
+  left: -1.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-typewriter);
+  font-size: 20px;
+  padding: 8px 16px;
+  border: 3px solid var(--color-on-background);
+  transform: rotate(-12deg);
+  box-shadow: 4px 4px 0px 0px var(--color-on-background);
+  z-index: 20;
+  font-weight: 700;
+}
+
+.hero-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--color-surface-lowest);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: all 500ms;
+}
+.hero-image-container:hover .hero-image {
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
+.hero-image-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 218, 214, 0.2); /* primary-fixed */
+  mix-blend-mode: multiply;
+  transition: opacity 500ms;
+}
+.hero-image-container:hover .hero-image-overlay {
+  opacity: 0;
+}
+
+.hero-image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-large {
+  font-size: 100px;
+  color: var(--color-on-background);
+  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.07)) drop-shadow(
+    0 2px 2px rgba(0, 0, 0, 0.06)
+  );
 }
 </style>
