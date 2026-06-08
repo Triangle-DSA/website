@@ -50,190 +50,228 @@ const { data: post } = await loadQuery<PostPage>({
 
 <Layout title={`${post.title} | North Carolina DSA`}>
   <main id="main-content">
-    <!-- Article Hero -->
-    <section class="article-hero">
-      <div class="container container--narrow">
-        <a href="/leftangles" class="back-link">
+    <section class="article-hero bg-primary border-heavy solid-shadow mt-xl mb-xl mx-auto container relative rotate-1">
+      <div class="bg-dots mix-blend-multiply opacity-20 absolute inset-0 pointer-events-none"></div>
+      
+      <div class="article-hero-content relative z-10 py-xl px-lg max-w-4xl mx-auto">
+        <a href="/leftangles" class="back-link font-typewriter text-xl font-bold text-on-primary bg-on-background px-4 py-2 border-medium back-link-shadow inline-flex items-center gap-sm mb-lg hover:bg-surface-lowest hover:text-on-background hover:-translate-x-2 transition-all -rotate-2">
           <svg
-            width="16"
-            height="16"
+            width="20"
+            height="20"
             viewBox="0 0 16 16"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
+            stroke-width="3"
             aria-hidden="true"
           >
             <path d="M10 2L4 8l6 6" />
           </svg>
           All Posts
         </a>
-        <h1 class="article-title">{post.title}</h1>
+        <h1 class="font-display article-hero-title font-black uppercase text-on-primary leading-tight mb-md" style="-webkit-text-stroke: 1.5px var(--color-on-background);">
+          {post.title}
+        </h1>
         {post.publishedAt && (
-          <time class="article-date" datetime={post.publishedAt}>
-            {new Date(post.publishedAt).toLocaleDateString("en-US", {
+          <time class="font-typewriter text-lg text-on-primary font-bold bg-black p-2 inline-block time-badge-shadow rotate-1" datetime={post.publishedAt}>
+            * {new Date(post.publishedAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
               day: "numeric",
-            })}
+            })} *
           </time>
         )}
       </div>
     </section>
 
-    <section class="section">
-      <div class="container container--narrow">
-        <article class="article-body">
-          {post.mainImage?.asset?.url && (
+    <section class="section container my-xl relative">
+      <article class="article-body bg-surface-lowest border-heavy solid-shadow p-xl max-w-4xl mx-auto -rotate-1 relative">
+        <div class="tape-effect" style="top: -10px; right: 20%; transform: translateX(50%) rotate(4deg);"></div>
+
+        {post.mainImage?.asset?.url && (
+          <div class="article-image-container mb-xl border-b-[4px] border-on-background bg-surface relative -mx-xl px-xl pt-xl pb-md -mt-xl">
             <img
-              class="article-image"
+              class="article-image w-full h-auto object-cover border-heavy solid-shadow grayscale-filter hover-grayscale-off rotate-1"
               src={post.mainImage.asset.url}
               alt={post.mainImage.alt ?? post.title}
               loading="eager"
               decoding="async"
               style={`view-transition-name: ${params.slug}`}
             />
-          )}
-          <div class="prose">
-            <PortableText portableText={post.body} />
           </div>
-        </article>
-
-        {(post.newer || post.older) && (
-          <nav class="post-nav" aria-label="More posts">
-            {post.newer ? (
-              <a href={`/leftangles/${post.newer.slug}`} class="post-nav-link post-nav-link--newer">
-                <span class="post-nav-label">← Newer Post</span>
-                <span class="post-nav-title">{post.newer.title}</span>
-              </a>
-            ) : <span />}
-            {post.older ? (
-              <a href={`/leftangles/${post.older.slug}`} class="post-nav-link post-nav-link--older">
-                <span class="post-nav-label">Older Post →</span>
-                <span class="post-nav-title">{post.older.title}</span>
-              </a>
-            ) : <span />}
-          </nav>
         )}
-      </div>
+        <div class="prose font-typewriter text-lg leading-relaxed text-on-background">
+          <PortableText portableText={post.body} />
+        </div>
+      </article>
+
+      {(post.newer || post.older) && (
+        <nav class="post-nav max-w-4xl mx-auto mt-xl grid md:grid-cols-2 gap-lg" aria-label="More posts">
+          {post.newer ? (
+            <a href={`/leftangles/${post.newer.slug}`} class="post-nav-link bg-surface border-medium shadow-md p-md flex flex-col gap-xs hover:bg-accent-yellow hover:-translate-y-1 transition-all">
+              <span class="post-nav-label font-typewriter text-sm font-bold text-primary uppercase">← Newer Post</span>
+              <span class="post-nav-title font-display text-xl font-black uppercase text-on-background">{post.newer.title}</span>
+            </a>
+          ) : <div></div>}
+          {post.older ? (
+            <a href={`/leftangles/${post.older.slug}`} class="post-nav-link bg-surface border-medium shadow-md p-md flex flex-col gap-xs text-right hover:bg-accent-yellow hover:-translate-y-1 transition-all">
+              <span class="post-nav-label font-typewriter text-sm font-bold text-primary uppercase">Older Post →</span>
+              <span class="post-nav-title font-display text-xl font-black uppercase text-on-background">{post.older.title}</span>
+            </a>
+          ) : <div></div>}
+        </nav>
+      )}
     </section>
   </main>
 </Layout>
 
 <style>
-main {
-  min-height: 100vh;
+/* Layout Utilities */
+.mx-auto { margin-left: auto; margin-right: auto; }
+.-mx-xl { margin-left: calc(var(--space-xl) * -1); margin-right: calc(var(--space-xl) * -1); }
+.mt-xl { margin-top: var(--space-xl); }
+.-mt-xl { margin-top: calc(var(--space-xl) * -1); }
+.my-xl { margin-top: var(--space-xl); margin-bottom: var(--space-xl); }
+.mb-xl { margin-bottom: var(--space-xl); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-md { margin-bottom: var(--space-md); }
+.py-xl { padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+.px-lg { padding-left: var(--space-lg); padding-right: var(--space-lg); }
+.px-xl { padding-left: var(--space-xl); padding-right: var(--space-xl); }
+.pt-xl { padding-top: var(--space-xl); }
+.pb-md { padding-bottom: var(--space-md); }
+.p-xl { padding: var(--space-xl); }
+.p-md { padding: var(--space-md); }
+.px-4 { padding-left: 16px; padding-right: 16px; }
+.py-2 { padding-top: 8px; padding-bottom: 8px; }
+.p-2 { padding: 8px; }
+
+/* Grid / Flex Layouts */
+.max-w-4xl { max-width: 56rem; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.inline-flex { display: inline-flex; }
+.items-center { align-items: center; }
+.gap-sm { gap: var(--space-sm); }
+.gap-xs { gap: var(--space-xs); }
+.gap-lg { gap: var(--space-lg); }
+.grid { display: grid; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.inline-block { display: inline-block; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.inset-0 { inset: 0; }
+.z-10 { z-index: 10; }
+.pointer-events-none { pointer-events: none; }
+.uppercase { text-transform: uppercase; }
+
+/* Transforms & Transitions */
+.rotate-1 { transform: rotate(1deg); }
+.-rotate-1 { transform: rotate(-1deg); }
+.rotate-2 { transform: rotate(2deg); }
+.-rotate-2 { transform: rotate(-2deg); }
+.transition-all { transition: all var(--transition-normal); }
+.hover\:-translate-x-2:hover { transform: translateX(-8px); }
+.hover\:-translate-y-1:hover { transform: translateY(-4px); }
+
+.article-hero-title {
+  font-size: clamp(32px, 5vw, 56px);
+}
+.back-link-shadow {
+  box-shadow: 4px 4px 0px 0px #ffffff;
+}
+.time-badge-shadow {
+  box-shadow: 4px 4px 0px 0px #ffffff;
 }
 
-.article-hero {
-  background: linear-gradient(
-    160deg,
-    var(--red-primary) 0%,
-    var(--red-dark) 50%,
-    var(--red-darker) 100%
-  );
-  color: var(--white);
-  padding: var(--space-2xl) 0 var(--space-3xl);
-  position: relative;
-  overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), 0 100%);
+/* Typography */
+.font-display { font-family: var(--font-display); }
+.font-typewriter { font-family: var(--font-typewriter); }
+.font-black { font-weight: 900; }
+.font-bold { font-weight: 700; }
+.text-sm { font-size: 14px; }
+.text-lg { font-size: 18px; }
+.text-xl { font-size: 20px; }
+.leading-tight { line-height: 1.1; }
+.leading-relaxed { line-height: 1.625; }
+
+/* Colors */
+.text-on-primary { color: var(--color-on-primary); }
+.text-on-background { color: var(--color-on-background); }
+.text-primary { color: var(--color-primary); }
+.bg-primary { background-color: var(--color-primary); }
+.bg-on-background { background-color: var(--color-on-background); }
+.bg-surface-lowest { background-color: var(--color-surface-lowest); }
+.bg-surface { background-color: var(--color-surface); }
+.bg-accent-yellow { background-color: var(--color-accent-yellow); }
+.bg-black { background-color: #000; }
+.hover\:bg-surface-lowest:hover { background-color: var(--color-surface-lowest); }
+.hover\:text-on-background:hover { color: var(--color-on-background); }
+.hover\:bg-accent-yellow:hover { background-color: var(--color-accent-yellow); }
+
+/* Mix Blends & Borders */
+.mix-blend-multiply { mix-blend-mode: multiply; }
+.opacity-20 { opacity: 0.2; }
+.border-medium { border: 3px solid var(--color-on-background); }
+.border-on-background { border-color: var(--color-on-background); }
+.border-on-primary { border-color: var(--color-on-primary); }
+.border-b-\[4px\] { border-bottom-width: 4px; border-bottom-style: solid; }
+.shadow-md { box-shadow: var(--shadow-solid-md); }
+
+/* Images */
+.w-full { width: 100%; }
+.h-auto { height: auto; }
+.object-cover { object-fit: cover; }
+.grayscale-filter {
+  filter: grayscale(100%) contrast(1.1);
+  transition: filter 500ms;
+}
+.hover-grayscale-off:hover {
+  filter: grayscale(0%) contrast(1);
 }
 
-.article-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 40px,
-    rgba(0, 0, 0, 0.04) 40px,
-    rgba(0, 0, 0, 0.04) 42px
-  );
-  pointer-events: none;
+@media (min-width: 768px) {
+  .md\:text-\[56px\] { font-size: 56px; }
+  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  color: rgba(255, 255, 255, 0.8);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  text-decoration: none;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--space-lg);
-  transition: color var(--duration-fast) var(--ease-out);
-  position: relative;
-}
-
-.back-link:hover {
-  color: var(--white);
-  text-decoration: none;
-}
-
-.article-title {
-  color: var(--white);
-  font-size: clamp(var(--text-2xl), 5vw, var(--text-4xl));
-  line-height: 1;
-  margin-bottom: var(--space-md);
-  position: relative;
-}
-
-.article-date {
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  color: rgba(255, 255, 255, 0.75);
-  letter-spacing: 0.06em;
-  position: relative;
-}
-
-.article-body {
-  background: var(--white);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: var(--space-2xl);
-  margin-top: calc(-30px + var(--space-md));
-  position: relative;
-}
-
-.article-image {
-  width: 100%;
-  height: auto;
-  margin-bottom: var(--space-xl);
-  border-radius: var(--radius-md);
-  display: block;
-}
-
-/* --- Prose Typography --- */
+/* --- Prose Typography tailored for Zine Style --- */
 .prose :global(p) {
-  font-size: var(--text-md);
-  line-height: 1.8;
-  color: var(--text-primary);
   margin-bottom: var(--space-lg);
-  max-width: none;
 }
 
 .prose :global(h2) {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  color: var(--text-primary);
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--color-on-background);
+  text-transform: uppercase;
   margin-top: var(--space-2xl);
   margin-bottom: var(--space-md);
+  background-color: var(--color-accent-yellow);
+  display: inline-block;
+  padding: 0 8px;
+  border: 3px solid var(--color-on-background);
+  transform: rotate(-1deg);
 }
 
 .prose :global(h3) {
   font-family: var(--font-display);
-  font-size: var(--text-xl);
-  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-on-background);
+  text-transform: uppercase;
   margin-top: var(--space-xl);
   margin-bottom: var(--space-sm);
 }
 
 .prose :global(h4) {
   font-family: var(--font-display);
-  font-size: var(--text-lg);
-  color: var(--text-primary);
-  margin-top: var(--space-xl);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-on-background);
+  text-transform: uppercase;
+  margin-top: var(--space-lg);
   margin-bottom: var(--space-sm);
 }
 
@@ -241,8 +279,6 @@ main {
 .prose :global(ol) {
   margin-bottom: var(--space-lg);
   padding-left: var(--space-xl);
-  font-size: var(--text-md);
-  line-height: 1.75;
 }
 
 .prose :global(li) {
@@ -250,14 +286,14 @@ main {
 }
 
 .prose :global(blockquote) {
-  border-left: 4px solid var(--red-primary);
+  border: 4px solid var(--color-on-background);
   padding: var(--space-md) var(--space-lg);
   margin: var(--space-xl) 0;
-  background: var(--gray-50);
-  font-style: italic;
-  font-size: var(--text-md);
-  color: var(--text-secondary);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background-color: var(--color-on-background);
+  color: var(--color-on-primary);
+  box-shadow: 6px 6px 0px 0px var(--color-primary);
+  font-weight: 700;
+  transform: rotate(1deg);
 }
 
 .prose :global(blockquote p) {
@@ -265,98 +301,59 @@ main {
 }
 
 .prose :global(code) {
-  background: var(--gray-50);
-  padding: var(--space-3xs) var(--space-xs);
-  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  padding: 2px 6px;
+  border: 2px solid var(--color-on-background);
   font-size: 0.9em;
 }
 
 .prose :global(pre) {
-  background: var(--gray-900);
-  color: var(--gray-100);
+  background: var(--color-on-background);
+  color: var(--color-on-primary);
   padding: var(--space-lg);
-  border-radius: var(--radius-md);
+  border: 4px solid var(--color-primary);
+  box-shadow: 6px 6px 0px 0px var(--color-on-background);
   overflow-x: auto;
   margin: var(--space-xl) 0;
-  font-size: var(--text-sm);
-  line-height: 1.6;
+  font-size: 16px;
+  transform: rotate(-1deg);
 }
 
 .prose :global(pre code) {
   background: none;
   padding: 0;
+  border: none;
   font-size: inherit;
 }
 
 .prose :global(a) {
-  color: var(--red-primary);
+  color: var(--color-primary);
+  font-weight: 700;
   text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.15em;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+  transition: all var(--transition-fast);
 }
 
 .prose :global(a:hover) {
-  color: var(--red-dark);
+  color: var(--color-on-background);
+  background-color: var(--color-accent-yellow);
 }
 
 .prose :global(img) {
-  border-radius: var(--radius-md);
+  border: 4px solid var(--color-on-background);
+  box-shadow: var(--shadow-solid-md);
   max-width: 100%;
   height: auto;
+  margin: var(--space-lg) 0;
 }
 
 .prose :global(hr) {
   border: none;
-  border-top: 2px solid var(--gray-100);
+  border-top: 4px dashed var(--color-on-background);
   margin: var(--space-2xl) 0;
 }
 
-.post-nav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-md);
-  margin-top: var(--space-2xl);
-}
-
-.post-nav-link {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2xs);
-  padding: var(--space-md) var(--space-lg);
-  background: var(--white);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  text-decoration: none;
-  color: inherit;
-  border-top: 3px solid var(--red-primary);
-  transition:
-    transform var(--duration-fast) var(--ease-out),
-    box-shadow var(--duration-fast) var(--ease-out);
-}
-
-.post-nav-link:hover {
-  text-decoration: none;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-}
-
-.post-nav-link--older {
-  text-align: right;
-}
-
-.post-nav-label {
-  font-size: var(--text-sm);
-  color: var(--red-primary);
-  font-weight: 500;
-  letter-spacing: 0.05em;
-}
-
-.post-nav-title {
-  font-family: var(--font-display);
-  font-size: var(--text-md);
-  color: var(--text-primary);
-  line-height: 1.2;
-}
 
 /* Text alignment via decorators */
 .prose :global(:is(p, h1, h2, h3, h4, blockquote):has([data-align="center"])) {
@@ -405,20 +402,6 @@ main {
 @media (max-width: 768px) {
   .article-body {
     padding: var(--space-lg);
-    border-radius: var(--radius-md);
-  }
-
-  .prose :global(blockquote) {
-    padding: var(--space-sm) var(--space-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .post-nav {
-    grid-template-columns: 1fr;
-  }
-
-  .post-nav-link--older {
-    text-align: left;
   }
 }
 </style>

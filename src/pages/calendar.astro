@@ -14,90 +14,125 @@ const calendarDataUrl = "/api/calendar.ics";
 >
   <main id="main-content">
     <!-- Page Hero -->
-    <section class="page-hero">
-      <div class="container">
-        <h1>Upcoming Events</h1>
-        <p class="page-hero-sub">
+    <section class="page-hero bg-primary border-heavy solid-shadow mt-xl mb-xl mx-auto container relative rotate-1">
+      <div class="bg-dots mix-blend-multiply opacity-20 absolute inset-0 pointer-events-none">
+      </div>
+      <div
+        class="tape-effect"
+        style="top: -10px; left: 20%; transform: translateX(-50%) rotate(5deg)"
+      >
+      </div>
+      <div
+        class="tape-effect"
+        style="top: -10px; left: 80%; transform: translateX(-50%) rotate(-3deg)"
+      >
+      </div>
+
+      <div class="page-hero-content relative z-10 text-center py-xl">
+        <h1 class="page-hero-title uppercase text-on-primary">
+          Upcoming Events
+        </h1>
+        <p class="page-hero-sub font-typewriter text-on-primary shadow-md bg-on-background inline-block p-4 mt-md -rotate-1 border-medium border-on-primary">
           Join us for meetings, actions, social events, and more!
         </p>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
+    <section class="section container">
+      <div class="content-wrapper">
         {!hasCalendarFeed && (
-          <div class="notice" role="alert">
+          <div
+            class="notice bg-accent-yellow border-heavy solid-shadow mb-xl p-lg flex items-center gap-md rotate-1"
+            role="alert"
+          >
             <svg
-              class="notice-icon"
-              width="18"
-              height="18"
+              class="notice-icon text-on-background"
+              width="24"
+              height="24"
               viewBox="0 0 18 18"
               fill="none"
               stroke="currentColor"
-              stroke-width="1.5"
+              stroke-width="2"
               aria-hidden="true"
             >
               <circle cx="9" cy="9" r="7.5" />
               <path d="M9 5.5v4M9 12.5h.01" />
             </svg>
-            <p>
+            <p class="font-typewriter text-lg text-on-background">
               <strong>Note:</strong> Calendar feed is not configured. Set
-              <code>PUBLIC_ICAL_FEED_URL</code> in your environment to show
-              events.
+              <code class="bg-surface-lowest px-2 py-1 border-medium"
+              >PUBLIC_ICAL_FEED_URL</code> in your environment to show events.
             </p>
           </div>
         )}
 
         {hasCalendarFeed ? (
-          <div class="calendar-wrapper card card--elevated">
+          <div class="calendar-wrapper bg-surface-lowest border-heavy solid-shadow mb-xl p-lg relative -rotate-1">
+            <div
+              class="tape-effect"
+              style="top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg)"
+            >
+            </div>
             <CalendarEmbed icalUrl={calendarDataUrl} client:load />
           </div>
         ) : (
-           <div class="no-events">
-             <p>
+           <div class="no-events bg-surface-lowest border-heavy solid-shadow mb-xl p-xl text-center rotate-1">
+             <p class="font-typewriter text-xl text-on-background">
                No calendar feed is available right now. Check back soon or
                follow us on social media for announcements.
              </p>
            </div>
          )}
 
-        <div class="calendar-info card card--elevated">
-          <h2>Stay Updated</h2>
-          <p>Don't miss an event! Here are ways to stay in the loop:</p>
-          <ul class="info-list">
-            <li>
-              <svg
-                class="info-icon"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                aria-hidden="true"
-              >
-                <rect x="2" y="3" width="12" height="11" rx="2" />
-                <path d="M2 6h12M5.5 1v3M10.5 1v3" />
-              </svg>
-              <a href="#contact">Sign up for our email list</a>
+        <div class="calendar-info bg-surface border-heavy solid-shadow p-xl relative mt-xl">
+          <h2 class="font-display info-title text-on-background uppercase mb-sm bg-accent-pink inline-block px-2 border-medium shadow-md -rotate-1">
+            Stay Updated
+          </h2>
+          <p class="font-typewriter text-lg text-on-background mb-md">
+            Don't miss an event! Here are ways to stay in the loop:
+          </p>
+          <ul class="info-list font-typewriter text-lg text-on-background">
+            <li class="flex items-center gap-sm mb-sm hover:translate-x-2 transition-transform">
+              <span class="bg-on-background p-1 border-medium">
+                <svg
+                  class="info-icon text-primary"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="3" width="12" height="11" rx="2" />
+                  <path d="M2 6h12M5.5 1v3M10.5 1v3" />
+                </svg>
+              </span>
+              <a href="/#contact" class="hover-underline text-primary font-bold"
+              >Sign up for our email list</a>
             </li>
-            <li>
-              <svg
-                class="info-icon"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                aria-hidden="true"
-              >
-                <circle cx="8" cy="8" r="6" />
-                <path d="M8 4v4l3 2" />
-              </svg>
+            <li class="flex items-center gap-sm hover:translate-x-2 transition-transform">
+              <span class="bg-on-background p-1 border-medium">
+                <svg
+                  class="info-icon text-primary"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <circle cx="8" cy="8" r="6" />
+                  <path d="M8 4v4l3 2" />
+                </svg>
+              </span>
               {hasCalendarFeed ? (
-                <a href={subscribeUrl}>Subscribe to our calendar</a>
-              ) : <>Calendar subscription available soon</>}
+                <a
+                  href={subscribeUrl}
+                  class="hover-underline text-primary font-bold"
+                >Subscribe to our calendar</a>
+              ) : <span>Calendar subscription available soon</span>}
             </li>
           </ul>
         </div>
@@ -107,117 +142,204 @@ const calendarDataUrl = "/api/calendar.ics";
 </Layout>
 
 <style>
-.page-hero {
-  background: linear-gradient(
-    160deg,
-    var(--red-primary) 0%,
-    var(--red-dark) 50%,
-    var(--red-darker) 100%
-  );
-  color: var(--white);
-  padding: var(--space-3xl) 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), 0 100%);
+/* Layout Utilities */
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
 }
-
-.page-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 40px,
-    rgba(0, 0, 0, 0.04) 40px,
-    rgba(0, 0, 0, 0.04) 42px
-  );
-  pointer-events: none;
+.mt-xl {
+  margin-top: var(--space-xl);
 }
-
-.page-hero h1 {
-  color: var(--white);
-  position: relative;
-}
-
-.page-hero-sub {
-  font-family: var(--font-body);
-  font-size: var(--text-lg);
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 500px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.notice {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
-  background: var(--notice-bg);
-  border: 1px solid var(--notice-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-md) var(--space-lg);
+.mb-xl {
   margin-bottom: var(--space-xl);
 }
-
-.notice-icon {
-  flex-shrink: 0;
-  color: var(--notice-border);
-  margin-top: 2px;
+.mt-md {
+  margin-top: var(--space-md);
 }
-
-.notice code {
-  background: var(--white);
-  padding: var(--space-3xs) var(--space-xs);
-  border-radius: var(--radius-sm);
-  font-size: 0.9em;
+.mb-md {
+  margin-bottom: var(--space-md);
 }
-
-.no-events {
-  text-align: center;
-  padding: var(--space-3xl) 0;
-  color: var(--text-secondary);
+.mb-sm {
+  margin-bottom: var(--space-sm);
 }
-
-.calendar-wrapper {
+.p-lg {
   padding: var(--space-lg);
-  margin-bottom: var(--space-2xl);
+}
+.p-xl {
+  padding: var(--space-xl);
+}
+.px-2 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.py-1 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.p-1 {
+  padding: 4px;
+}
+.flex {
+  display: flex;
+}
+.items-center {
+  align-items: center;
+}
+.gap-md {
+  gap: var(--space-md);
+}
+.gap-sm {
+  gap: var(--space-sm);
+}
+.text-center {
+  text-align: center;
+}
+.inline-block {
+  display: inline-block;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.inset-0 {
+  inset: 0;
+}
+.z-10 {
+  z-index: 10;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.rotate-1 {
+  transform: rotate(1deg);
+}
+.-rotate-1 {
+  transform: rotate(-1deg);
+}
+.transition-transform {
+  transition: transform var(--transition-fast);
+}
+.hover\:translate-x-2:hover {
+  transform: translateX(8px);
 }
 
-.calendar-wrapper.card--elevated {
-  transition: none;
+.info-title {
+  font-size: 32px;
 }
 
-.calendar-wrapper.card--elevated:hover {
-  transform: none;
-  box-shadow: var(--shadow-sm);
+/* Typography */
+.font-typewriter {
+  font-family: var(--font-typewriter);
+}
+.font-display {
+  font-family: var(--font-display);
+}
+.font-bold {
+  font-weight: 700;
+}
+.text-lg {
+  font-size: 18px;
+}
+.text-xl {
+  font-size: 20px;
+}
+.text-on-primary {
+  color: var(--color-on-primary);
+}
+.text-on-background {
+  color: var(--color-on-background);
+}
+.text-primary {
+  color: var(--color-primary);
+}
+.hover-underline:hover {
+  text-decoration: underline;
+  color: var(--color-on-background);
+  background-color: var(--color-accent-yellow);
+}
+
+/* Colors */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+.bg-on-background {
+  background-color: var(--color-on-background);
+}
+.bg-accent-yellow {
+  background-color: var(--color-accent-yellow);
+}
+.bg-accent-pink {
+  background-color: var(--color-accent-pink);
+}
+.bg-surface-lowest {
+  background-color: var(--color-surface-lowest);
+}
+.bg-surface {
+  background-color: var(--color-surface);
+}
+.mix-blend-multiply {
+  mix-blend-mode: multiply;
+}
+.opacity-20 {
+  opacity: 0.2;
+}
+
+/* Borders & Shadows */
+.border-medium {
+  border: 3px solid var(--color-on-background);
+}
+.border-on-primary {
+  border-color: var(--color-on-primary);
+}
+.shadow-md {
+  box-shadow: var(--shadow-solid-md);
+}
+
+/* Specifics */
+.page-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 900;
+  -webkit-text-stroke: 2px var(--color-on-background);
 }
 
 .calendar-wrapper :global(.fc) {
-  font-family: var(--font-body);
+  font-family: var(--font-typewriter);
 }
 
 .calendar-wrapper :global(.fc .fc-button) {
-  background: var(--red-primary);
-  border-color: var(--red-primary);
+  background: var(--color-primary);
+  border: 3px solid var(--color-on-background);
+  color: var(--color-on-primary);
+  font-weight: 700;
+  border-radius: 0;
+  text-transform: uppercase;
+  transition: all var(--transition-fast);
 }
 
 .calendar-wrapper :global(.fc .fc-button:hover),
 .calendar-wrapper :global(.fc .fc-button:focus) {
-  background: var(--red-dark);
-  border-color: var(--red-dark);
+  background: var(--color-accent-yellow);
+  color: var(--color-on-background);
+  transform: scale(1.05);
 }
 
 .calendar-wrapper
   :global(.fc .fc-button-primary:not(:disabled).fc-button-active) {
-  background: var(--red-darker);
-  border-color: var(--red-darker);
+  background: var(--color-on-background);
+  color: var(--color-surface-lowest);
+  border-color: var(--color-on-background);
 }
 
 .calendar-wrapper :global(.fc .fc-daygrid-event),
 .calendar-wrapper :global(.fc .fc-list-event-title a) {
-  color: var(--red-darker);
+  color: var(--color-on-background);
+  font-weight: 700;
 }
 
 .calendar-wrapper :global(.fc .fc-daygrid-event),
@@ -225,6 +347,7 @@ const calendarDataUrl = "/api/calendar.ics";
   cursor: pointer;
 }
 
+/* Modal styles overrides for Zine Style */
 .calendar-wrapper :global(.calendar-modal-backdrop) {
   position: fixed;
   inset: 0;
@@ -233,7 +356,7 @@ const calendarDataUrl = "/api/calendar.ics";
   align-items: center;
   justify-content: center;
   padding: var(--space-lg);
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.85); /* Darker backdrop */
 }
 
 .calendar-wrapper :global(.calendar-modal) {
@@ -241,12 +364,12 @@ const calendarDataUrl = "/api/calendar.ics";
   width: min(680px, 100%);
   max-height: min(85vh, 860px);
   overflow: auto;
-  background: var(--white);
-  color: var(--text-primary);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-xl);
+  background: var(--color-surface-lowest);
+  color: var(--color-on-background);
+  border: 4px solid var(--color-on-background);
+  box-shadow: var(--shadow-solid-lg);
   padding: var(--space-xl);
-  border-top: 6px solid var(--red-primary);
+  transform: rotate(1deg); /* Zine tilt */
 }
 
 .calendar-wrapper :global(.calendar-modal-close) {
@@ -255,43 +378,54 @@ const calendarDataUrl = "/api/calendar.ics";
   right: var(--space-sm);
   width: 2rem;
   height: 2rem;
-  border: none;
+  border: 3px solid transparent;
   background: transparent;
-  color: var(--gray-500);
+  color: var(--color-on-background);
   font-size: 1.75rem;
   line-height: 1;
   cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
 .calendar-wrapper :global(.calendar-modal-close:hover) {
-  color: var(--red-primary);
+  background: var(--color-accent-pink);
+  border-color: var(--color-on-background);
 }
 
 .calendar-wrapper :global(.calendar-modal-title) {
   margin: 0 2.25rem var(--space-md) 0;
-  color: var(--red-primary);
+  color: var(--color-on-background);
   font-size: clamp(var(--text-xl), 2vw, var(--text-2xl));
   line-height: 1.1;
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .calendar-wrapper :global(.calendar-modal-meta) {
   margin: 0 0 var(--space-sm);
-  color: var(--gray-700);
+  color: var(--color-on-surface-variant);
+  font-family: var(--font-typewriter);
+  font-weight: 700;
 }
 
 .calendar-wrapper :global(.calendar-modal-meta strong) {
-  color: var(--gray-900);
+  color: var(--color-on-background);
 }
 
 .calendar-wrapper :global(.calendar-modal-description) {
   margin-top: var(--space-lg);
+  font-family: var(--font-typewriter);
+  font-size: 18px;
+  border-top: 3px dashed var(--color-on-background);
+  padding-top: var(--space-md);
 }
 
 .calendar-wrapper :global(.calendar-modal-description p) {
   margin: 0 0 var(--space-md);
   max-width: none;
   white-space: pre-wrap;
-  color: var(--text-primary);
+  color: var(--color-on-background);
 }
 
 .calendar-wrapper :global(.calendar-modal-actions) {
@@ -299,55 +433,12 @@ const calendarDataUrl = "/api/calendar.ics";
   margin-bottom: 0;
 }
 
-.calendar-info {
-  padding: var(--space-xl);
-  margin-top: var(--space-2xl);
-}
-
-.calendar-info h2 {
-  color: var(--red-primary);
-  font-size: var(--text-2xl);
-  margin-bottom: var(--space-sm);
-}
-
-.calendar-info p {
-  max-width: none;
-}
-
-.info-list {
-  list-style: none;
-  margin-top: var(--space-md);
-  padding: 0;
-}
-
-.info-list li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-sm) 0;
-  font-size: var(--text-md);
-}
-
-.info-icon {
-  color: var(--red-primary);
-  flex-shrink: 0;
-}
-
 @media (max-width: 768px) {
-  .page-hero {
-    padding: var(--space-2xl) 0;
-  }
-
   .calendar-wrapper :global(.calendar-modal-backdrop) {
     padding: var(--space-md);
   }
-
   .calendar-wrapper :global(.calendar-modal) {
     padding: var(--space-lg);
-  }
-
-  .calendar-wrapper :global(.calendar-modal-title) {
-    margin-right: 2rem;
   }
 }
 </style>

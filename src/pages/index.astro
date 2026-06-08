@@ -93,7 +93,7 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
         <h2 class="section-title bg-accent-yellow -rotate-1 shadow-md uppercase">
           Our Program
         </h2>
-        <p class="section-subtitle font-typewriter rotate-1 mt-6">
+        <p class="section-subtitle font-typewriter rotate-1 mt-md">
           -- Where the organizing happens. Join a working group today. --
         </p>
       </div>
@@ -258,7 +258,7 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
         </p>
       </div>
 
-      <div class="contact-grid gap-md">
+      <div class="contact-grid">
         {socialMediaItems.map((item, i) => {
           const isExternal = item.url.startsWith("http://")
             || item.url.startsWith("https://");
@@ -473,7 +473,7 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
 @media (min-width: 768px) {
   .program-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-gutter);
+    gap: var(--space-lg);
   }
 }
 .program-card {
@@ -826,6 +826,7 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  gap: var(--space-lg);
 }
 .contact-card {
   display: flex;

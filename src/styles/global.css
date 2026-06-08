@@ -43,6 +43,7 @@
   --space-md: 24px;
   --space-lg: 48px;
   --space-xl: 80px;
+  --space-2xl: 120px;
   --space-gutter: 24px;
 
   /* Layout */
@@ -302,7 +303,8 @@ a {
 }
 
 /* Button Component */
-.btn-primary {
+.btn-primary,
+.btn.btn--primary {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -315,15 +317,33 @@ a {
   font-weight: 700;
   transition: all var(--transition-fast);
   cursor: pointer;
+  text-decoration: none;
 }
-.btn-primary:hover {
+.btn-primary:hover,
+.btn.btn--primary:hover {
   background-color: var(--color-surface-tint);
+  color: var(--color-on-primary);
 }
-.btn-primary:active {
+.btn-primary:active,
+.btn.btn--primary:active {
   transform: scale(0.95);
 }
 
 /* View Transitions */
 @view-transition {
   navigation: auto;
+}
+
+/* Prevent full-width boxed sections/heroes from clipping their borders/shadows/rotations on mobile & tablet viewports */
+@media (max-width: 1247px) {
+  .container.border-heavy,
+  .container.solid-shadow,
+  .page-hero,
+  .article-hero,
+  .article-body,
+  .events-section {
+    width: calc(100% - 32px) !important;
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+  }
 }
