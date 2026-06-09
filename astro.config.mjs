@@ -37,4 +37,10 @@ export default defineConfig({
       enabled: true,
     },
   }),
+
+  vite: {
+    ssr: {
+      noExternal: ["@sanity/astro"],
+    },
+  },
 });

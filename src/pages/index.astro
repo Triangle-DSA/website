@@ -45,7 +45,7 @@ const socialMediaItems = await sanityClient.fetch<SocialMedia[]>(
     platform,
     label,
     url,
-    emoji,
+    icon { asset },
     order
   }`,
 );
@@ -194,10 +194,16 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
 
             return (
               <li class="contact-item">
-                <span
-                  class="contact-icon"
-                  aria-hidden="true"
-                >{item.emoji ? item.emoji : "🔗"}</span>
+                {item.icon && (
+                  <img
+                    class="contact-icon"
+                    src={urlForImage(item.icon).width(32).height(32).format("webp").url()}
+                    alt=""
+                    width="32"
+                    height="32"
+                    aria-hidden="true"
+                  />
+                )}
                 <span class="contact-body">
                   <strong>{item.platform}</strong>
                   <a
@@ -445,10 +451,10 @@ main {
 }
 
 .contact-icon {
-  font-size: var(--text-xl);
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
-  line-height: 1;
-  margin-top: 2px;
+  object-fit: contain;
 }
 
 .contact-body {
