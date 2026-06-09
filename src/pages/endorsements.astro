@@ -1,127 +1,116 @@
 ---
 export const prerender = true;
 
-import { Image } from "astro:assets";
-import dannyNowellPhoto from "../assets/endorsements/danny-nowell.jpg";
-import natalieBentKitaifPhoto from "../assets/endorsements/natalie-bent-kitaif.jpg";
-import nateBakerPhoto from "../assets/endorsements/nate-baker.jpg";
+import { sanityClient } from "sanity:client";
+import PortableText from "../components/PortableText.astro";
 import Layout from "../layouts/Layout.astro";
+import { urlForImage } from "../sanity/lib/url-for-image";
+import type { Candidate } from "../sanity/schemaTypes/candidate";
+import type { EndorsementsPage } from "../sanity/schemaTypes/endorsementsPage";
 
-const endorsedCandidates = [
-  {
-    name: "Nate Baker",
-    office: "Durham City Council",
-    image: nateBakerPhoto,
-    imageAlt: "Nate Baker campaign photo",
-    summary:
-      "Nate is a Durham-born urban planner and longtime Planning Commission member who centers community-driven development and public engagement, with a focus on walkability, transit-oriented planning, worker and tenant power, and environmental protection through equitable growth.",
-  },
-  {
-    name: "Danny Nowell",
-    office: "Carrboro Town Council",
-    image: dannyNowellPhoto,
-    imageAlt: "Danny Nowell campaign photo",
-    summary:
-      "Danny is running for re-election to continue Carrboro's progressive momentum with experienced local leadership, emphasizing expanded housing supply, improved connectivity and mobility, and a reimagined approach to public safety.",
-  },
-  {
-    name: "Natalie Bent Kitaif",
-    office: "Durham Board of Education, District 1",
-    image: natalieBentKitaifPhoto,
-    imageAlt: "Natalie Bent Kitaif with her family in campaign photo",
-    summary:
-      "Natalie is focused on restoring trust, safety, and integrity in Durham Public Schools through accountable public leadership, prioritizing fair pay and support for school staff, transparent and stable governance, and safe student-centered school communities.",
-  },
-];
+const endorsementsPage = await sanityClient.fetch<EndorsementsPage>(
+  `*[_type == "endorsementsPage"][0]{
+    title,
+    description,
+    currentlyEndorsedHeading,
+    seekingHeading,
+    seekingDescription,
+    notesHeading,
+    notes,
+    questionnaireLabel,
+    questionnaireUrl
+  }`,
+);
+
+const candidates = await sanityClient.fetch<Candidate[]>(
+  `*[_type == "candidate"] | order(order asc) {
+    name,
+    office,
+    image,
+    summary,
+    order
+  }`,
+);
 ---
 
 <Layout
-  title="Endorsements - North Carolina DSA"
-  description="Learn about NC Triangle DSA's currently endorsed candidates and how to seek chapter endorsement."
+  title={endorsementsPage?.title || "Endorsements - North Carolina DSA"}
+  description={endorsementsPage?.description
+  || "Learn about NC Triangle DSA's currently endorsed candidates and how to seek chapter endorsement."}
 >
   <main id="main-content">
     <section class="section">
       <div class="container">
-        <h2 class="section-heading">Currently Endorsed</h2>
+        <h2 class="section-heading">
+          {endorsementsPage?.currentlyEndorsedHeading || "Currently Endorsed"}
+        </h2>
 
         <div class="endorsee-list">
-          {endorsedCandidates.map((candidate) => (
-            <article class="endorsee-card">
-              <div class="endorsee-media">
-                <Image
-                  src={candidate.image}
-                  alt={candidate.imageAlt}
-                  loading="lazy"
-                  class="endorsee-image"
-                  width={400}
-                  height={500}
-                />
-              </div>
+          {candidates && candidates.map((candidate) => {
+            const imageUrl = candidate.image?.asset
+              ? urlForImage(candidate.image).width(400).height(500).auto("format").fit(
+                "crop",
+              ).url()
+              : null;
+            return (
+              <article class="endorsee-card">
+                <div class="endorsee-media">
+                  {imageUrl && (
+                    <img
+                      src={imageUrl}
+                      alt={candidate.image.alt || `${candidate.name} campaign photo`}
+                      loading="lazy"
+                      class="endorsee-image"
+                      width={400}
+                      height={500}
+                    />
+                  )}
+                </div>
 
-              <div class="endorsee-content">
-                <h3>{candidate.name}</h3>
-                <p class="endorsee-office">{candidate.office}</p>
-                <p>{candidate.summary}</p>
-              </div>
-            </article>
-          ))}
+                <div class="endorsee-content">
+                  <h3>{candidate.name}</h3>
+                  <p class="endorsee-office">{candidate.office}</p>
+                  <p>{candidate.summary}</p>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
 
     <section class="section bg-light">
       <div class="container container--narrow">
-        <h2 class="section-heading">Seeking Endorsement?</h2>
-        <p>
-          NC Triangle DSA backs candidates who treat elected office as an
-          organizing tool, not a personal brand. We are looking for candidates
-          who can build and sustain working-class power in coalition with labor,
-          tenants, and community organizations.
-        </p>
-        <p>
-          Our chapter expects endorsed candidates to publicly identify as
-          socialist or democratic socialist, maintain membership in both our
-          chapter and National DSA, and show visible campaign affiliation with
-          NC Triangle DSA.
-        </p>
-        <p>
-          We also evaluate campaign strategy and accountability: your path to
-          victory, field and fundraising plan, policy commitments, and your
-          willingness to work with the chapter during the race and while in
-          office.
-        </p>
+        <h2 class="section-heading">
+          {endorsementsPage?.seekingHeading || "Seeking Endorsement?"}
+        </h2>
+        {endorsementsPage?.seekingDescription && (
+          <div class="seeking-description-wrap">
+            <PortableText portableText={endorsementsPage.seekingDescription} />
+          </div>
+        )}
 
-        <div class="candidate-notes">
-          <h3>What we look for in aspiring endorsees</h3>
-          <ul>
-            <li>
-              A clear socialist analysis and a concrete plan to mobilize
-              working-class voters.
-            </li>
-            <li>
-              Public commitments on labor, housing justice, climate,
-              anti-carceral policy, immigrant justice, and civil rights.
-            </li>
-            <li>
-              Alignment with chapter and national BDS and anti-zionist
-              resolutions.
-            </li>
-            <li>
-              A commitment to shared movement work, including collaboration with
-              other chapter-endorsed candidates and regular chapter check-ins if
-              elected.
-            </li>
-          </ul>
-        </div>
+        {endorsementsPage?.notes && (
+          <div class="candidate-notes">
+            <h3>
+              {endorsementsPage.notesHeading || "What we look for in aspiring endorsees"}
+            </h3>
+            <ul>
+              {endorsementsPage.notes.map((note) => <li>{note}</li>)}
+            </ul>
+          </div>
+        )}
 
-        <a
-          href="https://forms.gle/REPLACE_ME"
-          class="questionnaire-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Submit Endorsement Questionnaire
-        </a>
+        {endorsementsPage?.questionnaireUrl && (
+          <a
+            href={endorsementsPage.questionnaireUrl}
+            class="questionnaire-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {endorsementsPage.questionnaireLabel || "Submit Endorsement Questionnaire"}
+          </a>
+        )}
       </div>
     </section>
   </main>
