@@ -1,24 +1,12 @@
 ---
 import { sanityClient } from "sanity:client";
-import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import type { SocialMedia } from "../sanity/schemaTypes/socialMedia";
 import "../styles/global.css";
 
 interface Props {
   title?: string;
   description?: string;
 }
-
-const socialMediaItems = await sanityClient.fetch<SocialMedia[]>(
-  `*[_type == "socialMedia"] | order(order asc) {
-    platform,
-    label,
-    url,
-    emoji,
-    order
-  }`,
-);
 
 const {
   title = "North Carolina DSA",
@@ -80,6 +68,5 @@ const canonicalURL = new URL(
     <a href="#main-content" class="skip-link">Skip to content</a>
     <Header />
     <slot />
-    <Footer socialMediaItems={socialMediaItems} />
   </body>
 </html>

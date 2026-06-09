@@ -90,7 +90,7 @@ const { data: post } = await loadQuery<PostPage>({
         {post.mainImage?.asset?.url && (
           <div class="article-image-container mb-xl border-b-[4px] border-on-background bg-surface relative -mx-xl px-xl pt-xl pb-md -mt-xl">
             <img
-              class="article-image w-full h-auto object-cover border-heavy solid-shadow grayscale-filter hover-grayscale-off rotate-1"
+              class="article-image w-full h-auto object-cover border-heavy solid-shadow rotate-1"
               src={post.mainImage.asset.url}
               alt={post.mainImage.alt ?? post.title}
               loading="eager"
@@ -222,13 +222,6 @@ const { data: post } = await loadQuery<PostPage>({
 .w-full { width: 100%; }
 .h-auto { height: auto; }
 .object-cover { object-fit: cover; }
-.grayscale-filter {
-  filter: grayscale(100%) contrast(1.1);
-  transition: filter 500ms;
-}
-.hover-grayscale-off:hover {
-  filter: grayscale(0%) contrast(1);
-}
 
 @media (min-width: 768px) {
   .md\:text-\[56px\] { font-size: 56px; }

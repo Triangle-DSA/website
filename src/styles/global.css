@@ -275,7 +275,7 @@ a {
   transform: rotate(-1deg);
 }
 .photocopy-filter {
-  filter: grayscale(100%) contrast(150%) brightness(90%);
+  filter: contrast(120%) brightness(95%);
 }
 .tape-effect {
   position: absolute;

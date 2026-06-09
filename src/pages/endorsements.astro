@@ -294,14 +294,6 @@ const candidates = await sanityClient.fetch<Candidate[]>(
   box-shadow: 12px 12px 0px 0px var(--color-on-background);
 }
 
-.endorsee-item:hover .photocopy-filter .endorsee-image {
-  filter: grayscale(0%) contrast(1);
-}
-
-.endorsee-item:hover .overlay-transition {
-  opacity: 0;
-}
-
 @media (min-width: 768px) {
   .endorsee-list {
     grid-template-columns: repeat(3, 1fr);
@@ -479,20 +471,5 @@ const candidates = await sanityClient.fetch<Candidate[]>(
 .border-b-\[4px\] {
   border-bottom-width: 4px;
   border-bottom-style: solid;
-}
-
-/* Image Effects */
-.photocopy-filter .endorsee-image {
-  filter: grayscale(100%) contrast(1.2);
-  transition: filter 500ms;
-}
-.endorsee-card:hover .photocopy-filter .endorsee-image {
-  filter: grayscale(0%) contrast(1);
-}
-.overlay-transition {
-  transition: opacity 500ms;
-}
-.endorsee-card:hover .overlay-transition {
-  opacity: 0;
 }
 </style>

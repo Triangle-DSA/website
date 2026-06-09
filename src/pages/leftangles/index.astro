@@ -84,7 +84,7 @@ function cardSize(i: number): "large" | "wide" | "small" {
                 {post.mainImage?.asset?.url ? (
                   <div class="post-image-container relative border-b-[4px] border-on-background overflow-hidden flex-shrink-0 bg-surface">
                     <img
-                      class="post-image w-full h-full object-cover grayscale-filter transition-transform duration-300 group-hover:scale-105"
+                      class="post-image w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       src={post.mainImage.asset.url}
                       alt={post.mainImage.alt ?? post.title}
                       loading={i === 0 ? "eager" : "lazy"}
@@ -363,13 +363,6 @@ function cardSize(i: number): "large" | "wide" | "small" {
 
 .post-card:hover {
   transform: translateY(-8px);
-}
-
-.grayscale-filter {
-  filter: grayscale(100%) contrast(1.1);
-}
-.post-card:hover .grayscale-filter {
-  filter: grayscale(0%) contrast(1);
 }
 
 /* Grid System */
