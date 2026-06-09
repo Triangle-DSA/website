@@ -49,9 +49,12 @@ const candidates = await sanityClient.fetch<Candidate[]>(
       </div>
 
       <div class="page-hero-content relative z-10 text-center py-xl px-lg">
-        <h1 class="page-hero-title uppercase text-on-primary">{endorsementsPage?.title || "Endorsements"}</h1>
+        <h1 class="page-hero-title uppercase text-on-primary">
+          {endorsementsPage?.title || "Endorsements"}
+        </h1>
         <p class="font-typewriter text-lg text-on-primary mt-md font-bold bg-on-background p-4 border-medium border-on-primary inline-block rotate-1 shadow-[4px_4px_0_0_#ffffff]">
-          {endorsementsPage?.description || "Learn about our currently endorsed candidates and how to seek chapter endorsement."}
+          {endorsementsPage?.description
+            || "Learn about our currently endorsed candidates and how to seek chapter endorsement."}
         </p>
       </div>
     </section>
@@ -66,7 +69,9 @@ const candidates = await sanityClient.fetch<Candidate[]>(
           const rotateClass = i % 2 === 0 ? "rotate-1" : "-rotate-1";
           const mediaRotateClass = i % 2 === 0 ? "-rotate-1" : "rotate-1";
           const imageUrl = candidate.image?.asset
-            ? urlForImage(candidate.image).width(400).height(400).auto("format").fit("crop").url()
+            ? urlForImage(candidate.image).width(400).height(400).auto("format").fit(
+              "crop",
+            ).url()
             : null;
 
           return (

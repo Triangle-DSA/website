@@ -113,7 +113,10 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
           const tapeRotateClass = i % 2 === 0 ? "rotate(-6deg)" : "rotate(5deg)";
 
           return (
-            <div class={`program-card bg-surface-lowest border-heavy p-lg solid-shadow group ${rotateClass}`}>
+            <a
+              href={`/program#${slugify(item.title)}`}
+              class={`program-card bg-surface-lowest border-heavy p-sm solid-shadow group ${rotateClass}`}
+            >
               <div
                 class="tape-effect"
                 style={`transform: translateX(-50%) ${tapeRotateClass};`}
@@ -128,14 +131,8 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
                   <span class="icon-text">{item.icon}</span>
                 </div>
                 <h3 class="program-title uppercase">{item.title}</h3>
-                <p class="program-desc">{item.description}</p>
               </div>
-              <div class="program-card-footer mt-auto">
-                <a class="program-link" href={`/program#${slugify(item.title)}`}>
-                  -&gt; Read More
-                </a>
-              </div>
-            </div>
+            </a>
           );
         })}
       </div>
@@ -468,75 +465,52 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
 .program-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-xl);
+  gap: var(--space-md);
 }
 @media (min-width: 768px) {
   .program-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-lg);
+    gap: var(--space-md);
   }
 }
 .program-card {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   height: 100%;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
   transition: all var(--transition-slow);
 }
 .program-card:hover {
   transform: translateY(-8px);
+  background-color: var(--color-accent-yellow);
 }
 .program-card-content {
-  margin-bottom: var(--space-md);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
   position: relative;
 }
 .program-icon {
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--space-md);
 }
 .icon-text {
-  font-size: 36px;
+  font-size: 24px;
 }
 .program-title {
   font-family: var(--font-display);
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 900;
   color: var(--color-on-background);
-  margin-bottom: var(--space-sm);
-}
-.program-desc {
-  font-family: var(--font-typewriter);
-  font-size: 18px;
-  color: var(--color-on-background);
-  line-height: 1.625;
-}
-.program-card-footer {
-  padding-top: var(--space-md);
-  border-top: 3px dashed var(--color-on-background);
-}
-.program-link {
-  font-family: var(--font-typewriter);
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--color-primary);
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: 8px;
-  border: 2px solid transparent;
-  width: fit-content;
-  transition: all var(--transition-fast);
-}
-.program-card:hover .program-link {
-  transform: translateX(8px);
-}
-.program-link:hover {
-  color: var(--color-on-background);
-  background-color: var(--color-accent-yellow);
-  border-color: var(--color-on-background);
+  margin-bottom: 0;
 }
 
 /* Campaigns Section */
