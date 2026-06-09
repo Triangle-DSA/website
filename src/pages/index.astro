@@ -12,10 +12,14 @@ import { slugify } from "../utils/slugify";
 const homepage = await sanityClient.fetch<HomepageContent>(
   `*[_type == "homepageContent"][0]{
       hero {
-        ...,
-        heroImage {
-          alt,
-          asset
+        title,
+        subtitle,
+        carousel[] {
+          label,
+          image {
+            alt,
+            asset
+          }
         }
       },
       about,
@@ -49,8 +53,9 @@ const socialMediaItems = await sanityClient.fetch<SocialMedia[]>(
     order
   }`,
 );
-const heroPreloadUrl = homepage?.hero?.heroImage?.asset
-  ? urlForImage(homepage.hero.heroImage).width(1920).auto("format").url()
+const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
+  ? urlForImage(homepage.hero.carousel[0].image).width(1920).auto("format")
+    .url()
   : null;
 ---
 
@@ -67,7 +72,7 @@ const heroPreloadUrl = homepage?.hero?.heroImage?.asset
   <Hero
     title={homepage?.hero?.title}
     subtitle={homepage?.hero?.subtitle}
-    heroImage={homepage?.hero?.heroImage}
+    carousel={homepage?.hero?.carousel}
   />
   <main id="main-content">
     <!-- About Section -->

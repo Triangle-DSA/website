@@ -1,23 +1,44 @@
 ---
 import { urlForImage } from "../sanity/lib/url-for-image";
+import { type CarouselSlide } from "../sanity/schemaTypes/homepageContent";
 
 interface Props {
   title: string;
   subtitle: string;
-  heroImage?: {
-    alt?: string;
-    asset?: {
-      _ref: string;
-      _type: string;
-    };
-  };
+  carousel?: CarouselSlide[];
 }
 
-const { title, subtitle, heroImage } = Astro.props;
+const { title, subtitle, carousel } = Astro.props;
 
-const heroImageUrl = heroImage?.asset
-  ? urlForImage(heroImage).width(1200).auto("format").fit("max").url()
-  : null;
+// Define default slides
+const defaultSlides = [
+  {
+    label: "Organize!",
+    imageUrl: "/images/hero_organize.png",
+    alt: "Organize! - workers united",
+  },
+  {
+    label: "Educate!",
+    imageUrl: "/images/hero_educate.png",
+    alt: "Educate! - community study circle",
+  },
+  {
+    label: "Agitate!",
+    imageUrl: "/images/hero_agitate.png",
+    alt: "Agitate! - solidarity protest march",
+  },
+];
+
+// Map CMS slides or fallback
+const slides = carousel && carousel.length > 0
+  ? carousel.map((slide) => ({
+    label: slide.label,
+    imageUrl: slide.image?.asset
+      ? urlForImage(slide.image).width(1200).auto("format").fit("max").url()
+      : "/images/hero_organize.png",
+    alt: slide.image?.alt || slide.label,
+  }))
+  : defaultSlides;
 ---
 
 <section class="hero-section container">
@@ -79,26 +100,42 @@ const heroImageUrl = heroImage?.asset
         style="top: -10px; left: 80%; transform: translateX(-50%) rotate(-10deg)"
       >
       </div>
-      <div class="image-sticker">
-        Organize!
-      </div>
+
+      {slides.map((slide, i) => {
+        const leftPercent = slides.length > 1
+          ? 5 + (i * 65) / (slides.length - 1)
+          : 5;
+        const rotateDeg = i % 3 === 0
+          ? -8
+          : i % 3 === 1
+          ? 4
+          : -5;
+
+        return (
+          <button
+            class={`carousel-btn ${i === 0 ? "active" : ""}`}
+            data-slide={i}
+            style={`--left-percent: ${leftPercent}%; --rotate-deg: ${rotateDeg}deg;`}
+          >
+            {slide.label}
+          </button>
+        );
+      })}
 
       <div class="hero-image-container border-heavy solid-shadow photocopy-filter">
-        {heroImageUrl ? (
-          <>
+        {slides.map((slide, i) => (
+          <div
+            class={`carousel-slide ${i === 0 ? "active" : ""}`}
+            data-index={i}
+          >
             <img
-              src={heroImageUrl}
-              alt={heroImage?.alt || "DSA organizers in action"}
+              src={slide.imageUrl}
+              alt={slide.alt}
               class="hero-image"
             />
-            <div class="hero-image-overlay"></div>
-          </>
-        ) : (
-           <div class="hero-image-placeholder">
-             <span class="material-symbols-outlined icon-large drop-shadow-md"
-             >campaign</span>
-           </div>
-         )}
+            <div class="hero-image-overlay" />
+          </div>
+        ))}
       </div>
     </div>
   </div>
@@ -289,20 +326,45 @@ const heroImageUrl = heroImage?.asset
   border: 4px solid var(--color-on-background);
 }
 
-.image-sticker {
+.carousel-btn {
   position: absolute;
   bottom: -1.5rem;
-  left: -1.5rem;
+  left: var(--left-percent);
+  transform: rotate(var(--rotate-deg));
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   font-family: var(--font-typewriter);
-  font-size: 20px;
-  padding: 8px 16px;
+  font-size: 16px;
+  padding: 6px 12px;
   border: 3px solid var(--color-on-background);
-  transform: rotate(-12deg);
   box-shadow: 4px 4px 0px 0px var(--color-on-background);
   z-index: 20;
   font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+@media (min-width: 640px) {
+  .carousel-btn {
+    font-size: 20px;
+    padding: 8px 16px;
+  }
+}
+
+.carousel-btn:hover {
+  transform: translateY(-4px) rotate(var(--rotate-deg)) scale(1.05);
+  background-color: var(--color-accent-yellow);
+  color: var(--color-on-background);
+}
+
+.carousel-btn.active {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-on-background);
+  box-shadow: 2px 2px 0px 0px var(--color-on-background);
+  transform: translateY(2px) rotate(var(--rotate-deg));
 }
 
 .hero-image-container {
@@ -314,13 +376,29 @@ const heroImageUrl = heroImage?.asset
   z-index: 10;
 }
 
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 800ms ease-in-out, visibility 800ms ease-in-out;
+  z-index: 1;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
 .hero-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: all 500ms;
+  transition: transform 500ms;
 }
-.hero-image-container:hover .hero-image {
+
+.carousel-slide:hover .hero-image {
   transform: scale(1.05);
 }
 
@@ -331,22 +409,63 @@ const heroImageUrl = heroImage?.asset
   mix-blend-mode: multiply;
   transition: opacity 500ms;
 }
-.hero-image-container:hover .hero-image-overlay {
+
+.carousel-slide:hover .hero-image-overlay {
   opacity: 0;
 }
-
-.hero-image-placeholder {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.icon-large {
-  font-size: 100px;
-  color: var(--color-on-background);
-  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.07)) drop-shadow(
-    0 2px 2px rgba(0, 0, 0, 0.06)
-  );
-}
 </style>
+
+<script>
+function initCarousel() {
+  const slides = document.querySelectorAll(".carousel-slide");
+  const buttons = document.querySelectorAll(".carousel-btn");
+  let currentIndex = 0;
+  let intervalId;
+
+  if (!slides.length || !buttons.length) return;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      if (i === index) {
+        slide.classList.add("active");
+      } else {
+        slide.classList.remove("active");
+      }
+    });
+
+    buttons.forEach((btn, i) => {
+      if (i === index) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+
+    currentIndex = index;
+  }
+
+  function nextSlide() {
+    const nextIndex = (currentIndex + 1) % slides.length;
+    showSlide(nextIndex);
+  }
+
+  function startAutoCycle() {
+    clearInterval(intervalId);
+    intervalId = setInterval(nextSlide, 10000); // 10 seconds
+  }
+
+  buttons.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      showSlide(index);
+      startAutoCycle();
+    });
+  });
+
+  // Initialize auto cycle
+  startAutoCycle();
+}
+
+// Initialize on load and on view transitions page loads
+initCarousel();
+document.addEventListener("astro:after-swap", initCarousel);
+</script>
