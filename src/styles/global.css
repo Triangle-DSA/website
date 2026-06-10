@@ -347,3 +347,261 @@ a {
     margin-right: 16px !important;
   }
 }
+
+/* ==========================================================================
+   Refactored Utility Classes
+   ========================================================================== */
+
+/* Spacing: Margins & Paddings */
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.mt-md {
+  margin-top: var(--space-md);
+}
+.mt-xl {
+  margin-top: var(--space-xl);
+}
+.mb-xs {
+  margin-bottom: var(--space-xs);
+}
+.mb-sm {
+  margin-bottom: var(--space-sm);
+}
+.mb-md {
+  margin-bottom: var(--space-md);
+}
+.mb-lg {
+  margin-bottom: var(--space-lg);
+}
+.mb-xl {
+  margin-bottom: var(--space-xl);
+}
+.my-xl {
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.p-1 {
+  padding: 4px;
+}
+.p-2 {
+  padding: 8px;
+}
+.p-4 {
+  padding: 16px;
+}
+.p-sm {
+  padding: var(--space-sm);
+}
+.p-md {
+  padding: var(--space-md);
+}
+.p-lg {
+  padding: var(--space-lg);
+}
+.p-xl {
+  padding: var(--space-xl);
+}
+.py-1 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.py-md {
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+}
+.py-xl {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+.px-2 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.px-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.px-md {
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+}
+.px-lg {
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+}
+.px-xl {
+  padding-left: var(--space-xl);
+  padding-right: var(--space-xl);
+}
+.pt-md {
+  padding-top: var(--space-md);
+}
+.pb-xs {
+  padding-bottom: var(--space-xs);
+}
+.pl-md {
+  padding-left: var(--space-md);
+}
+
+/* Stack spacing */
+.space-y-sm > * + * {
+  margin-top: var(--space-sm);
+}
+.space-y-md > * + * {
+  margin-top: var(--space-md);
+}
+
+/* Size / Display / Alignment */
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.max-w-2xl {
+  max-width: 42rem;
+}
+.max-w-4xl {
+  max-width: 56rem;
+}
+.inline-block {
+  display: inline-block;
+}
+.text-center {
+  text-align: center;
+}
+.z-10 {
+  z-index: 10;
+}
+.inset-0 {
+  inset: 0;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.object-cover {
+  object-fit: cover;
+}
+.rounded-full {
+  border-radius: var(--radius-full);
+}
+
+/* Typography */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-black {
+  font-weight: 900;
+}
+.text-lg {
+  font-size: 18px;
+}
+.text-xl {
+  font-size: 20px;
+}
+.text-2xl {
+  font-size: 24px;
+}
+.text-4xl {
+  font-size: 36px;
+}
+.leading-tight {
+  line-height: 1.2;
+}
+.leading-relaxed {
+  line-height: 1.625;
+}
+
+/* Colors */
+.bg-surface-lowest {
+  background-color: var(--color-surface-lowest);
+}
+.bg-surface {
+  background-color: var(--color-surface);
+}
+.bg-primary {
+  background-color: var(--color-primary);
+}
+.bg-primary-fixed {
+  background-color: var(--color-primary-fixed);
+}
+.bg-primary-fixed-dim {
+  background-color: var(--color-primary-fixed-dim);
+}
+.bg-accent-yellow {
+  background-color: var(--color-accent-yellow);
+}
+.bg-accent-pink {
+  background-color: var(--color-accent-pink);
+}
+.bg-on-background {
+  background-color: var(--color-on-background);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+.text-on-primary {
+  color: var(--color-on-primary);
+}
+.text-on-background {
+  color: var(--color-on-background);
+}
+.text-accent-yellow {
+  color: var(--color-accent-yellow);
+}
+.text-on-surface-variant {
+  color: var(--color-on-surface-variant);
+}
+
+/* Rotations / Transforms */
+.rotate-1 {
+  transform: rotate(1deg);
+}
+.-rotate-1 {
+  transform: rotate(-1deg);
+}
+.rotate-2 {
+  transform: rotate(2deg);
+}
+.-rotate-2 {
+  transform: rotate(-2deg);
+}
+.rotate-3 {
+  transform: rotate(3deg);
+}
+.-rotate-3 {
+  transform: rotate(-3deg);
+}
+.rotate-5 {
+  transform: rotate(5deg);
+}
+.-rotate-5 {
+  transform: rotate(-5deg);
+}
+.rotate-12 {
+  transform: rotate(12deg);
+}
+.-rotate-12 {
+  transform: rotate(-12deg);
+}
+
+/* Transition & Hover */
+.transition-transform {
+  transition: transform var(--transition-fast);
+}
+.hover\:translate-x-2:hover {
+  transform: translateX(8px);
+}
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+.active\:scale-95:active {
+  transform: scale(0.95);
+}

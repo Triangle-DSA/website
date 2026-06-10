@@ -1,6 +1,8 @@
 ---
 import { sanityClient } from "sanity:client";
 import Hero from "../components/Hero.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import ZineCard from "../components/ZineCard.astro";
 import Layout from "../layouts/Layout.astro";
 import { urlForImage } from "../sanity/lib/url-for-image";
 import { type Campaign } from "../sanity/schemaTypes/campaign";
@@ -77,15 +79,22 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
   <main id="main-content">
     <!-- About Section -->
     <section id="about" class="about-section container mt-md relative">
-      <div class="section-header">
-        <h2 class="section-title bg-accent-pink rotate-1 shadow-md uppercase">
-          {homepage?.about?.heading}
-        </h2>
-      </div>
-      <div class="about-content p-lg border-heavy shadow-lg -rotate-1 bg-surface-lowest">
+      <SectionHeader
+        title={homepage?.about?.heading}
+        bgColor="pink"
+        rotate="rotate-1"
+      />
+      <ZineCard
+        variant="lowest"
+        border="heavy"
+        shadow="solid-lg"
+        rotate="-rotate-1"
+        class="about-content p-lg"
+        hover={false}
+      >
         <p class="about-lead">{homepage?.about?.paragraph1}</p>
         <p>{homepage?.about?.paragraph2}</p>
-      </div>
+      </ZineCard>
     </section>
 
     <!-- Program Section -->
@@ -94,14 +103,13 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
       class="program-section container mt-xl bg-surface-lowest relative"
     >
       <div class="bg-dots program-bg-overlay"></div>
-      <div class="section-header">
-        <h2 class="section-title bg-accent-yellow -rotate-1 shadow-md uppercase">
-          Our Program
-        </h2>
-        <p class="section-subtitle font-typewriter rotate-1 mt-md">
-          -- Where the organizing happens. Join a working group today. --
-        </p>
-      </div>
+      <SectionHeader
+        title="Our Program"
+        subtitle="-- Where the organizing happens. Join a working group today. --"
+        bgColor="yellow"
+        rotate="-rotate-1"
+        subtitleRotate="rotate-1"
+      />
 
       <div class="program-grid pt-md">
         {sortedProgram.map((item, i) => {
@@ -118,15 +126,16 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
           const tapeRotateClass = i % 2 === 0 ? "rotate(-6deg)" : "rotate(5deg)";
 
           return (
-            <a
+            <ZineCard
+              as="a"
               href={`/program#${slugify(item.title)}`}
-              class={`program-card bg-surface-lowest border-heavy p-sm solid-shadow group ${rotateClass}`}
+              variant="lowest"
+              border="heavy"
+              shadow="solid"
+              rotate={rotateClass}
+              class="program-card p-sm group"
+              tape={`transform: translateX(-50%) ${tapeRotateClass};`}
             >
-              <div
-                class="tape-effect"
-                style={`transform: translateX(-50%) ${tapeRotateClass};`}
-              >
-              </div>
               <div class="program-card-content z-10">
                 <div
                   class={`program-icon shadow-md border-medium ${iconBgClass} ${
@@ -137,7 +146,7 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
                 </div>
                 <h3 class="program-title uppercase">{item.title}</h3>
               </div>
-            </a>
+            </ZineCard>
           );
         })}
       </div>
@@ -166,14 +175,20 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
         {sortedCampaigns.map((campaign, i) => {
           const rotateClass = i % 2 === 0 ? "-rotate-1" : "rotate-1";
           return (
-            <div class={`campaign-card bg-surface p-md border-heavy shadow-lg ${rotateClass}`}>
+            <ZineCard
+              variant="surface"
+              border="heavy"
+              shadow="solid-lg"
+              rotate={rotateClass}
+              class="campaign-card p-md"
+            >
               <div class="campaign-card-content">
                 <h4 class="campaign-title uppercase">{campaign.title}</h4>
                 <div class="campaign-desc font-typewriter">
                   <p>{campaign.description}</p>
                 </div>
               </div>
-            </div>
+            </ZineCard>
           );
         })}
       </div>
@@ -251,14 +266,13 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
 
     <!-- Contact Section -->
     <section id="contact" class="contact-section container mt-xl">
-      <div class="section-header mb-lg">
-        <h2 class="section-title bg-accent-pink -rotate-1 shadow-md uppercase">
-          Get Involved
-        </h2>
-        <p class="section-subtitle font-typewriter mt-4">
-          We'd love to hear from you!
-        </p>
-      </div>
+      <SectionHeader
+        title="Get Involved"
+        subtitle="We'd love to hear from you!"
+        bgColor="pink"
+        rotate="-rotate-1"
+        class="mb-lg"
+      />
 
       <div class="contact-grid">
         {socialMediaItems.map((item, i) => {
@@ -267,9 +281,14 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
           const rotateClass = i % 2 === 0 ? "rotate-2" : "-rotate-2";
 
           return (
-            <a
+            <ZineCard
+              as="a"
               href={item.url}
-              class={`contact-card bg-surface p-md border-medium shadow-md ${rotateClass}`}
+              variant="surface"
+              border="medium"
+              shadow="solid-md"
+              rotate={rotateClass}
+              class="contact-card p-md"
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noopener noreferrer" : undefined}
             >
@@ -295,7 +314,7 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
                   )}
                 </span>
               </div>
-            </a>
+            </ZineCard>
           );
         })}
       </div>
@@ -304,137 +323,6 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
 </Layout>
 
 <style>
-/* General Layout Utilities used in index.astro */
-.mt-md {
-  margin-top: var(--space-md);
-}
-.mt-xl {
-  margin-top: var(--space-xl);
-}
-.my-xl {
-  margin-top: var(--space-xl);
-  margin-bottom: var(--space-xl);
-}
-.mb-xs {
-  margin-bottom: var(--space-xs);
-}
-.mb-lg {
-  margin-bottom: var(--space-lg);
-}
-.p-md {
-  padding: var(--space-md);
-}
-.p-lg {
-  padding: var(--space-lg);
-}
-.pt-md {
-  padding-top: var(--space-md);
-}
-.gap-md {
-  gap: var(--space-md);
-}
-.z-10 {
-  z-index: 10;
-}
-
-/* Rotations */
-.rotate-1 {
-  transform: rotate(1deg);
-}
-.-rotate-1 {
-  transform: rotate(-1deg);
-}
-.rotate-2 {
-  transform: rotate(2deg);
-}
-.-rotate-2 {
-  transform: rotate(-2deg);
-}
-.rotate-3 {
-  transform: rotate(3deg);
-}
-.-rotate-3 {
-  transform: rotate(-3deg);
-}
-.-rotate-12 {
-  transform: rotate(-12deg);
-}
-.rotate-12 {
-  transform: rotate(12deg);
-}
-
-/* Colors */
-.bg-accent-pink {
-  background-color: var(--color-accent-pink);
-}
-.bg-accent-yellow {
-  background-color: var(--color-accent-yellow);
-}
-.bg-surface-lowest {
-  background-color: var(--color-surface-lowest);
-}
-.bg-surface {
-  background-color: var(--color-surface);
-}
-.bg-primary {
-  background-color: var(--color-primary);
-}
-.bg-primary-fixed {
-  background-color: var(--color-primary-fixed);
-}
-.bg-primary-fixed-dim {
-  background-color: var(--color-primary-fixed-dim);
-}
-
-.text-primary {
-  color: var(--color-primary);
-}
-
-/* Shadows */
-.shadow-md {
-  box-shadow: var(--shadow-solid-md);
-}
-.shadow-lg {
-  box-shadow: var(--shadow-solid-lg);
-}
-.shadow-solid {
-  box-shadow: var(--shadow-solid);
-}
-
-/* Borders */
-.border-medium {
-  border: 3px solid var(--color-on-background);
-}
-
-/* Misc */
-.rounded-full {
-  border-radius: var(--radius-full);
-}
-
-/* Section Header */
-.section-header {
-  text-align: center;
-  margin-bottom: var(--space-xl);
-  position: relative;
-  width: 100%;
-  display: inline-block;
-}
-.section-title {
-  font-family: var(--font-display);
-  font-size: 48px;
-  font-weight: 800;
-  color: var(--color-on-background);
-  padding: 0 16px;
-  border: 3px solid var(--color-on-background);
-  display: inline-block;
-  position: relative;
-  z-index: 10;
-}
-.section-subtitle {
-  font-size: 20px;
-  color: var(--color-on-background);
-}
-
 /* About Section */
 .about-section {
   padding-top: var(--space-xl);
@@ -477,19 +365,6 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-md);
   }
-}
-.program-card {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  position: relative;
-  text-decoration: none;
-  color: inherit;
-  transition: all var(--transition-slow);
-}
-.program-card:hover {
-  transform: translateY(-8px);
-  background-color: var(--color-accent-yellow);
 }
 .program-card-content {
   display: flex;
@@ -598,13 +473,6 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  transition:
-    background-color var(--transition-normal),
-    transform var(--transition-normal);
-}
-.campaign-card:hover {
-  background-color: var(--color-accent-yellow);
-  transform: translateY(-4px);
 }
 .campaign-card-content {
   flex-grow: 1;
@@ -811,11 +679,6 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  transition: all var(--transition-normal);
-}
-.contact-card:hover {
-  background-color: var(--color-accent-yellow);
-  transform: translateY(-4px);
 }
 .contact-emoji {
   font-size: 24px;

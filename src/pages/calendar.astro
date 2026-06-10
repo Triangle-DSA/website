@@ -1,5 +1,7 @@
 ---
 import CalendarEmbed from "../components/CalendarEmbed";
+import PageHero from "../components/PageHero.astro";
+import ZineCard from "../components/ZineCard.astro";
 import Layout from "../layouts/Layout.astro";
 
 const icalFeedUrl = import.meta.env.PUBLIC_ICAL_FEED_URL;
@@ -14,36 +16,28 @@ const calendarDataUrl = "/api/calendar.ics";
 >
   <main id="main-content">
     <!-- Page Hero -->
-    <section class="page-hero bg-primary border-heavy solid-shadow mt-xl mb-xl mx-auto container relative rotate-1">
-      <div class="bg-dots mix-blend-multiply opacity-20 absolute inset-0 pointer-events-none">
-      </div>
-      <div
-        class="tape-effect"
-        style="top: -10px; left: 20%; transform: translateX(-50%) rotate(5deg)"
-      >
-      </div>
-      <div
-        class="tape-effect"
-        style="top: -10px; left: 80%; transform: translateX(-50%) rotate(-3deg)"
-      >
-      </div>
-
-      <div class="page-hero-content relative z-10 text-center py-xl">
-        <h1 class="page-hero-title uppercase text-on-primary">
-          Upcoming Events
-        </h1>
-        <p class="page-hero-sub font-typewriter text-on-primary shadow-md bg-on-background inline-block p-4 mt-md -rotate-1 border-medium border-on-primary">
-          Join us for meetings, actions, social events, and more!
-        </p>
-      </div>
-    </section>
+    <PageHero
+      title="Upcoming Events"
+      subtitle="Join us for meetings, actions, social events, and more!"
+      rotate="rotate-1"
+      subtitleRotate="-rotate-1"
+      tapes={[
+        "top: -10px; left: 20%; transform: translateX(-50%) rotate(5deg)",
+        "top: -10px; left: 80%; transform: translateX(-50%) rotate(-3deg)",
+      ]}
+    />
 
     <section class="section container">
       <div class="content-wrapper">
         {!hasCalendarFeed && (
-          <div
-            class="notice bg-accent-yellow border-heavy solid-shadow mb-xl p-lg flex items-center gap-md rotate-1"
+          <ZineCard
+            variant="yellow"
+            border="heavy"
+            shadow="solid"
+            rotate="rotate-1"
+            class="mb-xl p-lg flex items-center gap-md"
             role="alert"
+            hover={false}
           >
             <svg
               class="notice-icon text-on-background"
@@ -63,28 +57,44 @@ const calendarDataUrl = "/api/calendar.ics";
               <code class="bg-surface-lowest px-2 py-1 border-medium"
               >PUBLIC_ICAL_FEED_URL</code> in your environment to show events.
             </p>
-          </div>
+          </ZineCard>
         )}
 
         {hasCalendarFeed ? (
-          <div class="calendar-wrapper bg-surface-lowest border-heavy solid-shadow mb-xl p-lg relative -rotate-1">
-            <div
-              class="tape-effect"
-              style="top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg)"
-            >
-            </div>
+          <ZineCard
+            variant="lowest"
+            border="heavy"
+            shadow="solid"
+            rotate="-rotate-1"
+            class="calendar-wrapper mb-xl p-lg relative"
+            hover={false}
+            tape="top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg)"
+          >
             <CalendarEmbed icalUrl={calendarDataUrl} client:load />
-          </div>
+          </ZineCard>
         ) : (
-           <div class="no-events bg-surface-lowest border-heavy solid-shadow mb-xl p-xl text-center rotate-1">
+           <ZineCard
+             variant="lowest"
+             border="heavy"
+             shadow="solid"
+             rotate="rotate-1"
+             class="no-events mb-xl p-xl text-center"
+             hover={false}
+           >
              <p class="font-typewriter text-xl text-on-background">
                No calendar feed is available right now. Check back soon or
                follow us on social media for announcements.
              </p>
-           </div>
+           </ZineCard>
          )}
 
-        <div class="calendar-info bg-surface border-heavy solid-shadow p-xl relative mt-xl">
+        <ZineCard
+          variant="surface"
+          border="heavy"
+          shadow="solid"
+          class="calendar-info p-xl relative mt-xl"
+          hover={false}
+        >
           <h2 class="font-display info-title text-on-background uppercase mb-sm bg-accent-pink inline-block px-2 border-medium shadow-md -rotate-1">
             Stay Updated
           </h2>
@@ -135,179 +145,24 @@ const calendarDataUrl = "/api/calendar.ics";
               ) : <span>Calendar subscription available soon</span>}
             </li>
           </ul>
-        </div>
+        </ZineCard>
       </div>
     </section>
   </main>
 </Layout>
 
 <style>
-/* Layout Utilities */
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-.mt-xl {
-  margin-top: var(--space-xl);
-}
-.mb-xl {
-  margin-bottom: var(--space-xl);
-}
-.mt-md {
-  margin-top: var(--space-md);
-}
-.mb-md {
-  margin-bottom: var(--space-md);
-}
-.mb-sm {
-  margin-bottom: var(--space-sm);
-}
-.p-lg {
-  padding: var(--space-lg);
-}
-.p-xl {
-  padding: var(--space-xl);
-}
-.px-2 {
-  padding-left: 8px;
-  padding-right: 8px;
-}
-.py-1 {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-.p-1 {
-  padding: 4px;
-}
-.flex {
-  display: flex;
-}
-.items-center {
-  align-items: center;
-}
-.gap-md {
-  gap: var(--space-md);
-}
-.gap-sm {
-  gap: var(--space-sm);
-}
-.text-center {
-  text-align: center;
-}
-.inline-block {
-  display: inline-block;
-}
-.relative {
-  position: relative;
-}
-.absolute {
-  position: absolute;
-}
-.inset-0 {
-  inset: 0;
-}
-.z-10 {
-  z-index: 10;
-}
-.pointer-events-none {
-  pointer-events: none;
-}
-.uppercase {
-  text-transform: uppercase;
-}
-.rotate-1 {
-  transform: rotate(1deg);
-}
-.-rotate-1 {
-  transform: rotate(-1deg);
-}
-.transition-transform {
-  transition: transform var(--transition-fast);
-}
-.hover\:translate-x-2:hover {
-  transform: translateX(8px);
-}
-
 .info-title {
   font-size: 32px;
 }
 
-/* Typography */
-.font-typewriter {
-  font-family: var(--font-typewriter);
-}
-.font-display {
-  font-family: var(--font-display);
-}
-.font-bold {
-  font-weight: 700;
-}
-.text-lg {
-  font-size: 18px;
-}
-.text-xl {
-  font-size: 20px;
-}
-.text-on-primary {
-  color: var(--color-on-primary);
-}
-.text-on-background {
-  color: var(--color-on-background);
-}
-.text-primary {
-  color: var(--color-primary);
-}
 .hover-underline:hover {
   text-decoration: underline;
   color: var(--color-on-background);
   background-color: var(--color-accent-yellow);
 }
 
-/* Colors */
-.bg-primary {
-  background-color: var(--color-primary);
-}
-.bg-on-background {
-  background-color: var(--color-on-background);
-}
-.bg-accent-yellow {
-  background-color: var(--color-accent-yellow);
-}
-.bg-accent-pink {
-  background-color: var(--color-accent-pink);
-}
-.bg-surface-lowest {
-  background-color: var(--color-surface-lowest);
-}
-.bg-surface {
-  background-color: var(--color-surface);
-}
-.mix-blend-multiply {
-  mix-blend-mode: multiply;
-}
-.opacity-20 {
-  opacity: 0.2;
-}
-
-/* Borders & Shadows */
-.border-medium {
-  border: 3px solid var(--color-on-background);
-}
-.border-on-primary {
-  border-color: var(--color-on-primary);
-}
-.shadow-md {
-  box-shadow: var(--shadow-solid-md);
-}
-
 /* Specifics */
-.page-hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 5vw, 64px);
-  font-weight: 900;
-  -webkit-text-stroke: 2px var(--color-on-background);
-}
-
 .calendar-wrapper :global(.fc) {
   font-family: var(--font-typewriter);
 }

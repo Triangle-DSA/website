@@ -1,6 +1,8 @@
 ---
 export const prerender = true;
 
+import PageHero from "../components/PageHero.astro";
+import ZineCard from "../components/ZineCard.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
@@ -9,30 +11,26 @@ import Layout from "../layouts/Layout.astro";
   description="Support North Carolina DSA by purchasing official merchandise"
 >
   <main id="main-content">
-    <section class="page-hero bg-primary border-heavy solid-shadow mt-xl mb-xl mx-auto container relative rotate-1">
-      <div class="bg-dots mix-blend-multiply opacity-20 absolute inset-0 pointer-events-none">
-      </div>
-      <div
-        class="tape-effect"
-        style="top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg); width: 150px"
-      >
-      </div>
+    <PageHero
+      title="DSA Merchandise"
+      subtitle="Support North Carolina DSA by purchasing official merchandise. All proceeds help fund our organizing work across the state."
+      rotate="rotate-1"
+      subtitleRotate="-rotate-1"
+      tapes={["top: -10px; left: 50%; transform: translateX(-50%) rotate(-2deg); width: 150px"]}
+    />
 
-      <div class="page-hero-content relative z-10 text-center py-xl px-lg">
-        <h1 class="page-hero-title uppercase text-on-primary">
-          DSA Merchandise
-        </h1>
-        <p class="font-typewriter text-lg text-on-primary mt-md font-bold bg-on-background p-4 border-medium border-on-primary inline-block -rotate-1 page-hero-sub max-w-2xl mx-auto">
-          Support North Carolina DSA by purchasing official merchandise. All
-          proceeds help fund our organizing work across the state.
-        </p>
-      </div>
-    </section>
-
-    <section class="section container my-xl bg-surface-lowest border-heavy solid-shadow p-xl relative -rotate-1">
+    <ZineCard
+      as="section"
+      variant="lowest"
+      border="heavy"
+      shadow="solid"
+      rotate="-rotate-1"
+      class="container my-xl p-xl"
+      hover={false}
+    >
       <!-- Shopify Buy Button -->
       <div id="collection-component-1770002679393"></div>
-    </section>
+    </ZineCard>
   </main>
 </Layout>
 
@@ -205,130 +203,3 @@ import Layout from "../layouts/Layout.astro";
 })();
 /*]]>*/
 </script>
-
-<style>
-/* Layout Utilities */
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-.my-xl {
-  margin-top: var(--space-xl);
-  margin-bottom: var(--space-xl);
-}
-.mt-xl {
-  margin-top: var(--space-xl);
-}
-.mb-xl {
-  margin-bottom: var(--space-xl);
-}
-.mt-md {
-  margin-top: var(--space-md);
-}
-.p-xl {
-  padding: var(--space-xl);
-}
-.p-4 {
-  padding: 16px;
-}
-.py-xl {
-  padding-top: var(--space-xl);
-  padding-bottom: var(--space-xl);
-}
-.px-lg {
-  padding-left: var(--space-lg);
-  padding-right: var(--space-lg);
-}
-.max-w-2xl {
-  max-width: 42rem;
-}
-
-/* Grid / Flex Layouts */
-.text-center {
-  text-align: center;
-}
-.inline-block {
-  display: inline-block;
-}
-.relative {
-  position: relative;
-}
-.absolute {
-  position: absolute;
-}
-.inset-0 {
-  inset: 0;
-}
-.z-10 {
-  z-index: 10;
-}
-.pointer-events-none {
-  pointer-events: none;
-}
-.uppercase {
-  text-transform: uppercase;
-}
-
-/* Transforms & Mix Blends */
-.rotate-1 {
-  transform: rotate(1deg);
-}
-.-rotate-1 {
-  transform: rotate(-1deg);
-}
-.mix-blend-multiply {
-  mix-blend-mode: multiply;
-}
-.opacity-20 {
-  opacity: 0.2;
-}
-
-.page-hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 5vw, 64px);
-  font-weight: 900;
-  -webkit-text-stroke: 2px var(--color-on-background);
-}
-.page-hero-sub {
-  box-shadow: 4px 4px 0px 0px #ffffff;
-}
-
-/* Typography */
-.font-display {
-  font-family: var(--font-display);
-}
-.font-typewriter {
-  font-family: var(--font-typewriter);
-}
-.font-black {
-  font-weight: 900;
-}
-.font-bold {
-  font-weight: 700;
-}
-.text-lg {
-  font-size: 18px;
-}
-.text-on-primary {
-  color: var(--color-on-primary);
-}
-
-/* Colors */
-.bg-primary {
-  background-color: var(--color-primary);
-}
-.bg-on-background {
-  background-color: var(--color-on-background);
-}
-.bg-surface-lowest {
-  background-color: var(--color-surface-lowest);
-}
-
-/* Borders */
-.border-medium {
-  border: 3px solid var(--color-on-background);
-}
-.border-on-primary {
-  border-color: var(--color-on-primary);
-}
-</style>

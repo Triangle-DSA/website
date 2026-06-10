@@ -2,7 +2,10 @@
 export const prerender = true;
 
 import { sanityClient } from "sanity:client";
+import PageHero from "../components/PageHero.astro";
 import PortableText from "../components/PortableText.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import ZineCard from "../components/ZineCard.astro";
 import Layout from "../layouts/Layout.astro";
 import { urlForImage } from "../sanity/lib/url-for-image";
 import type { Candidate } from "../sanity/schemaTypes/candidate";
@@ -39,30 +42,22 @@ const candidates = await sanityClient.fetch<Candidate[]>(
   || "Learn about NC Triangle DSA's currently endorsed candidates and how to seek chapter endorsement."}
 >
   <main id="main-content">
-    <section class="page-hero bg-primary border-heavy solid-shadow mt-xl mb-xl mx-auto container relative -rotate-1">
-      <div class="bg-dots mix-blend-multiply opacity-20 absolute inset-0 pointer-events-none">
-      </div>
-      <div
-        class="tape-effect"
-        style="top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 200px"
-      >
-      </div>
-
-      <div class="page-hero-content relative z-10 text-center py-xl px-lg">
-        <h1 class="page-hero-title uppercase text-on-primary">
-          {endorsementsPage?.title || "Endorsements"}
-        </h1>
-        <p class="font-typewriter text-lg text-on-primary mt-md font-bold bg-on-background p-4 border-medium border-on-primary inline-block rotate-1 shadow-[4px_4px_0_0_#ffffff]">
-          {endorsementsPage?.description
-            || "Learn about our currently endorsed candidates and how to seek chapter endorsement."}
-        </p>
-      </div>
-    </section>
+    <PageHero
+      title={endorsementsPage?.title || "Endorsements"}
+      subtitle={endorsementsPage?.description
+      || "Learn about our currently endorsed candidates and how to seek chapter endorsement."}
+      rotate="-rotate-1"
+      subtitleRotate="rotate-1"
+      tapes={["top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 200px"]}
+    />
 
     <section class="section container my-xl">
-      <h2 class="font-display section-title uppercase bg-accent-pink inline-block px-4 border-medium shadow-md -rotate-1 mb-xl">
-        {endorsementsPage?.currentlyEndorsedHeading || "Currently Endorsed"}
-      </h2>
+      <SectionHeader
+        title={endorsementsPage?.currentlyEndorsedHeading || "Currently Endorsed"}
+        bgColor="pink"
+        rotate="-rotate-1"
+        class="mb-xl"
+      />
 
       <div class="endorsee-list">
         {candidates && candidates.map((candidate, i) => {
@@ -98,7 +93,15 @@ const candidates = await sanityClient.fetch<Candidate[]>(
                 </div>
               </div>
 
-              <article class={`endorsee-card bg-surface-lowest border-heavy solid-shadow flex flex-col relative ${rotateClass} mt-md flex-grow`}>
+              <ZineCard
+                as="article"
+                variant="lowest"
+                border="heavy"
+                shadow="solid"
+                rotate={rotateClass}
+                class="endorsee-card flex flex-col mt-md flex-grow"
+                hover={false}
+              >
                 <div class="endorsee-content p-md flex flex-col justify-center h-full">
                   <h3 class="font-display candidate-name font-black uppercase mb-xs">
                     {candidate.name}
@@ -110,21 +113,32 @@ const candidates = await sanityClient.fetch<Candidate[]>(
                     {candidate.summary}
                   </p>
                 </div>
-              </article>
+              </ZineCard>
             </div>
           );
         })}
       </div>
     </section>
 
-    <section class="section container my-xl bg-surface-lowest border-heavy solid-shadow p-xl relative rotate-1">
+    <ZineCard
+      as="section"
+      variant="lowest"
+      border="heavy"
+      shadow="solid"
+      rotate="rotate-1"
+      class="container my-xl p-xl"
+      hover={false}
+    >
       <div class="absolute inset-0 bg-halftone-texture opacity-10 pointer-events-none">
       </div>
 
       <div class="relative z-10 max-w-4xl mx-auto">
-        <h2 class="font-display section-title uppercase bg-accent-yellow inline-block px-4 border-medium shadow-md rotate-1 mb-lg">
-          {endorsementsPage?.seekingHeading || "Seeking Endorsement?"}
-        </h2>
+        <SectionHeader
+          title={endorsementsPage?.seekingHeading || "Seeking Endorsement?"}
+          bgColor="yellow"
+          rotate="rotate-1"
+          class="mb-lg"
+        />
 
         {endorsementsPage?.seekingDescription && (
           <div class="seeking-description-wrap font-typewriter text-xl leading-relaxed space-y-md mb-xl">
@@ -161,97 +175,11 @@ const candidates = await sanityClient.fetch<Candidate[]>(
           </div>
         )}
       </div>
-    </section>
+    </ZineCard>
   </main>
 </Layout>
 
 <style>
-/* Layout Utilities */
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-.my-xl {
-  margin-top: var(--space-xl);
-  margin-bottom: var(--space-xl);
-}
-.mt-xl {
-  margin-top: var(--space-xl);
-}
-.mb-xl {
-  margin-bottom: var(--space-xl);
-}
-.mb-lg {
-  margin-bottom: var(--space-lg);
-}
-.mb-md {
-  margin-bottom: var(--space-md);
-}
-.mb-xs {
-  margin-bottom: var(--space-xs);
-}
-.mt-md {
-  margin-top: var(--space-md);
-}
-.p-xl {
-  padding: var(--space-xl);
-}
-.p-lg {
-  padding: var(--space-lg);
-}
-.py-xl {
-  padding-top: var(--space-xl);
-  padding-bottom: var(--space-xl);
-}
-.px-lg {
-  padding-left: var(--space-lg);
-  padding-right: var(--space-lg);
-}
-.px-xl {
-  padding-left: var(--space-xl);
-  padding-right: var(--space-xl);
-}
-.py-md {
-  padding-top: var(--space-md);
-  padding-bottom: var(--space-md);
-}
-.px-4 {
-  padding-left: 16px;
-  padding-right: 16px;
-}
-.p-4 {
-  padding: 16px;
-}
-.pl-md {
-  padding-left: var(--space-md);
-}
-.space-y-md > * + * {
-  margin-top: var(--space-md);
-}
-.space-y-sm > * + * {
-  margin-top: var(--space-sm);
-}
-.max-w-4xl {
-  max-width: 56rem;
-}
-.w-full {
-  width: 100%;
-}
-.h-full {
-  height: 100%;
-}
-
-/* Flexbox */
-.flex {
-  display: flex;
-}
-.flex-col {
-  flex-direction: column;
-}
-.justify-center {
-  justify-content: center;
-}
-
 /* Grid / List Layouts */
 .endorsee-list {
   display: grid;
@@ -306,79 +234,6 @@ const candidates = await sanityClient.fetch<Candidate[]>(
   }
 }
 
-/* Misc Utilities */
-.inline-block {
-  display: inline-block;
-}
-.text-center {
-  text-align: center;
-}
-.uppercase {
-  text-transform: uppercase;
-}
-.relative {
-  position: relative;
-}
-.absolute {
-  position: absolute;
-}
-.inset-0 {
-  inset: 0;
-}
-.z-10 {
-  z-index: 10;
-}
-.pointer-events-none {
-  pointer-events: none;
-}
-.object-cover {
-  object-fit: cover;
-}
-.list-disc {
-  list-style-type: disc;
-}
-.list-outside {
-  list-style-position: outside;
-}
-
-/* Transitions & Transforms */
-.rotate-1 {
-  transform: rotate(1deg);
-}
-.-rotate-1 {
-  transform: rotate(-1deg);
-}
-.rotate-2 {
-  transform: rotate(2deg);
-}
-.transition-all {
-  transition: all var(--transition-normal);
-}
-.transition-transform {
-  transition: transform var(--transition-fast);
-}
-.duration-300 {
-  transition-duration: 300ms;
-}
-.hover\:-translate-y-2:hover {
-  transform: translateY(-8px);
-}
-.hover\:scale-105:hover {
-  transform: scale(1.05);
-}
-.active\:scale-95:active {
-  transform: scale(0.95);
-}
-
-.page-hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 5vw, 64px);
-  font-weight: 900;
-  -webkit-text-stroke: 2px var(--color-on-background);
-}
-.section-title {
-  font-size: clamp(28px, 4vw, 40px);
-}
 .candidate-name {
   font-size: clamp(24px, 3vw, 28px);
 }
@@ -387,94 +242,5 @@ const candidates = await sanityClient.fetch<Candidate[]>(
 }
 .candidate-notes-title {
   font-size: 28px;
-}
-
-/* Typography */
-.font-display {
-  font-family: var(--font-display);
-}
-.font-typewriter {
-  font-family: var(--font-typewriter);
-}
-.font-button {
-  font-family: var(--font-display);
-  font-weight: 700;
-}
-.font-black {
-  font-weight: 900;
-}
-.font-bold {
-  font-weight: 700;
-}
-.text-lg {
-  font-size: 18px;
-}
-.text-xl {
-  font-size: 20px;
-}
-.text-2xl {
-  font-size: 24px;
-}
-.text-on-primary {
-  color: var(--color-on-primary);
-}
-.text-on-background {
-  color: var(--color-on-background);
-}
-.text-accent-yellow {
-  color: var(--color-accent-yellow);
-}
-.text-on-surface-variant {
-  color: var(--color-on-surface-variant);
-}
-.leading-relaxed {
-  line-height: 1.625;
-}
-
-/* Colors */
-.bg-primary {
-  background-color: var(--color-primary);
-}
-.bg-primary-fixed {
-  background-color: var(--color-primary-fixed);
-}
-.bg-on-background {
-  background-color: var(--color-on-background);
-}
-.bg-surface-lowest {
-  background-color: var(--color-surface-lowest);
-}
-.bg-accent-yellow {
-  background-color: var(--color-accent-yellow);
-}
-.bg-accent-pink {
-  background-color: var(--color-accent-pink);
-}
-.hover\:bg-accent-yellow:hover {
-  background-color: var(--color-accent-yellow);
-}
-.mix-blend-multiply {
-  mix-blend-mode: multiply;
-}
-.opacity-10 {
-  opacity: 0.1;
-}
-.opacity-20 {
-  opacity: 0.2;
-}
-
-/* Borders & Shadows */
-.border-medium {
-  border: 3px solid var(--color-on-background);
-}
-.border-on-primary {
-  border-color: var(--color-on-primary);
-}
-.border-on-background {
-  border-color: var(--color-on-background);
-}
-.border-b-\[4px\] {
-  border-bottom-width: 4px;
-  border-bottom-style: solid;
 }
 </style>
