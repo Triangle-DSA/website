@@ -262,6 +262,15 @@ function isActive(href: string) {
   padding: 8px;
   z-index: 50;
 }
+.dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background-color: transparent;
+}
 .nav-dropdown-group:hover .dropdown-menu {
   display: block;
 }
