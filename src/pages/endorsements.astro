@@ -98,7 +98,6 @@ const candidates = await sanityClient.fetch<Candidate[]>(
                 variant="lowest"
                 border="heavy"
                 shadow="solid"
-                rotate={rotateClass}
                 class="endorsee-card flex flex-col mt-md flex-grow"
                 hover={false}
               >
@@ -125,7 +124,6 @@ const candidates = await sanityClient.fetch<Candidate[]>(
       variant="lowest"
       border="heavy"
       shadow="solid"
-      rotate="rotate-1"
       class="container my-xl p-xl"
       hover={false}
     >
@@ -147,7 +145,7 @@ const candidates = await sanityClient.fetch<Candidate[]>(
         )}
 
         {endorsementsPage?.notes && (
-          <div class="candidate-notes bg-on-background text-on-primary p-lg border-medium border-on-primary candidate-notes-shadow -rotate-1 mb-xl relative">
+          <div class="candidate-notes bg-on-background text-on-primary p-lg border-medium border-on-primary candidate-notes-shadow mb-xl relative">
             <div
               class="tape-effect"
               style="top: -15px; right: 20px; transform: rotate(10deg)"

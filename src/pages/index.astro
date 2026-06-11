@@ -91,7 +91,6 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
         variant="lowest"
         border="heavy"
         shadow="solid-lg"
-        rotate="-rotate-1"
         class="about-content p-lg"
         hover={false}
       >
@@ -176,13 +175,11 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
 
       <div class="campaigns-grid">
         {sortedCampaigns.map((campaign, i) => {
-          const rotateClass = i % 2 === 0 ? "-rotate-1" : "rotate-1";
           return (
             <ZineCard
               variant="surface"
               border="heavy"
               shadow="solid-lg"
-              rotate={rotateClass}
               class="campaign-card p-md"
             >
               <div class="campaign-card-content">
@@ -199,14 +196,14 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
 
     <!-- Join Section -->
     <section id="join" class="join-section container my-xl relative">
-      <div class="join-banner bg-primary border-heavy solid-shadow -rotate-1">
+      <div class="join-banner bg-primary border-heavy solid-shadow">
         <div class="join-bg-dots bg-dots"></div>
 
         <div class="join-content">
           <h2 class="join-title uppercase -rotate-2">
             {homepage?.join?.heading || "Fund the Movement."}
           </h2>
-          <p class="join-text font-typewriter shadow-md rotate-1">
+          <p class="join-text font-typewriter shadow-md">
             {homepage?.join?.text}
           </p>
           {homepage?.join?.duesInfo && (
