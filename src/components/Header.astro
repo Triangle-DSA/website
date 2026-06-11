@@ -157,8 +157,8 @@ function isActive(href: string) {
   width: 100%;
   position: sticky;
   top: 0;
-  background-color: var(--color-surface);
-  border-bottom: 4px solid var(--color-on-background);
+  background-color: var(--color-accent-pink);
+  border-bottom: 4px solid var(--color-primary);
   z-index: 50;
   transition: background-color var(--transition-slow);
 }
@@ -176,10 +176,10 @@ function isActive(href: string) {
   font-size: 32px;
   line-height: 38px;
   font-weight: 800;
-  color: var(--color-on-background);
+  color: var(--color-primary);
   letter-spacing: -0.01em;
   transition: all var(--transition-normal);
-  -webkit-text-stroke: 1px var(--color-on-background);
+  -webkit-text-stroke: 1px var(--color-primary);
 }
 @media (min-width: 1024px) {
   .brand-logo {
@@ -210,7 +210,7 @@ function isActive(href: string) {
   font-family: var(--font-display);
   font-size: 20px;
   font-weight: 700;
-  color: var(--color-on-background);
+  color: var(--color-primary);
   padding: var(--space-xs) 12px;
   border: 2px solid transparent;
   transition: all var(--transition-normal);
@@ -218,20 +218,17 @@ function isActive(href: string) {
   align-items: center;
   gap: 4px;
 }
-.nav-link:hover {
-  color: var(--color-primary);
+.nav-link:hover,
+.nav-link.active {
   background-color: var(--color-accent-yellow);
-  border-color: var(--color-on-background);
+  color: var(--color-on-background);
+  border-color: var(--color-primary);
 }
 .nav-link.rotate-right:hover {
   transform: rotate(3deg);
 }
 .nav-link.rotate-left:hover {
   transform: rotate(-3deg);
-}
-.nav-link.active {
-  background-color: var(--color-accent-yellow);
-  border-color: var(--color-on-background);
 }
 
 .nav-dropdown-group {
@@ -243,6 +240,7 @@ function isActive(href: string) {
 .dropdown-icon {
   width: 16px;
   height: 16px;
+  stroke: var(--color-primary);
   transition: transform var(--transition-normal);
 }
 .nav-dropdown-group:hover .dropdown-icon {
@@ -256,9 +254,9 @@ function isActive(href: string) {
   margin-top: 8px;
   display: none;
   width: 12rem;
-  background-color: var(--color-surface);
-  border: 3px solid var(--color-on-background);
-  box-shadow: 4px 4px 0px 0px var(--color-on-background);
+  background-color: var(--color-accent-pink);
+  border: 3px solid var(--color-primary);
+  box-shadow: 4px 4px 0px 0px var(--color-primary);
   padding: 8px;
   z-index: 50;
 }
@@ -279,7 +277,7 @@ function isActive(href: string) {
   font-family: var(--font-typewriter);
   font-size: 18px;
   font-weight: 700;
-  color: var(--color-on-background);
+  color: var(--color-primary);
   padding: 8px 12px;
   transition: all var(--transition-fast);
 }
@@ -323,9 +321,9 @@ function isActive(href: string) {
   align-items: center;
   justify-content: center;
   padding: var(--space-sm);
-  color: var(--color-on-background);
-  border: 3px solid var(--color-on-background);
-  background-color: var(--color-accent-yellow);
+  color: var(--color-primary);
+  border: 3px solid var(--color-primary);
+  background-color: var(--color-accent-pink);
   transition: background-color var(--transition-fast);
   cursor: pointer;
 }
@@ -335,7 +333,7 @@ function isActive(href: string) {
   }
 }
 .mobile-menu-btn:hover {
-  background-color: var(--color-surface-tint);
+  background-color: var(--color-primary);
   color: var(--color-on-primary);
 }
 
@@ -343,8 +341,8 @@ function isActive(href: string) {
   position: fixed;
   inset: 0;
   top: 88px;
-  background-color: var(--color-surface-lowest);
-  border-top: 4px solid var(--color-on-background);
+  background-color: var(--color-accent-pink);
+  border-top: 4px solid var(--color-primary);
   z-index: 40;
   display: none;
   flex-direction: column;
@@ -363,14 +361,14 @@ function isActive(href: string) {
 }
 
 .mobile-menu-section.border-bottom {
-  border-bottom: 3px solid var(--color-on-background);
+  border-bottom: 3px solid var(--color-primary);
   padding-bottom: var(--space-md);
 }
 
 .mobile-menu-label {
   font-size: 20px;
   font-weight: 700;
-  color: var(--color-on-background);
+  color: var(--color-primary);
   margin-bottom: var(--space-sm);
   opacity: 0.7;
 }
@@ -391,7 +389,7 @@ function isActive(href: string) {
   font-family: var(--font-display);
   font-size: 24px;
   font-weight: 700;
-  color: var(--color-on-background);
+  color: var(--color-primary);
   transition: color var(--transition-fast);
   display: inline-flex;
   align-items: center;
@@ -401,7 +399,7 @@ function isActive(href: string) {
   font-size: 30px;
 }
 .mobile-link:hover {
-  color: var(--color-primary);
+  color: var(--color-on-background);
 }
 
 .mobile-cta {
