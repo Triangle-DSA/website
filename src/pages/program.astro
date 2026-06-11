@@ -70,7 +70,7 @@ const sortedProgram = await sanityClient.fetch<ProgramItem[]>(
         </aside>
 
         <!-- Main Content -->
-        <div class="program-content flex flex-col gap-xl">
+        <div class="program-content flex flex-col">
           {sortedProgram.map((item, i) => {
             const slug = slugify(item.title);
             const rotateClass = i % 2 === 0 ? "-rotate-1" : "rotate-1";
@@ -186,6 +186,15 @@ sections.forEach((section) => observer.observe(section));
 
 .program-section {
   scroll-margin-top: 100px; /* target scroll offset for navbar */
+}
+
+.program-content {
+  gap: var(--space-xl);
+}
+@media (min-width: 1024px) {
+  .program-content {
+    gap: var(--space-2xl);
+  }
 }
 
 @media (min-width: 768px) {

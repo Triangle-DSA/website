@@ -401,6 +401,7 @@ function cardSize(i: number): "large" | "wide" | "small" {
 @media (min-width: 768px) {
   .posts-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2xl);
   }
   .post-card--large, .post-card--wide {
     grid-column: span 2;

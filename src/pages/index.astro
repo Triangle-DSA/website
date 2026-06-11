@@ -61,7 +61,10 @@ const heroPreloadUrl = homepage?.hero?.carousel?.[0]?.image?.asset
   : null;
 ---
 
-<Layout title="North Carolina DSA - Democratic Socialists of America">
+<Layout
+  title="North Carolina DSA - Democratic Socialists of America"
+  bodyClass="home-page"
+>
   {heroPreloadUrl && (
     <link
       slot="head"
