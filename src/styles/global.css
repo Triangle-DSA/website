@@ -4,9 +4,7 @@
    ========================================================================== */
 
 /* --- Fonts --- */
-@import "@fontsource-variable/bricolage-grotesque";
-@import "@fontsource-variable/atkinson-hyperlegible-next";
-@import "@fontsource-variable/atkinson-hyperlegible-next/wght-italic.css";
+/* Fonts are imported in Layout.astro to improve Vite bundling and prevent render blocking */
 
 /* Zine Style uses Google Fonts imported in head, but we keep these if needed. */
 
