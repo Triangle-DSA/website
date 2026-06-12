@@ -1,9 +1,9 @@
 // @ts-check
 import cloudflare from "@astrojs/cloudflare";
-import { defineConfig } from "astro/config";
-
 import react from "@astrojs/react";
 import sanity from "@sanity/astro";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 import { loadEnv } from "vite";
 
 const { PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET } = loadEnv(
@@ -37,4 +37,7 @@ export default defineConfig({
       enabled: true,
     },
   }),
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

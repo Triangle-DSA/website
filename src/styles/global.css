@@ -7,6 +7,7 @@
 /* Fonts are imported in Layout.astro to improve Vite bundling and prevent render blocking */
 
 /* Zine Style uses Google Fonts imported in head, but we keep these if needed. */
+@import "tailwindcss";
 
 /* --- Design Tokens --- */
 :root {
