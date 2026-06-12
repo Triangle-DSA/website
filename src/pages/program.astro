@@ -41,30 +41,38 @@ const sortedProgram = await sanityClient.fetch<ProgramItem[]>(
             variant="surface"
             border="heavy"
             shadow="solid"
-            rotate="rotate-1"
             class="sticky-nav p-md"
             hover={false}
           >
             <h2 class="font-display text-xl uppercase bg-accent-pink inline-block px-4 border-medium shadow-md -rotate-2 mb-md">
               Sections
             </h2>
-            <ul class="sidebar-list flex flex-col gap-sm font-typewriter font-bold">
-              {sortedProgram.map((item) => (
-                <li>
-                  <a
-                    href={`#${slugify(item.title)}`}
-                    class="sidebar-link flex items-center gap-sm p-2 border-medium border-transparent transition-all"
-                  >
-                    <span
-                      class="sidebar-link-icon text-2xl"
-                      aria-hidden="true"
-                    >{item.icon}</span>
-                    <span
-                      class="sidebar-link-text text-lg uppercase leading-tight"
-                    >{item.title}</span>
-                  </a>
-                </li>
-              ))}
+            <ul class="sidebar-list flex flex-col gap-md font-typewriter font-bold">
+              {sortedProgram.map((item, index) => {
+                const itemRotate = index % 4 === 0
+                  ? "rotate-1"
+                  : index % 4 === 1
+                  ? "-rotate-1"
+                  : index % 4 === 2
+                  ? "rotate-2"
+                  : "-rotate-2";
+                return (
+                  <li class={itemRotate}>
+                    <a
+                      href={`#${slugify(item.title)}`}
+                      class="sidebar-link flex items-center gap-sm p-2 border-medium border-transparent transition-all"
+                    >
+                      <span
+                        class="sidebar-link-icon text-2xl"
+                        aria-hidden="true"
+                      >{item.icon}</span>
+                      <span
+                        class="sidebar-link-text text-lg uppercase leading-tight"
+                      >{item.title}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </ZineCard>
         </aside>
@@ -165,6 +173,10 @@ sections.forEach((section) => observer.observe(section));
   top: 96px; /* offset for site header */
 }
 
+.sidebar-list {
+  list-style: none;
+}
+
 .sidebar-link {
   color: var(--color-on-background);
   text-decoration: none;
@@ -206,6 +218,9 @@ sections.forEach((section) => observer.observe(section));
   .program-sidebar {
     position: static;
     margin-bottom: var(--space-lg);
+  }
+  .sidebar-list li {
+    transform: none;
   }
 }
 </style>
