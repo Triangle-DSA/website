@@ -4,10 +4,10 @@ export const prerender = true;
 import { sanityClient } from "sanity:client";
 import PageHero from "../components/PageHero.astro";
 import PortableText from "../components/PortableText.astro";
+import SanityImage from "../components/SanityImage.astro";
 import SectionHeader from "../components/SectionHeader.astro";
 import ZineCard from "../components/ZineCard.astro";
 import Layout from "../layouts/Layout.astro";
-import { urlForImage } from "../sanity/lib/url-for-image";
 import type { Candidate } from "../sanity/schemaTypes/candidate";
 import type { EndorsementsPage } from "../sanity/schemaTypes/endorsementsPage";
 
@@ -63,11 +63,6 @@ const candidates = await sanityClient.fetch<Candidate[]>(
         {candidates && candidates.map((candidate, i) => {
           const rotateClass = i % 2 === 0 ? "rotate-1" : "-rotate-1";
           const mediaRotateClass = i % 2 === 0 ? "-rotate-1" : "rotate-1";
-          const imageUrl = candidate.image?.asset
-            ? urlForImage(candidate.image).width(400).height(400).auto("format").fit(
-              "crop",
-            ).url()
-            : null;
 
           return (
             <div class="endorsee-item flex flex-col">
@@ -80,14 +75,16 @@ const candidates = await sanityClient.fetch<Candidate[]>(
                 >
                 </div>
                 <div class="endorsee-media">
-                  {imageUrl && (
-                    <img
-                      src={imageUrl}
+                  {candidate.image?.asset && (
+                    <SanityImage
+                      src={candidate.image}
                       alt={candidate.name}
                       loading="lazy"
-                      class="endorsee-image w-full h-full object-cover"
+                      class="endorsee-image"
+                      pictureClass="w-full h-full object-cover block"
                       width={400}
                       height={400}
+                      fit="crop"
                     />
                   )}
                 </div>

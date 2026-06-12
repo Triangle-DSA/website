@@ -10,7 +10,6 @@ interface Props {
 
 const { title, subtitle, carousel } = Astro.props;
 
-// Define default slides
 const defaultSlides = [
   {
     label: "Organize!",
@@ -29,7 +28,6 @@ const defaultSlides = [
   },
 ];
 
-// Map CMS slides or fallback
 const slides = carousel && carousel.length > 0
   ? carousel.map((slide) => ({
     label: slide.label,
@@ -132,6 +130,8 @@ const slides = carousel && carousel.length > 0
               src={slide.imageUrl}
               alt={slide.alt}
               class="hero-image"
+              loading={i === 0 ? "eager" : "lazy"}
+              decoding="async"
             />
             <div class="hero-image-overlay" />
           </div>

@@ -1,6 +1,7 @@
 ---
 import PortableText from "../../components/PortableText.astro";
 import Layout from "../../layouts/Layout.astro";
+import SanityImage from "../../components/SanityImage.astro";
 import { loadQuery } from "../../sanity/lib/load-query";
 
 interface AdjacentPost {
@@ -14,9 +15,7 @@ interface PostPage {
   body: unknown;
   mainImage?: {
     alt?: string;
-    asset?: {
-      url?: string;
-    };
+    asset?: any;
   };
   newer?: AdjacentPost;
   older?: AdjacentPost;
@@ -29,10 +28,7 @@ const { data: post } = await loadQuery<PostPage>({
     title,
     publishedAt,
     body,
-    mainImage {
-      alt,
-      asset->{url}
-    },
+    mainImage,
     "newer": *[_type == "post" && defined(slug.current) && _id != ^._id && coalesce(publishedAt, _createdAt) > coalesce(^.publishedAt, ^._createdAt)]
       | order(coalesce(publishedAt, _createdAt) asc)[0]{
         title,
@@ -101,18 +97,20 @@ const { data: post } = await loadQuery<PostPage>({
         >
         </div>
 
-        {post.mainImage?.asset?.url && (
+        {post.mainImage?.asset ? (
           <div class="article-image-container mb-xl border-b-[4px] border-on-background bg-surface relative -mx-xl px-xl pt-xl pb-md -mt-xl">
-            <img
-              class="article-image w-full h-auto object-cover border-heavy solid-shadow rotate-1"
-              src={post.mainImage.asset.url}
+            <SanityImage
+              class="article-image rotate-1 border-heavy solid-shadow"
+              pictureClass="w-full h-auto object-cover block"
+              src={post.mainImage}
               alt={post.mainImage.alt ?? post.title}
               loading="eager"
               decoding="async"
+              width={1200}
               style={`view-transition-name: ${params.slug}`}
             />
           </div>
-        )}
+        ) : null}
         <div class="prose font-typewriter text-lg leading-relaxed text-on-background">
           <PortableText portableText={post.body} />
         </div>
