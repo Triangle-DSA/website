@@ -31,9 +31,9 @@
   --color-accent-pink: #ffccd5;
 
   /* Fonts */
-  --font-display: "Montserrat", sans-serif;
-  --font-body: "Inter", sans-serif;
-  --font-typewriter: "Special Elite", monospace;
+  --font-display: "Folsom", sans-serif;
+  --font-body: "Katwijk-Mono", sans-serif;
+  --font-typewriter: "Clack", monospace;
 
   /* Spacing */
   --space-xs: 4px;
