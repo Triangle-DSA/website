@@ -9,8 +9,6 @@ interface Props {
     | "surface"
     | "accent-pink"
     | "accent-yellow";
-  rotate?: string;
-  subtitleRotate?: string;
   class?: string;
 }
 
@@ -18,8 +16,6 @@ const {
   title,
   subtitle,
   bgColor = "pink",
-  rotate = "-rotate-1",
-  subtitleRotate = "rotate-1",
   class: className = "",
 } = Astro.props;
 
@@ -36,11 +32,11 @@ const bgClass = bgColor.startsWith("bg-")
 ---
 
 <div class={`section-header ${className}`}>
-  <h2 class={`font-display section-title uppercase ${bgClass} ${rotate} border-medium shadow-md`}>
+  <h2 class={`font-display section-title uppercase ${bgClass} border-medium shadow-md`}>
     {title}
   </h2>
   {subtitle && (
-    <p class={`section-subtitle font-typewriter ${subtitleRotate} mt-md`}>
+    <p class={`section-subtitle font-typewriter mt-md`}>
       {subtitle}
     </p>
   )}
