@@ -7,7 +7,7 @@
 /* Fonts are imported in Layout.astro to improve Vite bundling and prevent render blocking */
 
 /* Zine Style uses Google Fonts imported in head, but we keep these if needed. */
-@import "tailwindcss";
+/* @import "tailwindcss"; */
 
 /* --- Design Tokens --- */
 :root {
@@ -36,14 +36,32 @@
   --font-typewriter: "Clack", monospace;
 
   /* Spacing */
-  --space-xs: 4px;
-  --space-base: 8px;
-  --space-sm: 12px;
-  --space-md: 24px;
-  --space-lg: 48px;
-  --space-xl: 80px;
-  --space-2xl: 120px;
-  --space-gutter: 24px;
+  --space-xs: var(--space-4);
+  --space-base: var(--space-8);
+  --space-sm: var(--space-12);
+  --space-md: var(--space-24);
+  --space-lg: var(--space-48);
+  --space-xl: var(--space-96);
+  --space-2xl: var(--sapce-128);
+  --space-gutter: var(--space-24);
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+  --space-128: 128px;
+  --space-192: 192px;
+  --space-256: 256px;
+  --space-384: 384px;
+  --space-512: 512px;
+  --space-640: 640px;
+  --space-768: 768px;
+
 
   /* Layout */
   --container-max: 1200px;
