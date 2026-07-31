@@ -1,17 +1,29 @@
-/* ==========================================================================
-   NC Triangle DSA — Zine Design System
-   Bold, heavy borders, high-contrast activist style
-   ========================================================================== */
-
-/* --- Fonts --- */
-/* Fonts are imported in Layout.astro to improve Vite bundling and prevent render blocking */
-
-/* Zine Style uses Google Fonts imported in head, but we keep these if needed. */
-/* @import "tailwindcss"; */
-
-/* --- Design Tokens --- */
 :root {
   /* Colors */
+  --red-50: oklch(0.95 0.024 26.697);
+  --red-100: oklch(0.881 0.06 26.697);
+  --red-200: oklch(0.811 0.101 26.697);
+  --red-300: oklch(0.742 0.149 26.697);
+  --red-400: oklch(0.672 0.204 26.697);
+  --red-500: oklch(0.603 0.232 26.697);
+  --red-600: oklch(0.523 0.202 26.697);
+  --red-700: oklch(0.443 0.171 26.697);
+  --red-800: oklch(0.363 0.14 26.697);
+  --red-900: oklch(0.283 0.109 26.697);
+  --red-950: oklch(0.203 0.078 26.697);
+
+  --gray-50: oklch(0.95 0 26.697);
+  --gray-100: oklch(0.881 0 26.697);
+  --gray-200: oklch(0.811 0 26.697);
+  --gray-300: oklch(0.742 0 26.697);
+  --gray-400: oklch(0.672 0 26.697);
+  --gray-500: oklch(0.603 0 26.697);
+  --gray-600: oklch(0.523 0 26.697);
+  --gray-700: oklch(0.443 0 26.697);
+  --gray-800: oklch(0.363 0 26.697);
+  --gray-900: oklch(0.283 0 26.697);
+  --gray-950: oklch(0.203 0 26.697);
+
   --color-surface-lowest: #ffffff;
   --color-surface: #fcf9f8;
   --color-surface-dim: #dcd9d9;
