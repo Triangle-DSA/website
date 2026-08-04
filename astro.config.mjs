@@ -2,7 +2,6 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sanity from "@sanity/astro";
-import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
 import { loadEnv } from "vite";
 
@@ -80,12 +79,8 @@ export default defineConfig({
     react(),
   ],
 
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-  }),
+  adapter: cloudflare(),
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [],
   },
 });
