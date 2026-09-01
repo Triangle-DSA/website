@@ -595,38 +595,6 @@ a {
   color: var(--color-on-surface-variant);
 }
 
-/* Rotations / Transforms */
-.rotate-1 {
-  transform: rotate(1deg);
-}
-.-rotate-1 {
-  transform: rotate(-1deg);
-}
-.rotate-2 {
-  transform: rotate(2deg);
-}
-.-rotate-2 {
-  transform: rotate(-2deg);
-}
-.rotate-3 {
-  transform: rotate(3deg);
-}
-.-rotate-3 {
-  transform: rotate(-3deg);
-}
-.rotate-5 {
-  transform: rotate(5deg);
-}
-.-rotate-5 {
-  transform: rotate(-5deg);
-}
-.rotate-12 {
-  transform: rotate(12deg);
-}
-.-rotate-12 {
-  transform: rotate(-12deg);
-}
-
 /* Transition & Hover */
 .transition-transform {
   transition: transform var(--transition-fast);
