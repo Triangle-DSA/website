@@ -42,11 +42,6 @@ const slides = carousel && carousel.length > 0
 <section class="hero-section container">
   <div class="hero-grid">
     <div class="hero-content">
-      <!-- Sticker Badge -->
-      <div class="sticker-badge">
-        * Worker Power! *
-      </div>
-
       <h1 class="hero-title uppercase">
         {title.split(". ").map((part, index, array) => {
           if (index === array.length - 1 && array.length > 1) {
@@ -165,7 +160,6 @@ const slides = carousel && carousel.length > 0
 .hero-content {
   position: relative;
   z-index: 10;
-  transform: rotate(-1deg);
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -234,7 +228,6 @@ const slides = carousel && carousel.length > 0
   padding: var(--space-sm);
   border: 3px solid var(--color-on-background);
   box-shadow: 4px 4px 0px 0px var(--color-on-background);
-  transform: rotate(-1deg);
 }
 
 .hero-actions {
@@ -265,7 +258,6 @@ const slides = carousel && carousel.length > 0
   font-size: 20px;
   padding: var(--space-md) var(--space-xl);
   border-width: 4px;
-  transform: rotate(2deg);
 }
 @media (min-width: 640px) {
   .hero-cta-primary {
@@ -297,7 +289,6 @@ const slides = carousel && carousel.length > 0
 
 .hero-cta-secondary {
   width: 100%;
-  transform: rotate(-1deg);
 }
 @media (min-width: 640px) {
   .hero-cta-secondary {
