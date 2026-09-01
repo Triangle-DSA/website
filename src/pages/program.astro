@@ -1,5 +1,7 @@
 ---
 import { sanityClient } from "sanity:client";
+import PageHero from "../components/PageHero.astro";
+import ZineCard from "../components/ZineCard.astro";
 import Layout from "../layouts/Layout.astro";
 import { type ProgramItem } from "../sanity/schemaTypes/programItem";
 import { slugify } from "../utils/slugify";
@@ -20,57 +22,99 @@ const sortedProgram = await sanityClient.fetch<ProgramItem[]>(
 >
   <main id="main-content">
     <!-- Page Hero -->
-    <section class="page-hero">
-      <div class="container">
-        <h1>Our Program</h1>
-        <p class="page-hero-sub">
-          Demanding a democratic, socialist future in the Tar Heel State
-        </p>
-      </div>
-    </section>
+    <PageHero
+      title="Our Program"
+      subtitle="Demanding a democratic, socialist future in the Tar Heel State"
+      rotate="-rotate-1"
+      subtitleRotate="rotate-1"
+      tapes={["top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 200px"]}
+    />
 
     <!-- Program Content Section -->
-    <section class="section">
-      <div class="container program-container">
+    <section class="section container my-xl">
+      <div class="program-container">
         <!-- Sidebar Table of Contents -->
         <aside class="program-sidebar">
-          <nav aria-label="Program sections navigation" class="sticky-nav">
-            <h2 class="sidebar-title">Sections</h2>
-            <ul class="sidebar-list">
-              {sortedProgram.map((item) => (
-                <li>
-                  <a href={`#${slugify(item.title)}`} class="sidebar-link">
-                    <span
-                      class="sidebar-link-icon"
-                      aria-hidden="true"
-                    >{item.icon}</span>
-                    <span class="sidebar-link-text">{item.title}</span>
-                  </a>
-                </li>
-              ))}
+          <ZineCard
+            as="nav"
+            aria-label="Program sections navigation"
+            variant="surface"
+            border="heavy"
+            shadow="solid"
+            class="sticky-nav p-md"
+            hover={false}
+          >
+            <h2 class="font-display text-xl uppercase bg-accent-pink inline-block px-4 border-medium shadow-md -rotate-2 mb-md">
+              Sections
+            </h2>
+            <ul class="sidebar-list flex flex-col gap-md font-typewriter font-bold">
+              {sortedProgram.map((item, index) => {
+                const itemRotate = index % 4 === 0
+                  ? "rotate-1"
+                  : index % 4 === 1
+                  ? "-rotate-1"
+                  : index % 4 === 2
+                  ? "rotate-2"
+                  : "-rotate-2";
+                return (
+                  <li class={itemRotate}>
+                    <a
+                      href={`#${slugify(item.title)}`}
+                      class="sidebar-link flex items-center gap-sm p-2 border-medium border-transparent transition-all"
+                    >
+                      <span
+                        class="sidebar-link-icon text-2xl"
+                        aria-hidden="true"
+                      >{item.icon}</span>
+                      <span
+                        class="sidebar-link-text text-lg uppercase leading-tight"
+                      >{item.title}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
-          </nav>
+          </ZineCard>
         </aside>
 
         <!-- Main Content -->
-        <div class="program-content">
-          {sortedProgram.map((item) => {
+        <div class="program-content flex flex-col">
+          {sortedProgram.map((item, i) => {
             const slug = slugify(item.title);
+            const rotateClass = i % 2 === 0 ? "-rotate-1" : "rotate-1";
+            const variant = i % 3 === 0
+              ? "lowest"
+              : i % 3 === 1
+              ? "surface"
+              : "primary-fixed-dim";
+            const tapeRotate = i % 2 === 0 ? "-5deg" : "5deg";
+            const tapeLeft = i % 2 === 0 ? "10%" : "auto";
+            const tapeRight = i % 2 === 0 ? "auto" : "10%";
+
             return (
-              <article id={slug} class="program-section">
-                <h2 class="section-title">
+              <ZineCard
+                as="article"
+                id={slug}
+                variant={variant}
+                border="heavy"
+                shadow="solid"
+                class="program-section p-lg"
+                hover={false}
+                tape={`top: -15px; left: ${tapeLeft}; right: ${tapeRight}; transform: rotate(${tapeRotate}); width: 120px;`}
+              >
+                <h2 class="section-title font-display uppercase font-black mb-md pb-xs border-b-4 border-on-background flex items-center gap-md">
                   <span
-                    class="section-title-icon"
+                    class="section-title-icon text-4xl"
                     aria-hidden="true"
                   >{item.icon}</span>
                   {item.title}
                 </h2>
-                <div class="section-body">
+                <div class="section-body font-typewriter text-lg leading-relaxed space-y-md">
                   {item.description.split("\n\n").filter(p => p.trim()).map((
                     paragraph,
                   ) => <p>{paragraph}</p>)}
                 </div>
-              </article>
+              </ZineCard>
             );
           })}
         </div>
@@ -110,204 +154,73 @@ sections.forEach((section) => observer.observe(section));
 </script>
 
 <style>
-main {
-  min-height: 100vh;
-}
-
-/* --- Hero --- */
-.page-hero {
-  background: linear-gradient(
-    160deg,
-    var(--red-primary) 0%,
-    var(--red-dark) 50%,
-    var(--red-darker) 100%
-  );
-  color: var(--white);
-  padding: var(--space-3xl) 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), 0 100%);
-}
-
-.page-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 40px,
-    rgba(0, 0, 0, 0.04) 40px,
-    rgba(0, 0, 0, 0.04) 42px
-  );
-  pointer-events: none;
-}
-
-.page-hero h1 {
-  color: var(--white);
-  position: relative;
-  margin-bottom: var(--space-sm);
-}
-
-.page-hero-sub {
-  font-family: var(--font-body);
-  font-size: var(--text-lg);
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 600px;
-  margin: 0 auto;
-  position: relative;
-}
-
-/* --- Layout --- */
 .program-container {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: var(--space-2xl);
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
   align-items: start;
 }
+@media (min-width: 1024px) {
+  .program-container {
+    grid-template-columns: 280px 1fr;
+    gap: var(--space-2xl);
+  }
+}
 
-/* --- Sticky Sidebar --- */
+/* Components */
 .program-sidebar {
   position: sticky;
   top: 96px; /* offset for site header */
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  padding-right: var(--space-md);
-  border-right: 1px solid var(--gray-200);
-}
-
-.sidebar-title {
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--gray-500);
-  margin-bottom: var(--space-md);
 }
 
 .sidebar-list {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
 }
 
 .sidebar-link {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-weight: 500;
+  color: var(--color-on-background);
   text-decoration: none;
-  font-size: var(--text-sm);
-  transition:
-    background-color var(--duration-fast) var(--ease-out),
-    color var(--duration-fast) var(--ease-out),
-    padding-left var(--duration-fast) var(--ease-out);
 }
 
 .sidebar-link:hover {
-  background-color: var(--gray-100);
-  color: var(--red-primary);
-  text-decoration: none;
-  padding-left: var(--space-md);
+  background-color: var(--color-accent-yellow);
+  border-color: var(--color-on-background);
+  transform: translateX(4px);
 }
 
 .sidebar-link--active {
-  background-color: var(--red-glow);
-  color: var(--red-primary);
-  font-weight: 700;
-}
-
-.sidebar-link-icon {
-  font-size: var(--text-md);
-  flex-shrink: 0;
-}
-
-.sidebar-link-text {
-  line-height: 1.3;
-}
-
-/* --- Main Content --- */
-.program-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3xl);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-color: var(--color-on-background);
+  transform: translateX(4px);
 }
 
 .program-section {
-  padding-top: var(--space-md);
   scroll-margin-top: 100px; /* target scroll offset for navbar */
 }
 
-.section-title {
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  color: var(--text-primary);
-  border-bottom: 2px solid var(--red-primary);
-  padding-bottom: var(--space-xs);
-  margin-bottom: var(--space-md);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
+.program-content {
+  gap: var(--space-xl);
 }
-
-.section-title-icon {
-  font-size: var(--text-2xl);
-}
-
-.section-body p {
-  font-size: var(--text-md);
-  line-height: 1.8;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-md);
-}
-
-.section-body p:last-child {
-  margin-bottom: 0;
-}
-
-/* --- Responsive --- */
-@media (max-width: 1024px) {
-  .program-container {
-    grid-template-columns: 240px 1fr;
-    gap: var(--space-xl);
+@media (min-width: 1024px) {
+  .program-content {
+    gap: var(--space-2xl);
   }
 }
 
-@media (max-width: 768px) {
-  .program-container {
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
+@media (min-width: 768px) {
+  .p-lg {
+    padding: var(--space-xl);
   }
+}
 
+@media (max-width: 1023px) {
   .program-sidebar {
     position: static;
-    max-height: none;
-    border-right: none;
-    padding-right: 0;
     margin-bottom: var(--space-lg);
-    background: var(--gray-50);
-    padding: var(--space-md);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--gray-200);
   }
-
-  .sidebar-list {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--space-xs);
-  }
-
-  .sidebar-link {
-    background: var(--white);
-    border: 1px solid var(--gray-200);
-  }
-
-  .sidebar-link:hover {
-    padding-left: var(--space-sm);
+  .sidebar-list li {
+    transform: none;
   }
 }
 </style>

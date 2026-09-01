@@ -1,4 +1,5 @@
 ---
+import SanityImage from "../../components/SanityImage.astro";
 import Layout from "../../layouts/Layout.astro";
 import { loadQuery } from "../../sanity/lib/load-query";
 
@@ -10,9 +11,7 @@ interface PostListItem {
   publishedAt?: string;
   mainImage?: {
     alt?: string;
-    asset?: {
-      url?: string;
-    };
+    asset?: any;
   };
 }
 
@@ -22,10 +21,7 @@ const { data: posts } = await loadQuery<PostListItem[]>({
       title,
       slug,
       publishedAt,
-      mainImage {
-        alt,
-        asset->{url}
-      }
+      mainImage
     }`,
 });
 
@@ -38,337 +34,401 @@ function cardSize(i: number): "large" | "wide" | "small" {
 
 <Layout title="Left Angles | North Carolina DSA">
   <main id="main-content">
-    <!-- Page Hero -->
-    <section class="page-hero">
-      <div class="container">
-        <h1>Left Angles</h1>
-        <p class="page-hero-sub">
+    <section class="page-hero bg-primary border-heavy solid-shadow mt-xl mb-xl mx-auto container relative -rotate-1">
+      <div class="bg-dots mix-blend-multiply opacity-20 absolute inset-0 pointer-events-none">
+      </div>
+      <div
+        class="tape-effect"
+        style="top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 200px"
+      >
+      </div>
+
+      <div class="page-hero-content relative z-10 text-center py-xl px-lg">
+        <h1 class="page-hero-title uppercase text-on-primary">Left Angles</h1>
+        <p class="font-typewriter text-lg text-on-primary mt-md font-bold bg-on-background p-4 border-medium border-on-primary inline-block rotate-1 page-hero-sub">
           News, analysis, and dispatches from NC Triangle DSA
         </p>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="posts-grid">
-          {posts.map((post, i) => {
-            const size = cardSize(i);
-            return (
-              <article
-                class:list={[
-                  "card card--elevated post-card",
-                  size === "large" && "post-card--large",
-                  size === "wide" && "post-card--wide",
-                ]}
+    <section class="section container my-xl">
+      <div class="posts-grid">
+        {posts.map((post, i) => {
+          const size = cardSize(i);
+          const rotationAngle = i % 2 === 0 ? "1deg" : "-1deg";
+          return (
+            <article
+              style={`--card-rotate: ${rotationAngle};`}
+              class:list={[
+                "post-card bg-surface-lowest border-heavy solid-shadow flex flex-col group transition-all duration-300 relative",
+                size === "large" && "post-card--large",
+                size === "wide" && "post-card--wide",
+              ]}
+            >
+              <div
+                class="tape-effect"
+                style={`top: -10px; left: ${
+                  i % 2 === 0 ? "10%" : "80%"
+                }; transform: translateX(-50%) rotate(${i % 2 === 0 ? "-5deg" : "5deg"});`}
               >
-                <a href={`/leftangles/${post.slug.current}`} class="post-link">
-                  {post.mainImage?.asset?.url ? (
-                    <img
-                      class="post-image"
-                      src={post.mainImage.asset.url}
+              </div>
+
+              <a
+                href={`/leftangles/${post.slug.current}`}
+                class="post-link flex flex-col h-full hover:no-underline"
+              >
+                {post.mainImage?.asset ? (
+                  <div class="post-image-container relative border-b-[4px] border-on-background overflow-hidden flex-shrink-0 bg-surface">
+                    <SanityImage
+                      class="post-image transition-transform duration-300 group-hover:scale-105"
+                      pictureClass="w-full h-full object-cover block"
+                      src={post.mainImage}
                       alt={post.mainImage.alt ?? post.title}
                       loading={i === 0 ? "eager" : "lazy"}
                       decoding="async"
+                      width={size === "large" ? 800 : 400}
+                      height={size === "large" ? 600 : 300}
+                      fit="crop"
                       style={`view-transition-name: post-image-${post.slug.current}`}
                     />
-                  ) : (
-                     <div
-                       class="post-image-placeholder"
-                       aria-hidden="true"
-                       style={`view-transition-name: post-image-${post.slug.current}`}
-                     />
-                   )}
-                  <div class="post-content">
-                    <h2 class="post-title">{post.title}</h2>
-                    {post.publishedAt && (
-                      <time class="post-meta" datetime={post.publishedAt}>
-                        {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </time>
-                    )}
-                    <span class="post-arrow" aria-hidden="true">→</span>
+                    <div class="absolute inset-0 bg-primary-fixed opacity-20 mix-blend-multiply pointer-events-none group-hover:opacity-0 transition-opacity duration-300">
+                    </div>
                   </div>
-                </a>
-              </article>
-            );
-          })}
-        </div>
+                ) : (
+                   <div
+                     class="post-image-placeholder relative border-b-[4px] border-on-background flex-shrink-0 bg-accent-yellow"
+                     aria-hidden="true"
+                     style={`view-transition-name: post-image-${post.slug.current}`}
+                   >
+                     <div class="absolute inset-0 bg-halftone-texture opacity-30">
+                     </div>
+                   </div>
+                 )}
+
+                <div class="post-content p-md flex-grow flex flex-col justify-center bg-surface group-hover:bg-accent-yellow transition-colors duration-300 relative">
+                  <h2 class="font-display post-card-title font-black uppercase text-on-background mb-xs leading-tight group-hover:text-primary transition-colors">
+                    {post.title}
+                  </h2>
+                  {post.publishedAt && (
+                    <time
+                      class="font-typewriter text-sm font-bold text-on-surface-variant mb-sm"
+                      datetime={post.publishedAt}
+                    >
+                      {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </time>
+                  )}
+                </div>
+              </a>
+            </article>
+          );
+        })}
       </div>
     </section>
   </main>
 </Layout>
 
 <style>
-main {
-  min-height: 100vh;
+/* Layout Utilities */
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-xl {
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+.mt-xl {
+  margin-top: var(--space-xl);
+}
+.mb-xl {
+  margin-bottom: var(--space-xl);
+}
+.mt-md {
+  margin-top: var(--space-md);
+}
+.mb-xs {
+  margin-bottom: var(--space-xs);
+}
+.mb-sm {
+  margin-bottom: var(--space-sm);
+}
+.py-xl {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+.px-lg {
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+}
+.p-lg {
+  padding: var(--space-lg);
+}
+.p-4 {
+  padding: 16px;
 }
 
-.page-hero {
-  background: linear-gradient(
-    160deg,
-    var(--red-primary) 0%,
-    var(--red-dark) 50%,
-    var(--red-darker) 100%
-  );
-  color: var(--white);
-  padding: var(--space-3xl) 0;
+/* Flexbox */
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-grow {
+  flex-grow: 1;
+}
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+.justify-center {
+  justify-content: center;
+}
+
+/* Misc */
+.text-center {
   text-align: center;
-  position: relative;
-  overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), 0 100%);
 }
-
-.page-hero::before {
-  content: "";
+.inline-block {
+  display: inline-block;
+}
+.relative {
+  position: relative;
+}
+.absolute {
   position: absolute;
+}
+.inset-0 {
   inset: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 40px,
-    rgba(0, 0, 0, 0.04) 40px,
-    rgba(0, 0, 0, 0.04) 42px
-  );
+}
+.z-10 {
+  z-index: 10;
+}
+.pointer-events-none {
   pointer-events: none;
 }
-
-.page-hero h1 {
-  color: var(--white);
-  position: relative;
-}
-
-.page-hero-sub {
-  font-family: var(--font-body);
-  font-size: var(--text-lg);
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 500px;
-  margin: 0 auto;
-  position: relative;
-}
-
-/* ---- Grid ---- */
-
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 260px;
-  grid-auto-flow: dense;
-  gap: var(--space-lg);
-}
-
-/* ---- Card base ---- */
-
-.post-card {
-  padding: 0;
-  border-radius: var(--radius-md);
+.overflow-hidden {
   overflow: hidden;
 }
-
-.post-link {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
+.w-full {
+  width: 100%;
+}
+.h-full {
   height: 100%;
 }
-
-.post-link:hover {
+.object-cover {
+  object-fit: cover;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.hover\:no-underline:hover {
   text-decoration: none;
 }
 
-.post-link:hover .post-title {
-  color: var(--red-primary);
-}
-
-.post-link:hover .post-image {
-  transform: scale(1.04);
-}
-
-.post-link:hover .post-arrow {
-  transform: translateX(4px);
-  opacity: 1;
-}
-
-/* Image fills available card height above the content strip */
-
-.post-image,
-.post-image-placeholder {
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  display: block;
-}
-
-.post-image {
-  object-fit: cover;
-  transition: transform var(--duration-normal) var(--ease-out);
-}
-
-.post-image-placeholder {
-  background: linear-gradient(
-    160deg,
-    var(--red-primary) 0%,
-    var(--red-dark) 50%,
-    var(--red-darker) 100%
-  );
-  position: relative;
-}
-
-.post-image-placeholder::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 40px,
-    rgba(0, 0, 0, 0.06) 40px,
-    rgba(0, 0, 0, 0.06) 42px
-  );
-}
-
-/* Content strip at the bottom of each card */
-
-.post-content {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-md) var(--space-lg);
-  position: relative;
-  background: var(--white);
-  border-top: 3px solid var(--red-primary);
-}
-
-.post-title {
+.page-hero-title {
   font-family: var(--font-display);
-  font-size: var(--text-lg);
-  color: var(--text-primary);
-  letter-spacing: 0.02em;
-  margin-bottom: var(--space-2xs);
-  transition: color var(--duration-fast) var(--ease-out);
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 900;
+  -webkit-text-stroke: 2px var(--color-on-background);
+}
+.page-hero-sub {
+  box-shadow: 4px 4px 0px 0px #ffffff;
+}
+.post-card-title {
+  font-size: 1.125rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (min-width: 768px) {
+  .post-card-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* Typography */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-typewriter {
+  font-family: var(--font-typewriter);
+}
+.font-black {
+  font-weight: 900;
+}
+.font-bold {
+  font-weight: 700;
+}
+.text-sm {
+  font-size: 14px;
+}
+.text-lg {
+  font-size: 18px;
+}
+.text-2xl {
+  font-size: 24px;
+}
+.text-on-primary {
+  color: var(--color-on-primary);
+}
+.text-on-background {
+  color: var(--color-on-background);
+}
+.text-primary {
+  color: var(--color-primary);
+}
+.text-on-surface-variant {
+  color: var(--color-on-surface-variant);
+}
+.leading-tight {
   line-height: 1.1;
 }
 
-.post-meta {
-  color: var(--text-secondary);
-  font-size: var(--text-sm);
+/* Colors & Blends */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+.bg-on-background {
+  background-color: var(--color-on-background);
+}
+.bg-surface-lowest {
+  background-color: var(--color-surface-lowest);
+}
+.bg-surface {
+  background-color: var(--color-surface);
+}
+.bg-accent-yellow {
+  background-color: var(--color-accent-yellow);
+}
+.bg-primary-fixed {
+  background-color: var(--color-primary-fixed);
+}
+.mix-blend-multiply {
+  mix-blend-mode: multiply;
+}
+.opacity-20 {
+  opacity: 0.2;
+}
+.opacity-30 {
+  opacity: 0.3;
 }
 
-.post-arrow {
-  position: absolute;
-  top: 50%;
-  right: var(--space-lg);
-  transform: translateY(-50%);
-  font-size: var(--text-lg);
-  color: var(--red-primary);
-  opacity: 0;
+/* Borders & Shadows */
+.border-medium {
+  border: 3px solid var(--color-on-background);
+}
+.border-on-primary {
+  border-color: var(--color-on-primary);
+}
+.border-on-background {
+  border-color: var(--color-on-background);
+}
+.border-b-\[4px\] {
+  border-bottom-width: 4px;
+  border-bottom-style: solid;
+}
+
+/* Transitions & Transforms & Hover Effects */
+.rotate-1 {
+  transform: rotate(1deg);
+}
+.-rotate-1 {
+  transform: rotate(-1deg);
+}
+.rotate-2 {
+  transform: rotate(2deg);
+}
+.transition-all {
+  transition: all var(--transition-normal);
+}
+.transition-colors {
   transition:
-    transform var(--duration-fast) var(--ease-out),
-    opacity var(--duration-fast) var(--ease-out);
+    background-color var(--transition-normal),
+    color var(--transition-normal);
+}
+.transition-transform {
+  transition: transform var(--transition-normal);
+}
+.transition-opacity {
+  transition: opacity var(--transition-normal);
+}
+.duration-300 {
+  transition-duration: 300ms;
 }
 
-.post-link:hover .post-arrow {
-  transform: translateY(-50%) translateX(4px);
-  opacity: 1;
+.post-card:hover {
+  transform: translateY(-8px);
 }
 
-/* ---- Large card: 2 cols × 2 rows ---- */
+/* Grid System */
+.posts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: minmax(320px, auto);
+  grid-auto-flow: dense;
+  gap: var(--space-md);
+}
 
+.post-image-container,
+.post-image-placeholder {
+  height: 180px;
+}
+
+/* Large card: 2 cols x 2 rows */
 .post-card--large {
-  grid-column: span 2;
+  grid-column: span 1;
   grid-row: span 2;
 }
-
-.post-card--large .post-content {
-  padding: var(--space-lg) var(--space-xl);
+.post-card--large .post-image-container,
+.post-card--large .post-image-placeholder {
+  height: calc(100% - 140px); /* Fill available space minus content height */
+  min-height: 240px;
+}
+.post-card--large .post-card-title {
+  font-size: 1.25rem;
+  -webkit-line-clamp: 3;
 }
 
-.post-card--large .post-title {
-  font-size: var(--text-2xl);
-}
-
-/* ---- Wide card: 2 cols × 1 row — horizontal layout ---- */
-
+/* Wide card: 2 cols x 1 row */
 .post-card--wide {
-  grid-column: span 2;
+  grid-column: span 1;
 }
 
-.post-card--wide .post-link {
-  flex-direction: row;
-}
-
-/* Image fixed to natural aspect ratio at full card height */
-.post-card--wide .post-image,
-.post-card--wide .post-image-placeholder {
-  flex: none;
-  width: auto;
-  height: 100%;
-  aspect-ratio: 4 / 3;
-}
-
-/* Content fills remaining width beside the image */
-.post-card--wide .post-content {
-  flex: 1;
-  border-top: none;
-  border-left: 3px solid var(--red-primary);
-  justify-content: center;
-  padding: var(--space-xl);
-}
-
-.post-card--wide .post-title {
-  font-size: var(--text-xl);
-}
-
-/* ---- Responsive ---- */
-
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .posts-grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: 220px;
+    gap: var(--space-lg);
   }
-
-  .post-card--large {
+  .post-card--large, .post-card--wide {
     grid-column: span 2;
-    grid-row: span 1;
+  }
+  .post-card--large .post-card-title {
+    font-size: 1.25rem;
   }
 
-  .post-card--large .post-title {
-    font-size: var(--text-xl);
+  .post-card--wide .post-link {
+    flex-direction: row;
+  }
+  .post-card--wide .post-image-container,
+  .post-card--wide .post-image-placeholder {
+    height: 100%;
+    width: 40%;
+    border-bottom-width: 0;
+    border-right-width: 4px;
+    border-right-style: solid;
+    border-color: var(--color-on-background);
   }
 }
 
-@media (max-width: 480px) {
+@media (min-width: 1024px) {
   .posts-grid {
-    grid-template-columns: 1fr;
-    grid-auto-rows: 240px;
-  }
-
-  .post-card--large,
-  .post-card--wide {
-    grid-column: span 1;
-  }
-
-  /* Revert wide card to vertical on single-column layout */
-  .post-card--wide .post-link {
-    flex-direction: column;
-  }
-
-  .post-card--wide .post-image,
-  .post-card--wide .post-image-placeholder {
-    flex: 1;
-    width: 100%;
-    height: auto;
-    aspect-ratio: unset;
-  }
-
-  .post-card--wide .post-content {
-    border-left: none;
-    border-top: 3px solid var(--red-primary);
-    justify-content: flex-start;
-    padding: var(--space-md) var(--space-lg);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 </style>

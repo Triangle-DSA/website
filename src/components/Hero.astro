@@ -1,150 +1,475 @@
 ---
 import { urlForImage } from "../sanity/lib/url-for-image";
+import { type CarouselSlide } from "../sanity/schemaTypes/homepageContent";
 
 interface Props {
   title: string;
   subtitle: string;
-  heroImage?: {
-    alt?: string;
-    asset?: {
-      _ref: string;
-      _type: string;
-    };
-  };
+  carousel?: CarouselSlide[];
 }
 
-const { title, subtitle, heroImage } = Astro.props;
+const { title, subtitle, carousel } = Astro.props;
 
-const heroImageUrl = heroImage?.asset
-  ? urlForImage(heroImage).width(1920).auto("format").fit("max").url()
-  : null;
+const defaultSlides = [
+  {
+    label: "Organize!",
+    imageUrl: "/images/hero_organize.png",
+    alt: "Organize! - workers united",
+  },
+  {
+    label: "Educate!",
+    imageUrl: "/images/hero_educate.png",
+    alt: "Educate! - community study circle",
+  },
+  {
+    label: "Agitate!",
+    imageUrl: "/images/hero_agitate.png",
+    alt: "Agitate! - solidarity protest march",
+  },
+];
 
-const lqipUrl = heroImage?.asset
-  ? urlForImage(heroImage).width(20).blur(50).format("jpg").url()
-  : null;
+const slides = carousel && carousel.length > 0
+  ? carousel.map((slide) => ({
+    label: slide.label,
+    imageUrl: slide.image?.asset
+      ? urlForImage(slide.image).width(1200).auto("format").fit("max").url()
+      : "/images/hero_organize.png",
+    alt: slide.image?.alt || slide.label,
+  }))
+  : defaultSlides;
 ---
 
-<section class="hero">
-  <div
-    class="hero-bg"
-    aria-hidden="true"
-    style={lqipUrl
-    ? `background-image: url('${lqipUrl}'); background-size: cover; background-position: center;`
-    : undefined}
-  >
-    {heroImageUrl && (
-      <img
-        src={heroImageUrl}
-        alt={heroImage?.alt || ""}
-        class="hero-bg-image"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      />
-    )}
-  </div>
-  <div class="container">
+<section class="hero-section container">
+  <div class="hero-grid">
     <div class="hero-content">
-      <h1 class="hero-title animate-in">{title}</h1>
-      <p class="hero-subtitle animate-in animate-in-delay-1">
+      <h1 class="hero-title uppercase">
+        {title.split(". ").map((part, index, array) => {
+          if (index === array.length - 1 && array.length > 1) {
+            return (
+              <span class="hero-title-highlight-wrapper">
+                <span
+                  class="highlighter-effect hero-title-highlight"
+                >{part}</span>
+              </span>
+            );
+          }
+          return <>{part}. <br /></>;
+        })}
+      </h1>
+
+      <p class="hero-subtitle">
         {subtitle}
       </p>
-      <div class="hero-buttons animate-in animate-in-delay-2">
-        <a href="#join" class="btn btn--secondary">Become a Member</a>
-        <a href="#about" class="btn btn--outline">Learn More</a>
+
+      <div class="hero-actions">
+        <div class="hero-cta-wrapper">
+          <div class="zine-circle"></div>
+          <a
+            class="btn-primary hero-cta-primary solid-shadow-hover"
+            href="#join"
+          >
+            Join Us
+          </a>
+        </div>
+        <a
+          class="btn-secondary hero-cta-secondary solid-shadow-hover"
+          href="#about"
+        >
+          Learn More
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-image-wrapper">
+      <!-- Decorative Pattern behind image -->
+      <div class="hero-image-bg bg-dots"></div>
+      <div
+        class="tape-effect"
+        style="top: -10px; left: 20%; transform: translateX(-50%) rotate(15deg)"
+      >
+      </div>
+      <div
+        class="tape-effect"
+        style="top: -10px; left: 80%; transform: translateX(-50%) rotate(-10deg)"
+      >
+      </div>
+
+      {slides.map((slide, i) => {
+        const leftPercent = slides.length > 1
+          ? 15 + (i * 70) / (slides.length - 1)
+          : 50;
+        const rotateDeg = i % 3 === 0
+          ? -8
+          : i % 3 === 1
+          ? 4
+          : -5;
+
+        return (
+          <button
+            class={`carousel-btn ${i === 0 ? "active" : ""}`}
+            data-slide={i}
+            style={`--left-percent: ${leftPercent}%; --rotate-deg: ${rotateDeg}deg;`}
+          >
+            {slide.label}
+          </button>
+        );
+      })}
+
+      <div class="hero-image-container border-heavy solid-shadow photocopy-filter">
+        {slides.map((slide, i) => (
+          <div
+            class={`carousel-slide ${i === 0 ? "active" : ""}`}
+            data-index={i}
+          >
+            <img
+              src={slide.imageUrl}
+              alt={slide.alt}
+              class="hero-image"
+              loading={i === 0 ? "eager" : "lazy"}
+              decoding="async"
+            />
+            <div class="hero-image-overlay" />
+          </div>
+        ))}
       </div>
     </div>
   </div>
 </section>
 
 <style>
-.hero {
+.hero-section {
   position: relative;
-  color: var(--white);
-  padding: var(--space-5xl) 0 calc(var(--space-5xl) + 40px);
-  text-align: center;
-  overflow: hidden;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), 0 100%);
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-xl);
 }
 
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.hero-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.38);
-}
-
-.hero-bg-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-}
-
-.hero .container {
+.hero-grid {
+  display: grid;
+  gap: var(--space-gutter);
+  align-items: center;
   position: relative;
-  z-index: 1;
+}
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
 }
 
 .hero-content {
-  max-width: 850px;
-  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+@media (min-width: 768px) {
+  .hero-content {
+    grid-column: span 7 / span 7;
+  }
+}
+
+.sticker-badge {
+  position: absolute;
+  top: -3rem;
+  left: -2rem;
+  background-color: var(--color-accent-yellow);
+  color: var(--color-on-background);
+  font-family: var(--font-typewriter);
+  font-size: 20px;
+  padding: 8px 16px;
+  border: 3px solid var(--color-on-background);
+  transform: rotate(-6deg);
+  box-shadow: 4px 4px 0px 0px var(--color-on-background);
+  z-index: 20;
+  font-weight: 700;
 }
 
 .hero-title {
-  font-size: clamp(var(--text-4xl), 8vw, var(--text-5xl));
-  line-height: 0.95;
-  letter-spacing: 0.04em;
-  margin-bottom: var(--space-lg);
-  color: var(--white);
-  text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 800;
+  color: var(--color-on-background);
+  letter-spacing: -0.01em;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 72px;
+    line-height: 76px;
+  }
+}
+
+.hero-title-highlight-wrapper {
+  color: var(--color-on-background);
+  display: inline-block;
+  transition: transform var(--transition-normal);
+  cursor: default;
+  margin-top: 16px;
+  position: relative;
+}
+.hero-title-highlight-wrapper:hover {
+  transform: scale(1.05);
+}
+.hero-title-highlight {
+  color: var(--color-primary);
 }
 
 .hero-subtitle {
-  font-family: var(--font-body);
-  font-size: clamp(var(--text-md), 2.5vw, var(--text-lg));
-  line-height: 1.5;
-  max-width: 600px;
-  margin: 0 auto var(--space-xl);
-  text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+  font-family: var(--font-typewriter);
+  font-size: 20px;
+  line-height: 1.625;
+  color: var(--color-on-background);
+  max-width: 42rem;
+  margin-top: var(--space-md);
+  background-color: var(--color-surface-lowest);
+  padding: var(--space-sm);
+  border: 3px solid var(--color-on-background);
+  box-shadow: 4px 4px 0px 0px var(--color-on-background);
 }
 
-.hero-buttons {
+.hero-actions {
   display: flex;
+  flex-direction: column;
   gap: var(--space-md);
-  justify-content: center;
-  flex-wrap: wrap;
+  padding-top: var(--space-lg);
+}
+@media (min-width: 640px) {
+  .hero-actions {
+    flex-direction: row;
+  }
 }
 
-@media (max-width: 768px) {
-  .hero {
-    padding: var(--space-3xl) 0 calc(var(--space-3xl) + 30px);
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), 0 100%);
+.hero-cta-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .hero-cta-wrapper {
+    width: auto;
   }
+}
 
-  .hero-buttons {
-    flex-direction: column;
-    align-items: center;
+.hero-cta-primary {
+  width: 100%;
+  font-size: 20px;
+  padding: var(--space-md) var(--space-xl);
+  border-width: 4px;
+}
+@media (min-width: 640px) {
+  .hero-cta-primary {
+    width: auto;
   }
+}
 
-  .hero-buttons .btn {
-    width: 100%;
-    max-width: 280px;
+.btn-secondary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-surface-lowest);
+  color: var(--color-on-background);
+  padding: var(--space-md) var(--space-xl);
+  border: 4px solid var(--color-on-background);
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background-color: var(--color-accent-yellow);
+}
+.btn-secondary:active {
+  transform: scale(0.95);
+}
+
+.hero-cta-secondary {
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .hero-cta-secondary {
+    width: auto;
   }
+}
+
+.hero-image-wrapper {
+  position: relative;
+  margin-top: var(--space-xl);
+  transform: rotate(2deg);
+}
+@media (min-width: 768px) {
+  .hero-image-wrapper {
+    grid-column: span 5 / span 5;
+    margin-top: 0;
+  }
+}
+
+.hero-image-bg {
+  position: absolute;
+  bottom: -2rem;
+  right: -2rem;
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--color-on-background);
+}
+
+.carousel-btn {
+  position: absolute;
+  bottom: -1.5rem;
+  left: var(--left-percent);
+  transform: translateX(-50%) rotate(var(--rotate-deg));
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-typewriter);
+  font-size: 16px;
+  padding: 6px 12px;
+  border: 3px solid var(--color-on-background);
+  box-shadow: 4px 4px 0px 0px var(--color-on-background);
+  z-index: 20;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+@media (min-width: 640px) {
+  .carousel-btn {
+    font-size: 20px;
+    padding: 8px 16px;
+  }
+}
+
+.carousel-btn:hover {
+  transform: translate(-50%, -4px) rotate(var(--rotate-deg)) scale(1.05);
+  background-color: var(--color-accent-yellow);
+  color: var(--color-on-background);
+}
+
+.carousel-btn.active {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-on-background);
+  box-shadow: 2px 2px 0px 0px var(--color-on-background);
+  transform: translate(-50%, 2px) rotate(var(--rotate-deg));
+}
+
+@media (max-width: 380px) {
+  .carousel-btn {
+    font-size: 13px;
+    padding: 4px 8px;
+    border-width: 2px;
+    box-shadow: 2px 2px 0px 0px var(--color-on-background);
+  }
+  .carousel-btn.active {
+    box-shadow: 1px 1px 0px 0px var(--color-on-background);
+    transform: translate(-50%, 1px) rotate(var(--rotate-deg));
+  }
+}
+
+.hero-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--color-surface-lowest);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 800ms ease-in-out, visibility 800ms ease-in-out;
+  z-index: 1;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 500ms;
+}
+
+.carousel-slide:hover .hero-image {
+  transform: scale(1.05);
+}
+
+.hero-image-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 218, 214, 0.2); /* primary-fixed */
+  mix-blend-mode: multiply;
+  transition: opacity 500ms;
+}
+
+.carousel-slide:hover .hero-image-overlay {
+  opacity: 0;
 }
 </style>
+
+<script>
+function initCarousel() {
+  const slides = document.querySelectorAll(".carousel-slide");
+  const buttons = document.querySelectorAll(".carousel-btn");
+  let currentIndex = 0;
+  let intervalId;
+
+  if (!slides.length || !buttons.length) return;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      if (i === index) {
+        slide.classList.add("active");
+      } else {
+        slide.classList.remove("active");
+      }
+    });
+
+    buttons.forEach((btn, i) => {
+      if (i === index) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+
+    currentIndex = index;
+  }
+
+  function nextSlide() {
+    const nextIndex = (currentIndex + 1) % slides.length;
+    showSlide(nextIndex);
+  }
+
+  function startAutoCycle() {
+    clearInterval(intervalId);
+    intervalId = setInterval(nextSlide, 10000); // 10 seconds
+  }
+
+  buttons.forEach((btn, index) => {
+    btn.addEventListener("click", () => {
+      showSlide(index);
+      startAutoCycle();
+    });
+  });
+
+  // Initialize auto cycle
+  startAutoCycle();
+}
+
+// Initialize on load and on view transitions page loads
+initCarousel();
+document.addEventListener("astro:after-swap", initCarousel);
+</script>

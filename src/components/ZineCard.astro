@@ -1,0 +1,77 @@
+---
+interface Props {
+  as?: any;
+  href?: string;
+  class?: string;
+  variant?:
+    | "lowest"
+    | "surface"
+    | "primary"
+    | "yellow"
+    | "pink"
+    | "primary-fixed-dim";
+  border?: "heavy" | "medium" | "none";
+  shadow?: "solid" | "solid-md" | "solid-lg" | "none";
+  rotate?: string;
+  hover?: boolean;
+  tape?: boolean | string;
+  [key: string]: any;
+}
+
+const {
+  as: Element = "div",
+  href,
+  class: className = "",
+  variant = "lowest",
+  border = "heavy",
+  shadow = "solid",
+  rotate = "",
+  hover = true,
+  tape = false,
+  ...rest
+} = Astro.props;
+
+// Build classes based on props
+const bgClass = `bg-${variant}`;
+const borderClass = border === "heavy"
+  ? "border-heavy"
+  : border === "medium"
+  ? "border-medium"
+  : "";
+const shadowClass = shadow === "solid"
+  ? "solid-shadow"
+  : shadow === "solid-md"
+  ? "solid-shadow-md"
+  : shadow === "solid-lg"
+  ? "solid-shadow-lg"
+  : "";
+const hoverClass = hover ? "zine-card-hover" : "";
+---
+
+<Element
+  href={href}
+  class={`zine-card ${bgClass} ${borderClass} ${shadowClass} ${rotate} ${hoverClass} ${className}`}
+  {...rest}
+>
+  {tape && (
+    <div
+      class="tape-effect"
+      style={typeof tape === "string"
+      ? tape
+      : "top: -15px; left: 50%; transform: translateX(-50%) rotate(5deg); width: 100px;"}
+    />
+  )}
+  <slot />
+</Element>
+
+<style>
+.zine-card {
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.zine-card-hover:hover {
+  background-color: var(--color-accent-yellow) !important;
+  transform: translateY(-6px) !important;
+}
+</style>

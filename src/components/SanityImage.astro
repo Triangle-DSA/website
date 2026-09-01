@@ -1,0 +1,53 @@
+---
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { urlForImage } from "../sanity/lib/url-for-image";
+
+interface Props {
+  src: SanityImageSource;
+  alt?: string;
+  width?: number;
+  height?: number;
+  loading?: "lazy" | "eager";
+  decoding?: "async" | "sync" | "auto";
+  class?: string;
+  pictureClass?: string;
+  style?: string;
+  fit?: "crop" | "max" | "min" | "scale" | "fill" | "clip";
+}
+
+const {
+  src,
+  alt = "",
+  width,
+  height,
+  loading = "lazy",
+  decoding = "async",
+  class: className,
+  pictureClass,
+  style,
+  fit = "max",
+} = Astro.props;
+
+let builder = urlForImage(src);
+
+if (width) {
+  builder = builder.width(width);
+}
+if (height) {
+  builder = builder.height(height);
+}
+builder = builder.fit(fit);
+
+const optimizedUrl = builder.auto("format").url();
+---
+
+<img
+  src={optimizedUrl}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding={decoding}
+  class={pictureClass ? `${pictureClass} ${className || ""}`.trim() : className}
+  style={style}
+/>

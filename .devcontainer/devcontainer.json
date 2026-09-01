@@ -10,7 +10,11 @@
     }
   },
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-24-bookworm",
+<<<<<<< Updated upstream
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+=======
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:5-26-trixie",
+>>>>>>> Stashed changes
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },

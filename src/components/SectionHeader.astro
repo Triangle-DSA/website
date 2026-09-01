@@ -1,0 +1,70 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  bgColor?:
+    | "pink"
+    | "yellow"
+    | "primary"
+    | "surface"
+    | "accent-pink"
+    | "accent-yellow";
+  rotate?: string;
+  subtitleRotate?: string;
+  class?: string;
+}
+
+const {
+  title,
+  subtitle,
+  bgColor = "pink",
+  rotate = "-rotate-1",
+  subtitleRotate = "rotate-1",
+  class: className = "",
+} = Astro.props;
+
+// Standardize background classes
+const bgClass = bgColor.startsWith("bg-")
+  ? bgColor
+  : `bg-${
+    bgColor === "pink"
+      ? "accent-pink"
+      : bgColor === "yellow"
+      ? "accent-yellow"
+      : bgColor
+  }`;
+---
+
+<div class={`section-header ${className}`}>
+  <h2 class={`font-display section-title uppercase ${bgClass} ${rotate} border-medium shadow-md`}>
+    {title}
+  </h2>
+  {subtitle && (
+    <p class={`section-subtitle font-typewriter ${subtitleRotate} mt-md`}>
+      {subtitle}
+    </p>
+  )}
+</div>
+
+<style>
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+.section-title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 800;
+  color: var(--color-on-background);
+  padding: 4px 16px;
+  display: inline-block;
+  position: relative;
+  z-index: 10;
+}
+.section-subtitle {
+  font-size: 20px;
+  color: var(--color-on-background);
+}
+</style>

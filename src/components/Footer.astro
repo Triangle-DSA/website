@@ -21,171 +21,161 @@ const socialMediaItems = socialMediaFromProps
 ---
 
 <footer class="site-footer">
-  <div class="footer-accent" aria-hidden="true"></div>
-  <div class="container">
-    <div class="footer-content">
-      <div class="footer-section footer-brand">
-        <h3>NC Triangle DSA</h3>
-        <p>Building a democratic, socialist future in the Tar Heel State.</p>
-      </div>
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="/#about">About</a></li>
-          <li><a href="/#campaigns">Campaigns</a></li>
-          <li><a href="/endorsements">Endorsements</a></li>
-          <li><a href="/calendar">Events</a></li>
-          <li><a href="/#join">Join DSA</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>Connect</h4>
-        <ul>
-          {socialMediaItems.map((item) => {
-            const isExternal = item.url.startsWith("http://")
-              || item.url.startsWith("https://");
+  <div class="footer-bg-dots bg-dots mix-blend-screen"></div>
 
-            return (
-              <li>
-                <a
-                  href={item.url}
-                  target={isExternal ? "_blank" : undefined}
-                  rel={isExternal ? "noopener noreferrer" : undefined}
-                >
-                  {item.platform}
-                  {isExternal && (
-                    <svg
-                      class="footer-external-icon"
-                      width="11"
-                      height="11"
-                      viewBox="0 0 12 12"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      aria-hidden="true"
-                    >
-                      <path d="M4.5 1.5H10.5V7.5M10.5 1.5L1.5 10.5" />
-                    </svg>
-                  )}
-                  <span
-                    class="sr-only"
-                  >{isExternal ? " (opens in new tab)" : ""}</span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>
-        &copy; {new Date().getFullYear()} North Carolina Democratic Socialists
-        of America
+  <div class="footer-container container">
+    <!-- Brand & Copyright -->
+    <div class="footer-brand">
+      <span class="footer-logo uppercase">
+        <span class="footer-logo-box"></span> NC Triangle DSA
+      </span>
+      <p class="footer-copyright">
+        &copy; {new Date().getFullYear()} NC Triangle DSA.<br />All Rights
+        Reserved.<br />Not authorized by any candidate or candidate's committee.
       </p>
+    </div>
+
+    <!-- Links -->
+    <div class="footer-links">
+      <a class="footer-link hover-rotate-right uppercase" href="/#about"
+      >About</a>
+      <a class="footer-link hover-rotate-left uppercase" href="/#campaigns"
+      >Campaigns</a>
+      <a class="footer-link hover-rotate-left uppercase" href="/endorsements"
+      >Endorsements</a>
+      <a class="footer-link hover-rotate-right uppercase" href="/calendar"
+      >Events</a>
+
+      {socialMediaItems.map((item, index) => {
+        const isExternal = item.url.startsWith("http://")
+          || item.url.startsWith("https://");
+        const rotationClass = index % 2 === 0
+          ? "hover-rotate-left"
+          : "hover-rotate-right";
+
+        return (
+          <a
+            class={`footer-link ${rotationClass} uppercase`}
+            href={item.url}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
+          >
+            {item.platform}
+            {isExternal && (
+              <svg
+                class="external-icon"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                aria-hidden="true"
+              >
+                <path d="M4.5 1.5H10.5V7.5M10.5 1.5L1.5 10.5" />
+              </svg>
+            )}
+          </a>
+        );
+      })}
     </div>
   </div>
 </footer>
 
 <style>
 .site-footer {
-  background: #c1c0bf;
-  color: var(--black);
-  padding: var(--space-3xl) 0 var(--space-lg);
-  margin-top: 0;
+  width: 100%;
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  background-color: var(--color-on-background);
+  margin-top: var(--space-xl);
   position: relative;
+  border-top: 8px solid var(--color-primary);
 }
 
-.footer-accent {
+.footer-bg-dots {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--red-primary);
+  inset: 0;
+  opacity: 0.2;
+  pointer-events: none;
+  mix-blend-mode: screen;
 }
 
-.footer-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: var(--space-2xl);
-  margin-bottom: var(--space-2xl);
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-lg);
+  position: relative;
+  z-index: 10;
+}
+@media (min-width: 768px) {
+  .footer-container {
+    flex-direction: row;
+  }
 }
 
-.footer-section h3 {
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 24rem;
+}
+
+.footer-logo {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  color: var(--black);
-  letter-spacing: 0.04em;
-  margin-bottom: var(--space-sm);
-}
-
-.footer-section h4 {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  color: var(--red-primary);
-  letter-spacing: 0.04em;
-  margin-bottom: var(--space-md);
-}
-
-.footer-section p {
-  color: var(--black);
-  line-height: 1.6;
-  max-width: 35ch;
-}
-
-.footer-section ul {
-  list-style: none;
-  padding: 0;
-}
-
-.footer-section ul li {
-  margin-bottom: var(--space-xs);
-}
-
-.footer-section a {
-  color: var(--black);
-  text-decoration: none;
-  transition: color var(--duration-fast) var(--ease-out);
-  display: inline-flex;
+  font-size: 32px;
+  font-weight: 900; /* black */
+  color: var(--color-on-primary);
+  display: flex;
   align-items: center;
-  gap: var(--space-2xs);
-  font-size: var(--text-sm);
+  gap: 12px;
 }
 
-.footer-section a:hover {
-  color: var(--red-primary);
-  text-decoration: none;
+.footer-logo-box {
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-primary);
+  border: 3px solid var(--color-on-primary);
+  display: inline-block;
 }
 
-.footer-external-icon {
-  opacity: 0.5;
+.footer-copyright {
+  font-family: var(--font-typewriter);
+  font-size: 18px;
+  color: var(--color-surface-dim); /* using surface-dim or surface-variant */
+  margin-top: 16px;
 }
 
-.footer-bottom {
-  border-top: 1px solid var(--gray-700);
-  padding-top: var(--space-lg);
-  text-align: center;
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--space-xl);
+  row-gap: 24px;
 }
 
-.footer-bottom p {
-  color: var(--black);
-  font-size: var(--text-sm);
-  max-width: none;
-  margin: 0 auto;
+.footer-link {
+  font-family: var(--font-typewriter);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-on-primary);
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-link:hover {
+  color: var(--color-accent-yellow);
+  text-decoration: underline;
 }
 
-@media (max-width: 768px) {
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
-  }
+.hover-rotate-right:hover {
+}
+.hover-rotate-left:hover {
+}
 
-  .footer-brand {
-    text-align: center;
-  }
-
-  .footer-brand p {
-    max-width: none;
-  }
+.external-icon {
+  width: 12px;
+  height: 12px;
+  opacity: 0.7;
 }
 </style>

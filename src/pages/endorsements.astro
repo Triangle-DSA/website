@@ -2,9 +2,12 @@
 export const prerender = true;
 
 import { sanityClient } from "sanity:client";
+import PageHero from "../components/PageHero.astro";
 import PortableText from "../components/PortableText.astro";
+import SanityImage from "../components/SanityImage.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import ZineCard from "../components/ZineCard.astro";
 import Layout from "../layouts/Layout.astro";
-import { urlForImage } from "../sanity/lib/url-for-image";
 import type { Candidate } from "../sanity/schemaTypes/candidate";
 import type { EndorsementsPage } from "../sanity/schemaTypes/endorsementsPage";
 
@@ -39,214 +42,200 @@ const candidates = await sanityClient.fetch<Candidate[]>(
   || "Learn about NC Triangle DSA's currently endorsed candidates and how to seek chapter endorsement."}
 >
   <main id="main-content">
-    <section class="section">
-      <div class="container">
-        <h2 class="section-heading">
-          {endorsementsPage?.currentlyEndorsedHeading || "Currently Endorsed"}
-        </h2>
+    <PageHero
+      title={endorsementsPage?.title || "Endorsements"}
+      subtitle={endorsementsPage?.description
+      || "Learn about our currently endorsed candidates and how to seek chapter endorsement."}
+      rotate="-rotate-1"
+      subtitleRotate="rotate-1"
+      tapes={["top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 200px"]}
+    />
 
-        <div class="endorsee-list">
-          {candidates && candidates.map((candidate) => {
-            const imageUrl = candidate.image?.asset
-              ? urlForImage(candidate.image).width(400).height(500).auto("format").fit(
-                "crop",
-              ).url()
-              : null;
-            return (
-              <article class="endorsee-card">
+    <section class="section container my-xl">
+      <SectionHeader
+        title={endorsementsPage?.currentlyEndorsedHeading || "Currently Endorsed"}
+        bgColor="pink"
+        rotate="-rotate-1"
+        class="mb-xl"
+      />
+
+      <div class="endorsee-list">
+        {candidates && candidates.map((candidate, i) => {
+          const rotateClass = i % 2 === 0 ? "rotate-1" : "-rotate-1";
+          const mediaRotateClass = i % 2 === 0 ? "-rotate-1" : "rotate-1";
+
+          return (
+            <div class="endorsee-item flex flex-col">
+              <div class={`endorsee-media-container relative ${mediaRotateClass}`}>
+                <div
+                  class="tape-effect"
+                  style={`top: -15px; left: 50%; transform: translateX(-50%) rotate(${
+                    i % 2 === 0 ? "-5deg" : "5deg"
+                  }); width: 100px;`}
+                >
+                </div>
                 <div class="endorsee-media">
-                  {imageUrl && (
-                    <img
-                      src={imageUrl}
-                      alt={candidate.image.alt || `${candidate.name} campaign photo`}
+                  {candidate.image?.asset && (
+                    <SanityImage
+                      src={candidate.image}
+                      alt={candidate.name}
                       loading="lazy"
                       class="endorsee-image"
+                      pictureClass="w-full h-full object-cover block"
                       width={400}
-                      height={500}
+                      height={400}
+                      fit="crop"
                     />
                   )}
                 </div>
+              </div>
 
-                <div class="endorsee-content">
-                  <h3>{candidate.name}</h3>
-                  <p class="endorsee-office">{candidate.office}</p>
-                  <p>{candidate.summary}</p>
+              <ZineCard
+                as="article"
+                variant="lowest"
+                border="heavy"
+                shadow="solid"
+                class="endorsee-card flex flex-col mt-md flex-grow"
+                hover={false}
+              >
+                <div class="endorsee-content p-md flex flex-col justify-center h-full">
+                  <h3 class="font-display candidate-name font-black uppercase mb-xs">
+                    {candidate.name}
+                  </h3>
+                  <p class="font-typewriter text-lg font-bold text-on-surface-variant mb-sm">
+                    {candidate.office}
+                  </p>
+                  <p class="font-typewriter text-md leading-relaxed">
+                    {candidate.summary}
+                  </p>
                 </div>
-              </article>
-            );
-          })}
-        </div>
+              </ZineCard>
+            </div>
+          );
+        })}
       </div>
     </section>
 
-    <section class="section bg-light">
-      <div class="container container--narrow">
-        <h2 class="section-heading">
-          {endorsementsPage?.seekingHeading || "Seeking Endorsement?"}
-        </h2>
+    <ZineCard
+      as="section"
+      variant="lowest"
+      border="heavy"
+      shadow="solid"
+      class="container my-xl p-xl"
+      hover={false}
+    >
+      <div class="absolute inset-0 bg-halftone-texture opacity-10 pointer-events-none">
+      </div>
+
+      <div class="relative z-10 max-w-4xl mx-auto">
+        <SectionHeader
+          title={endorsementsPage?.seekingHeading || "Seeking Endorsement?"}
+          bgColor="yellow"
+          rotate="rotate-1"
+          class="mb-lg"
+        />
+
         {endorsementsPage?.seekingDescription && (
-          <div class="seeking-description-wrap">
+          <div class="seeking-description-wrap font-typewriter text-xl leading-relaxed space-y-md mb-xl">
             <PortableText portableText={endorsementsPage.seekingDescription} />
           </div>
         )}
 
         {endorsementsPage?.notes && (
-          <div class="candidate-notes">
-            <h3>
+          <div class="candidate-notes bg-on-background text-on-primary p-lg border-medium border-on-primary candidate-notes-shadow mb-xl relative">
+            <div
+              class="tape-effect"
+              style="top: -15px; right: 20px; transform: rotate(10deg)"
+            >
+            </div>
+            <h3 class="font-display candidate-notes-title uppercase mb-md text-accent-yellow">
               {endorsementsPage.notesHeading || "What we look for in aspiring endorsees"}
             </h3>
-            <ul>
+            <ul class="font-typewriter text-lg space-y-sm pl-md list-disc list-outside">
               {endorsementsPage.notes.map((note) => <li>{note}</li>)}
             </ul>
           </div>
         )}
 
         {endorsementsPage?.questionnaireUrl && (
-          <a
-            href={endorsementsPage.questionnaireUrl}
-            class="questionnaire-link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {endorsementsPage.questionnaireLabel || "Submit Endorsement Questionnaire"}
-          </a>
+          <div class="text-center mt-xl">
+            <a
+              href={endorsementsPage.questionnaireUrl}
+              class="questionnaire-link inline-block font-button text-2xl uppercase bg-primary text-on-primary py-md px-xl border-heavy solid-shadow hover:scale-105 active:scale-95 transition-transform rotate-2"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {endorsementsPage.questionnaireLabel || "Submit Endorsement Questionnaire"}
+            </a>
+          </div>
         )}
       </div>
-    </section>
+    </ZineCard>
   </main>
 </Layout>
 
 <style>
-.page-hero {
-  background: linear-gradient(
-    160deg,
-    var(--gray-700) 0%,
-    var(--gray-900) 60%,
-    var(--black-rich) 100%
-  );
-  color: var(--white);
-  padding: var(--space-3xl) 0;
-  text-align: center;
-}
-
-.section-heading::after {
-  background: var(--gray-700);
-}
-
-.page-hero h1 {
-  color: var(--white);
-}
-
-.page-hero-sub {
-  color: rgba(255, 255, 255, 0.92);
-  margin: 0 auto;
-}
-
+/* Grid / List Layouts */
 .endorsee-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-xl);
 }
 
-.endorsee-card {
+.endorsee-item {
   display: flex;
   flex-direction: column;
-  flex: 0 1 320px;
-  max-width: 100%;
-  min-width: 0;
-  background: var(--white);
-  border: 1px solid var(--gray-200);
-  box-shadow: var(--shadow-sm);
+  height: 100%;
+}
+
+.endorsee-media-container {
+  z-index: 10;
+  margin-bottom: var(--space-xs);
+  width: 100%;
 }
 
 .endorsee-media {
-  width: 100%;
-  max-width: 320px;
-  height: 400px;
+  border: 4px solid var(--color-on-background);
+  background-color: #ffffff;
+  padding: 12px 12px 28px 12px;
+  position: relative;
   overflow: hidden;
-  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  width: 100%;
 }
 
 .endorsee-image {
   width: 100%;
-  max-width: 320px;
-  height: 400px;
+  height: 100%;
   object-fit: cover;
-  display: block;
 }
 
-.endorsee-content {
-  flex: 1;
-  min-width: 0;
-  padding: var(--space-lg);
-  overflow-wrap: break-word;
+.endorsee-card {
+  overflow: visible;
+  transition: all var(--transition-normal);
+  width: 100%;
 }
 
-.endorsee-office {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-
-  color: var(--text-secondary);
-  margin-bottom: var(--space-md);
+.endorsee-item:hover .endorsee-card {
+  background-color: var(--color-accent-yellow);
+  transform: translateY(-8px);
+  box-shadow: 12px 12px 0px 0px var(--color-on-background);
 }
 
-.candidate-notes {
-  margin: var(--space-xl) 0;
-  background: var(--white);
-  padding: var(--space-lg);
-  border: 1px solid var(--gray-200);
-  border-left: 1px solid var(--gray-200);
-  box-shadow: var(--shadow-sm);
-}
-
-.candidate-notes ul {
-  padding-left: 1.25rem;
-}
-
-.candidate-notes li {
-  margin-bottom: var(--space-sm);
-}
-
-.questionnaire-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-sm) var(--space-xl);
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  letter-spacing: 0.08em;
-
-  background: var(--gray-900);
-  color: var(--white);
-  text-decoration: none;
-}
-
-.questionnaire-link:hover {
-  color: var(--white);
-  background: var(--black-rich);
-  text-decoration: none;
-}
-
-@media (max-width: 768px) {
-  .page-hero {
-    padding: var(--space-2xl) 0;
-  }
-
+@media (min-width: 768px) {
   .endorsee-list {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-gutter);
   }
+}
 
-  .endorsee-card {
-    width: 100%;
-  }
-
-  .endorsee-media,
-  .endorsee-image {
-    max-width: 100%;
-    height: auto;
-  }
+.candidate-name {
+  font-size: clamp(24px, 3vw, 28px);
+}
+.candidate-notes-shadow {
+  box-shadow: 8px 8px 0px 0px var(--color-primary);
+}
+.candidate-notes-title {
+  font-size: 28px;
 }
 </style>

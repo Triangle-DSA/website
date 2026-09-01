@@ -1,16 +1,21 @@
 import { defineField, defineType } from "sanity";
 
+export interface CarouselSlide {
+  label: string;
+  image?: {
+    alt?: string;
+    asset?: {
+      _ref: string;
+      _type: string;
+    };
+  };
+}
+
 export interface HomepageContent {
   hero: {
     title: string;
     subtitle: string;
-    heroImage?: {
-      alt?: string;
-      asset?: {
-        _ref: string;
-        _type: string;
-      };
-    };
+    carousel?: CarouselSlide[];
   };
   about: {
     heading: string;
@@ -47,16 +52,37 @@ export const homepageContentType = defineType({
           validation: (rule) => rule.required(),
         }),
         defineField({
-          name: "heroImage",
-          type: "image",
-          options: {
-            hotspot: true,
-          },
-          fields: [
+          name: "carousel",
+          title: "Carousel Slides",
+          type: "array",
+          of: [
             {
-              name: "alt",
-              type: "string",
-              title: "Alternative Text",
+              type: "object",
+              name: "slide",
+              title: "Slide",
+              fields: [
+                {
+                  name: "label",
+                  title: "Label",
+                  type: "string",
+                  validation: (rule) => rule.required(),
+                },
+                {
+                  name: "image",
+                  title: "Image",
+                  type: "image",
+                  options: {
+                    hotspot: true,
+                  },
+                  fields: [
+                    {
+                      name: "alt",
+                      type: "string",
+                      title: "Alternative Text",
+                    },
+                  ],
+                },
+              ],
             },
           ],
         }),

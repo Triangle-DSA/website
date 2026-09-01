@@ -1,0 +1,48 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  class?: string;
+  rotate?: string; // e.g. "rotate-1" or "-rotate-1"
+  subtitleRotate?: string; // e.g. "rotate-1" or "-rotate-1"
+  bgDotsOpacity?: string; // e.g. "opacity-20"
+  tapes?: string[]; // Custom inline styles for tape effects
+}
+
+const {
+  title,
+  subtitle,
+  class: className = "",
+  rotate = "-rotate-1",
+  subtitleRotate = "rotate-1",
+  bgDotsOpacity = "opacity-20",
+  tapes = [
+    "top: -10px; left: 50%; transform: translateX(-50%) rotate(2deg); width: 200px",
+  ],
+} = Astro.props;
+---
+
+<section class={`page-hero bg-primary border-heavy solid-shadow mt-xl mb-xl mx-auto container relative ${rotate} ${className}`}>
+  <div class={`bg-dots mix-blend-multiply ${bgDotsOpacity} absolute inset-0 pointer-events-none`}>
+  </div>
+
+  {tapes.map((tapeStyle) => <div class="tape-effect" style={tapeStyle} />)}
+
+  <div class="page-hero-content relative z-10 text-center py-xl px-lg">
+    <h1 class="page-hero-title uppercase text-on-primary font-display font-black">
+      {title}
+    </h1>
+    {subtitle && (
+      <p class={`font-typewriter text-lg text-on-primary mt-md font-bold bg-on-background p-4 border-medium border-on-primary inline-block ${subtitleRotate} shadow-[4px_4px_0_0_#ffffff] max-w-2xl mx-auto`}>
+        {subtitle}
+      </p>
+    )}
+  </div>
+</section>
+
+<style>
+.page-hero-title {
+  font-size: clamp(32px, 5vw, 64px);
+  -webkit-text-stroke: 2px var(--color-on-background);
+}
+</style>

@@ -1,29 +1,22 @@
 ---
+import "@fontsource-variable/bricolage-grotesque";
+import "@fontsource-variable/atkinson-hyperlegible-next";
+import "@fontsource-variable/atkinson-hyperlegible-next/wght-italic.css";
 import { sanityClient } from "sanity:client";
-import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import type { SocialMedia } from "../sanity/schemaTypes/socialMedia";
 import "../styles/global.css";
 
 interface Props {
   title?: string;
   description?: string;
+  bodyClass?: string;
 }
-
-const socialMediaItems = await sanityClient.fetch<SocialMedia[]>(
-  `*[_type == "socialMedia"] | order(order asc) {
-    platform,
-    label,
-    url,
-    emoji,
-    order
-  }`,
-);
 
 const {
   title = "North Carolina DSA",
   description =
     "North Carolina Chapter of the Democratic Socialists of America - Building a democratic, socialist future in the Tar Heel State",
+  bodyClass = "",
 } = Astro.props;
 
 const canonicalURL = new URL(
@@ -60,16 +53,25 @@ const canonicalURL = new URL(
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
-    <!-- Fonts are self-hosted via @fontsource (imported in global.css) -->
+    <!-- Fonts are self-hosted via @fontsource (imported in global.css), and Google Fonts are below -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700;800&family=Special+Elite&display=swap"
+      rel="stylesheet"
+    />
 
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <slot name="head" />
   </head>
-  <body>
+  <body class={bodyClass}>
     <a href="#main-content" class="skip-link">Skip to content</a>
     <Header />
     <slot />
-    <Footer socialMediaItems={socialMediaItems} />
   </body>
 </html>
